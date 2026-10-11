@@ -638,6 +638,53 @@ textarea:focus, .steer-row input:focus { outline: 1px solid var(--brand); outlin
 .deg-artifact-none { color: var(--ink-muted); }
 .deg-md { max-height: 320px; overflow: auto; white-space: pre-wrap; font-size: 11px; background: var(--paper-soft, #fafaf8); border: 1px solid var(--line-soft); border-radius: 6px; padding: 10px; }
 
+/* ── 方向 C：品牌区 + 验证门（首屏主角）────────────────────────────── */
+.brand-hero { margin: 6px 0 14px; padding: 4px 2px; }
+.brand-hero-name { font-size: 13px; letter-spacing: .06em; color: var(--brand-deep); font-weight: 700; }
+.brand-hero-sep { color: var(--ink-muted); font-weight: 400; }
+.brand-hero-slogan { font-size: 26px; font-weight: 700; color: var(--ink); margin-top: 6px; letter-spacing: .01em; }
+.brand-hero-sub { font-size: 12.5px; color: var(--ink-muted); margin-top: 6px; }
+
+/* 验证门：左（锁定预测） | 分界 | 右（现实检验） */
+.gate {
+  display: grid; grid-template-columns: minmax(0, 1fr) 56px minmax(0, 1fr);
+  background: var(--panel-bg, #fff); border: 1px solid var(--line-soft); border-radius: 12px;
+  margin-bottom: 12px; overflow: hidden;
+}
+.gate-side { padding: 18px 22px; }
+.gate-eyebrow { font-size: 10px; letter-spacing: .12em; color: var(--ink-muted); font-weight: 700; margin-bottom: 10px; }
+.gate-lock-line { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.gate-badge { font-size: 11px; padding: 2px 10px; border-radius: 999px; background: var(--paper-soft, #f4f5f2); border: 1px solid var(--line-soft); color: var(--ink-muted); }
+.gate-badge-lock { background: #e8f3ec; color: var(--ok); border-color: #c4ddcd; }
+.gate-time { font-size: 10.5px; color: var(--ink-muted); }
+.gate-subject { font-size: 30px; font-weight: 700; color: var(--brand-deep); letter-spacing: .02em; }
+.gate-judgment { font-size: 13.5px; color: var(--ink-soft); margin-top: 8px; line-height: 1.6; }
+.gate-contract { font-size: 13px; color: var(--ink-soft); margin-top: 8px; }
+.gate-contract code { font-size: 14px; color: var(--brand-deep); background: var(--paper-soft, #f4f5f2); padding: 2px 8px; border-radius: 6px; }
+.gate-contract-note { font-size: 10.5px; color: var(--ink-muted); margin-left: 8px; }
+.gate-fp { font-size: 10px; color: var(--ink-muted); margin-top: 10px; }
+.gate-divider {
+  display: flex; align-items: center; justify-content: center;
+  background: var(--paper-soft, #f7f8f5); border-left: 1px solid var(--line-soft); border-right: 1px solid var(--line-soft);
+}
+.gate-divider span { font-size: 10px; letter-spacing: .2em; color: var(--ink-muted); text-align: center; line-height: 1.9; }
+.gate-reality { background: linear-gradient(to bottom, #fff, #fbfaf7); }
+.gate-big { font-size: 34px; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--brand-deep); }
+.gate-big-dim { font-size: 18px; color: var(--ink-muted); font-weight: 400; }
+.gate-waiting { color: #8a6508; }
+.gate-pass { color: var(--ok); }
+.gate-fail { color: var(--danger); }
+.gate-progress { height: 6px; border-radius: 3px; background: var(--line-soft); margin: 10px 0 4px; overflow: hidden; }
+.gate-progress i { display: block; height: 100%; background: #c9a227; border-radius: 3px; }
+.gate-note { font-size: 11px; color: var(--ink-muted); margin-top: 8px; line-height: 1.7; }
+.gate-estimate { font-size: 10px; }
+@media (max-width: 1100px) {
+  .gate { grid-template-columns: 1fr; }
+  .gate-divider { border: none; border-top: 1px solid var(--line-soft); border-bottom: 1px solid var(--line-soft); padding: 6px 0; }
+  .gate-divider span { letter-spacing: .4em; }
+  .gate-divider span br { display: none; }
+}
+
 /* ── Cockpit 重设计 v2：浅色紧凑上下文条 / 结论区 / IC 主图 / 链路抽屉 ─────────────── */
 
 /* A. 顶部研究上下文条（浅色、紧凑、有层级） */
@@ -2863,9 +2910,9 @@ body.mod-research .stage { padding: 20px 24px 40px; }
   .ro-bar .ro-tag { margin-left: auto; opacity: .7; }
 </style>
 <div class="ro-bar">
-  <b>DiffLine · 只读预览（2026-10-12 快照 v5 · 引用追溯 + 框选 + 滚动统计）</b>
+  <b>DiffLine · 只读预览（2026-10-12 快照 v6 · 验证门构图）</b>
   <a href="readonly.html">首页</a>
-  <a href="readonly-workspace.html">研究工作台（Cockpit v5）</a>
+  <a href="readonly-workspace.html">研究工作台（验证门版）</a>
   <a href="readonly-legacy.html">legacy 降级视图</a>
   <span class="ro-tag">静态快照 · 无需登录 · 非交互 · 数据截止 2026-10-09</span>
 </div>

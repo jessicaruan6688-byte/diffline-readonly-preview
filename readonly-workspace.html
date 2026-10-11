@@ -638,6 +638,53 @@ textarea:focus, .steer-row input:focus { outline: 1px solid var(--brand); outlin
 .deg-artifact-none { color: var(--ink-muted); }
 .deg-md { max-height: 320px; overflow: auto; white-space: pre-wrap; font-size: 11px; background: var(--paper-soft, #fafaf8); border: 1px solid var(--line-soft); border-radius: 6px; padding: 10px; }
 
+/* ── 方向 C：品牌区 + 验证门（首屏主角）────────────────────────────── */
+.brand-hero { margin: 6px 0 14px; padding: 4px 2px; }
+.brand-hero-name { font-size: 13px; letter-spacing: .06em; color: var(--brand-deep); font-weight: 700; }
+.brand-hero-sep { color: var(--ink-muted); font-weight: 400; }
+.brand-hero-slogan { font-size: 26px; font-weight: 700; color: var(--ink); margin-top: 6px; letter-spacing: .01em; }
+.brand-hero-sub { font-size: 12.5px; color: var(--ink-muted); margin-top: 6px; }
+
+/* 验证门：左（锁定预测） | 分界 | 右（现实检验） */
+.gate {
+  display: grid; grid-template-columns: minmax(0, 1fr) 56px minmax(0, 1fr);
+  background: var(--panel-bg, #fff); border: 1px solid var(--line-soft); border-radius: 12px;
+  margin-bottom: 12px; overflow: hidden;
+}
+.gate-side { padding: 18px 22px; }
+.gate-eyebrow { font-size: 10px; letter-spacing: .12em; color: var(--ink-muted); font-weight: 700; margin-bottom: 10px; }
+.gate-lock-line { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.gate-badge { font-size: 11px; padding: 2px 10px; border-radius: 999px; background: var(--paper-soft, #f4f5f2); border: 1px solid var(--line-soft); color: var(--ink-muted); }
+.gate-badge-lock { background: #e8f3ec; color: var(--ok); border-color: #c4ddcd; }
+.gate-time { font-size: 10.5px; color: var(--ink-muted); }
+.gate-subject { font-size: 30px; font-weight: 700; color: var(--brand-deep); letter-spacing: .02em; }
+.gate-judgment { font-size: 13.5px; color: var(--ink-soft); margin-top: 8px; line-height: 1.6; }
+.gate-contract { font-size: 13px; color: var(--ink-soft); margin-top: 8px; }
+.gate-contract code { font-size: 14px; color: var(--brand-deep); background: var(--paper-soft, #f4f5f2); padding: 2px 8px; border-radius: 6px; }
+.gate-contract-note { font-size: 10.5px; color: var(--ink-muted); margin-left: 8px; }
+.gate-fp { font-size: 10px; color: var(--ink-muted); margin-top: 10px; }
+.gate-divider {
+  display: flex; align-items: center; justify-content: center;
+  background: var(--paper-soft, #f7f8f5); border-left: 1px solid var(--line-soft); border-right: 1px solid var(--line-soft);
+}
+.gate-divider span { font-size: 10px; letter-spacing: .2em; color: var(--ink-muted); text-align: center; line-height: 1.9; }
+.gate-reality { background: linear-gradient(to bottom, #fff, #fbfaf7); }
+.gate-big { font-size: 34px; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--brand-deep); }
+.gate-big-dim { font-size: 18px; color: var(--ink-muted); font-weight: 400; }
+.gate-waiting { color: #8a6508; }
+.gate-pass { color: var(--ok); }
+.gate-fail { color: var(--danger); }
+.gate-progress { height: 6px; border-radius: 3px; background: var(--line-soft); margin: 10px 0 4px; overflow: hidden; }
+.gate-progress i { display: block; height: 100%; background: #c9a227; border-radius: 3px; }
+.gate-note { font-size: 11px; color: var(--ink-muted); margin-top: 8px; line-height: 1.7; }
+.gate-estimate { font-size: 10px; }
+@media (max-width: 1100px) {
+  .gate { grid-template-columns: 1fr; }
+  .gate-divider { border: none; border-top: 1px solid var(--line-soft); border-bottom: 1px solid var(--line-soft); padding: 6px 0; }
+  .gate-divider span { letter-spacing: .4em; }
+  .gate-divider span br { display: none; }
+}
+
 /* ── Cockpit 重设计 v2：浅色紧凑上下文条 / 结论区 / IC 主图 / 链路抽屉 ─────────────── */
 
 /* A. 顶部研究上下文条（浅色、紧凑、有层级） */
@@ -2863,9 +2910,9 @@ body.mod-research .stage { padding: 20px 24px 40px; }
   .ro-bar .ro-tag { margin-left: auto; opacity: .7; }
 </style>
 <div class="ro-bar">
-  <b>DiffLine · 只读预览（2026-10-12 快照 v5 · 引用追溯 + 框选 + 滚动统计）</b>
+  <b>DiffLine · 只读预览（2026-10-12 快照 v6 · 验证门构图）</b>
   <a href="readonly.html">首页</a>
-  <a href="readonly-workspace.html">研究工作台（Cockpit v5）</a>
+  <a href="readonly-workspace.html">研究工作台（验证门版）</a>
   <a href="readonly-legacy.html">legacy 降级视图</a>
   <span class="ro-tag">静态快照 · 无需登录 · 非交互 · 数据截止 2026-10-09</span>
 </div>
@@ -2906,7 +2953,7 @@ body.mod-research .stage { padding: 20px 24px 40px; }
   <div class="rws rws-story">
     <header class="ctx-strip" id="research-context">
       <div class="ctx-strip-left">
-        <span class="ctx-strip-brand">DIFFLINE · RESEARCH COCKPIT</span>
+        <span class="ctx-strip-brand">RESEARCH COCKPIT</span>
         <span class="ctx-chip" title="研究对象（factor × horizon）">mom20 · 10D</span>
         <span class="ctx-chip ctx-chip-light" title="Knowledge cutoff">cutoff 2026-09-30</span>
       </div>
@@ -2920,129 +2967,39 @@ body.mod-research .stage { padding: 20px 24px 40px; }
     </header>
 
     
-  <section class="conclusion" id="conclusion">
-    <div class="concl-main">
-      <div class="concl-eyebrow">研究结论 · 当前状态（等待现实成熟）</div>
-      <p class="concl-statement">Factor Health（run-2026-09-30-5f4b99-fh）近 20 有效 IC mean=-0.0644。Concept Drift（run-2026-09-30-5f4b99-cd）recentMean=-0.0644，baselineMean=0.0549，effectSize=-0.3708，relationshipShift=false。最近一条成熟 Rank IC（run-2026-09-30-5f4b99-ic）=0.3123（2026-09-15）。OOD expanding（run-2026-09-30-5f4b99-ood-exp）=false，rolling120（run-2026-09-30-5f4b99-ood-roll）=false。</p>
-      <p class="concl-contract">评估合同：pass ⟺ actual &lt; 0 · 方向 negative · 指纹 93a3f214…</p>
+  <section class="brand-hero">
+    <div class="brand-hero-name">DiffLine<span class="brand-hero-sep">｜</span>金融研究验证与学习智能体</div>
+    <div class="brand-hero-slogan">让每一个研究假设，都接受现实检验。</div>
+    <div class="brand-hero-sub">从证据与预测，到现实差异、错误归因和下一轮实验。</div>
+  </section>
+
+    
+  <section class="gate" id="gate">
+    
+    <div class="gate-side">
+      <div class="gate-eyebrow">LOCKED PREDICTION · 真实预测记录</div>
+      <div class="gate-lock-line"><span class="gate-badge gate-badge-lock">🔒 已锁定</span><span class="gate-time mono">2026-10-11 23:05 锁定</span></div>
+      <div class="gate-subject mono">mom20 · 10D</div>
+      <div class="gate-judgment">研究判断：未来 10 个交易日的截面 RankIC 方向为 <b>负</b></div>
+      <div class="gate-contract">预测合同 <code>actual &lt; 0</code> <span class="gate-contract-note">按已锁定规则检验</span></div>
+      <div class="gate-fp mono">指纹 93a3f2143dea1cbc</div>
     </div>
-    <div class="concl-metrics">
-      <div class="cm-chip cm-pos">
-        <span class="cm-label">最新成熟 RankIC</span>
-        <b>0.3123</b>
-        <span class="cm-meta">2026-09-15 · 序列 n=290</span>
-      </div>
-      <div class="cm-chip cm-pos">
-        <span class="cm-label">Baseline ICIR</span>
-        <b>0.2647</b>
-        <span class="cm-meta">baseline-rankic-icir-v1 · ICIR of matured RankIC ≤ 2026-09-30 · minSamples 20</span>
-      </div>
-      <div class="cm-chip cm-neg">
-        <span class="cm-label">概念漂移 ΔIC</span>
-        <b>-0.1193</b>
-        <span class="cm-meta">近窗 n=20 vs 基准 n=120 · 非因果解释</span>
-      </div>
-      <div class="cm-chip cm-wait">
-        <span class="cm-label">Reality</span>
-        <b>WAITING</b>
-        <span class="cm-meta">未成熟：未来 bar 1/10</span>
+    <div class="gate-divider"><span>现<br>实<br>检<br>验</span></div>
+    
+    <div class="gate-side gate-reality">
+      <div class="gate-eyebrow">REALITY · 现实检验</div>
+      <div class="gate-big gate-waiting">1 <span class="gate-big-dim">/ 10</span></div>
+      <div class="gate-progress"><i style="width:10%"></i></div>
+      <div class="gate-judgment">尚未成熟，暂不判定结果</div>
+      <div class="gate-note">研究日 2026-10-08 · 已积累 1 根未来交易日 bar
+        <br>预计成熟 2026-10-22<span class="gate-estimate">（估算：按周一~周五推算剩余交易日，未含节假日调整；以真实交易日历到位为准）</span>
       </div>
     </div>
   </section>
 
-    <section class="panel rws-panel lt-panel" id="loop-timeline">
-      <div class="lt-panel-head">
-        <h2>研究闭环 · 点击阶段查看真实记录</h2>
-        <span class="lt-persisted mono">事件日志 2 条 · 日志态 预测已锁定</span>
-      </div>
-      <ol class="lt-flow">
-      <li class="lt-cell lt-complete" data-ltstage="research" role="button" tabindex="0" title="点击查看 Research 的真实记录">
-        <div class="lt-idx mono">01</div>
-        <div class="lt-label">Research</div>
-        <div class="lt-state">完成</div>
-        <div class="lt-time mono">2026-10-11 23:05</div>
-        <div class="lt-timelabel">研究创建</div>
-        <div class="lt-detail" title="asOf 2026-09-30 · mom20×10">asOf 2026-09-30 · mom20×10</div>
-      </li>
-      <li class="lt-arrow" aria-hidden="true">→</li>
-      <li class="lt-cell lt-complete" data-ltstage="evidence" role="button" tabindex="0" title="点击查看 Evidence 的真实记录">
-        <div class="lt-idx mono">02</div>
-        <div class="lt-label">Evidence</div>
-        <div class="lt-state">完成</div>
-        <div class="lt-time mono">2026-10-11 23:05</div>
-        <div class="lt-timelabel">证据生成</div>
-        <div class="lt-detail" title="7 条证据">7 条证据</div>
-      </li>
-      <li class="lt-arrow" aria-hidden="true">→</li>
-      <li class="lt-cell lt-complete" data-ltstage="hypothesis" role="button" tabindex="0" title="点击查看 Hypothesis 的真实记录">
-        <div class="lt-idx mono">03</div>
-        <div class="lt-label">Hypothesis</div>
-        <div class="lt-state">完成</div>
-        <div class="lt-time mono">2026-10-11 23:05</div>
-        <div class="lt-timelabel">假设形成</div>
-        <div class="lt-detail" title="run-2026-09-30-5f4b99-hyp">run-2026-09-30-5f4b99-hyp</div>
-      </li>
-      <li class="lt-arrow" aria-hidden="true">→</li>
-      <li class="lt-cell lt-complete" data-ltstage="lock" role="button" tabindex="0" title="点击查看 Prediction LOCK 的真实记录">
-        <div class="lt-idx mono">04</div>
-        <div class="lt-label">Prediction LOCK</div>
-        <div class="lt-state">完成</div>
-        <div class="lt-time mono">2026-10-11 23:05</div>
-        <div class="lt-timelabel">锁定时间</div>
-        <div class="lt-detail" title="方向 negative · 指纹已绑定">方向 negative · 指纹已绑定</div>
-      </li>
-      <li class="lt-arrow" aria-hidden="true">→</li>
-      <li class="lt-cell lt-waiting" data-ltstage="reality" role="button" tabindex="0" title="点击查看 Reality 的真实记录">
-        <div class="lt-idx mono">05</div>
-        <div class="lt-label">Reality</div>
-        <div class="lt-state">WAITING</div>
-        <div class="lt-time mono">—</div>
-        
-        <div class="lt-detail" title="未成熟：未来 bar 1/10">未成熟：未来 bar 1/10</div>
-      </li>
-      <li class="lt-arrow" aria-hidden="true">→</li>
-      <li class="lt-cell lt-waiting" data-ltstage="reality_diff" role="button" tabindex="0" title="点击查看 Reality Diff 的真实记录">
-        <div class="lt-idx mono">06</div>
-        <div class="lt-label">Reality Diff</div>
-        <div class="lt-state">WAITING</div>
-        <div class="lt-time mono">—</div>
-        
-        
-      </li>
-      <li class="lt-arrow" aria-hidden="true">→</li>
-      <li class="lt-cell lt-waiting" data-ltstage="attribution" role="button" tabindex="0" title="点击查看 Attribution 的真实记录">
-        <div class="lt-idx mono">07</div>
-        <div class="lt-label">Attribution</div>
-        <div class="lt-state">WAITING</div>
-        <div class="lt-time mono">—</div>
-        
-        
-      </li>
-      <li class="lt-arrow" aria-hidden="true">→</li>
-      <li class="lt-cell lt-waiting" data-ltstage="learning" role="button" tabindex="0" title="点击查看 Learning 的真实记录">
-        <div class="lt-idx mono">08</div>
-        <div class="lt-label">Learning</div>
-        <div class="lt-state">WAITING</div>
-        <div class="lt-time mono">—</div>
-        
-        
-      </li>
-      <li class="lt-arrow" aria-hidden="true">→</li>
-      <li class="lt-cell lt-waiting" data-ltstage="next_experiment" role="button" tabindex="0" title="点击查看 Next Experiment 的真实记录">
-        <div class="lt-idx mono">09</div>
-        <div class="lt-label">Next Experiment</div>
-        <div class="lt-state">WAITING</div>
-        <div class="lt-time mono">2026-09-30</div>
-        <div class="lt-timelabel">决策生成</div>
-        <div class="lt-detail" title="selected f10342b7…">selected f10342b7…</div>
-      </li>
-      </ol>
-      
-    </section>
-
     <nav class="rws-story-nav" aria-label="研究流程">
-      <a href="#conclusion">研究结论</a>
-      <a href="#story-charts">图表</a>
+      <a href="#gate">验证门</a>
+      <a href="#story-charts">研究依据</a>
       <a href="#loop-timeline">研究闭环</a>
       <a href="#story-thesis">论点与证据</a>
       <a href="#story-prediction">预测锁定</a>
@@ -3052,10 +3009,10 @@ body.mod-research .stage { padding: 20px 24px 40px; }
 
     <section class="rws-story-section" id="story-charts">
       <div class="rws-story-heading">
-        <span class="rws-story-index">01 / CHARTS</span>
+        <span class="rws-story-index">01 / EVIDENCE BASIS</span>
         <div>
-          <h2>图表</h2>
-          <p>历史 Rank IC 主图、概念漂移对照、因子×期限评分——全部来自真实引擎输出。</p>
+          <h2>这项预测的研究依据</h2>
+          <p>历史 IC 序列、滚动统计、近期与基准对照、因子×期限评分——全部来自真实引擎输出。</p>
         </div>
       </div>
 
@@ -4462,6 +4419,96 @@ body.mod-research .stage { padding: 20px 24px 40px; }
       <p class="tm-source mono">排名：runCrossSection（asOf 截断快照，point-in-time）· resultHash <span class="mono">2eb7e1e2e3923dca</span> · 配置 cfg-default-v0 v0 · configHash <span class="mono">c0b15ef2b6b8</span></p>
       <p class="tm-source mono">IC：computeRankICAtDate（src/engine/ic.ts，与 Outcome 评估同一实现） · 研究日 2026-10-09 截面因子值 × 研究日之后 10 个交易日 forward return（取自完整未截断快照；RankIC 是评估标签，不是候选评分，也不是决策 trace）</p>
       </section>
+    </section>
+
+    <section class="panel rws-panel lt-panel" id="loop-timeline">
+      <div class="lt-panel-head">
+        <h2>研究闭环 · 点击阶段查看真实记录</h2>
+        <span class="lt-persisted mono">事件日志 2 条 · 日志态 预测已锁定</span>
+      </div>
+      <ol class="lt-flow">
+      <li class="lt-cell lt-complete" data-ltstage="research" role="button" tabindex="0" title="点击查看 Research 的真实记录">
+        <div class="lt-idx mono">01</div>
+        <div class="lt-label">Research</div>
+        <div class="lt-state">完成</div>
+        <div class="lt-time mono">2026-10-11 23:05</div>
+        <div class="lt-timelabel">研究创建</div>
+        <div class="lt-detail" title="asOf 2026-09-30 · mom20×10">asOf 2026-09-30 · mom20×10</div>
+      </li>
+      <li class="lt-arrow" aria-hidden="true">→</li>
+      <li class="lt-cell lt-complete" data-ltstage="evidence" role="button" tabindex="0" title="点击查看 Evidence 的真实记录">
+        <div class="lt-idx mono">02</div>
+        <div class="lt-label">Evidence</div>
+        <div class="lt-state">完成</div>
+        <div class="lt-time mono">2026-10-11 23:05</div>
+        <div class="lt-timelabel">证据生成</div>
+        <div class="lt-detail" title="7 条证据">7 条证据</div>
+      </li>
+      <li class="lt-arrow" aria-hidden="true">→</li>
+      <li class="lt-cell lt-complete" data-ltstage="hypothesis" role="button" tabindex="0" title="点击查看 Hypothesis 的真实记录">
+        <div class="lt-idx mono">03</div>
+        <div class="lt-label">Hypothesis</div>
+        <div class="lt-state">完成</div>
+        <div class="lt-time mono">2026-10-11 23:05</div>
+        <div class="lt-timelabel">假设形成</div>
+        <div class="lt-detail" title="run-2026-09-30-5f4b99-hyp">run-2026-09-30-5f4b99-hyp</div>
+      </li>
+      <li class="lt-arrow" aria-hidden="true">→</li>
+      <li class="lt-cell lt-complete" data-ltstage="lock" role="button" tabindex="0" title="点击查看 Prediction LOCK 的真实记录">
+        <div class="lt-idx mono">04</div>
+        <div class="lt-label">Prediction LOCK</div>
+        <div class="lt-state">完成</div>
+        <div class="lt-time mono">2026-10-11 23:05</div>
+        <div class="lt-timelabel">锁定时间</div>
+        <div class="lt-detail" title="方向 negative · 指纹已绑定">方向 negative · 指纹已绑定</div>
+      </li>
+      <li class="lt-arrow" aria-hidden="true">→</li>
+      <li class="lt-cell lt-waiting" data-ltstage="reality" role="button" tabindex="0" title="点击查看 Reality 的真实记录">
+        <div class="lt-idx mono">05</div>
+        <div class="lt-label">Reality</div>
+        <div class="lt-state">WAITING</div>
+        <div class="lt-time mono">—</div>
+        
+        <div class="lt-detail" title="未成熟：未来 bar 1/10">未成熟：未来 bar 1/10</div>
+      </li>
+      <li class="lt-arrow" aria-hidden="true">→</li>
+      <li class="lt-cell lt-waiting" data-ltstage="reality_diff" role="button" tabindex="0" title="点击查看 Reality Diff 的真实记录">
+        <div class="lt-idx mono">06</div>
+        <div class="lt-label">Reality Diff</div>
+        <div class="lt-state">WAITING</div>
+        <div class="lt-time mono">—</div>
+        
+        
+      </li>
+      <li class="lt-arrow" aria-hidden="true">→</li>
+      <li class="lt-cell lt-waiting" data-ltstage="attribution" role="button" tabindex="0" title="点击查看 Attribution 的真实记录">
+        <div class="lt-idx mono">07</div>
+        <div class="lt-label">Attribution</div>
+        <div class="lt-state">WAITING</div>
+        <div class="lt-time mono">—</div>
+        
+        
+      </li>
+      <li class="lt-arrow" aria-hidden="true">→</li>
+      <li class="lt-cell lt-waiting" data-ltstage="learning" role="button" tabindex="0" title="点击查看 Learning 的真实记录">
+        <div class="lt-idx mono">08</div>
+        <div class="lt-label">Learning</div>
+        <div class="lt-state">WAITING</div>
+        <div class="lt-time mono">—</div>
+        
+        
+      </li>
+      <li class="lt-arrow" aria-hidden="true">→</li>
+      <li class="lt-cell lt-waiting" data-ltstage="next_experiment" role="button" tabindex="0" title="点击查看 Next Experiment 的真实记录">
+        <div class="lt-idx mono">09</div>
+        <div class="lt-label">Next Experiment</div>
+        <div class="lt-state">WAITING</div>
+        <div class="lt-time mono">2026-09-30</div>
+        <div class="lt-timelabel">决策生成</div>
+        <div class="lt-detail" title="selected f10342b7…">selected f10342b7…</div>
+      </li>
+      </ol>
+      
     </section>
 
     <section class="rws-story-section" id="story-thesis">
