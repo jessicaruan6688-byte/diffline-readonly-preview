@@ -714,6 +714,25 @@ textarea:focus, .steer-row input:focus { outline: 1px solid var(--brand); outlin
 .sd-item { font-size: 11.5px; padding: 6px 8px; background: var(--paper-soft, #f7f8f5); border-radius: 6px; }
 .sd-item p { margin: 4px 0 0; line-height: 1.6; }
 
+/* IC 主图去重（§五.5）：组件内的题头文字与指标块和结论区/外层标题重复，
+   保留图例（dlv-legend）与图表本体，隐藏重复文本层。 */
+.ic-hero .dlv-head > div { display: none; }
+.ic-hero .dlv-head { justify-content: flex-end; }
+.ic-hero .dlv-metrics { display: none; }
+.ic-hero .dlv-card > footer { display: none; } /* Source 行由图表下方 rolling note 与结论区口径承担 */
+.ic-range-custom { cursor: default; }
+
+/* 滚动窗口统计条（A4） */
+.roll-table { margin-top: 10px; }
+.roll-table th, .roll-table td { font-size: 11px; padding: 4px 10px; }
+
+/* 证据引用定位（B2） */
+button.ws-ref { background: none; border: 1px solid var(--line-soft); border-radius: 5px; cursor: pointer; padding: 1px 6px; font-size: 10.5px; }
+button.ws-ref:hover { border-color: var(--brand-deep); color: var(--brand-deep); }
+.ev-flash { background: #fff3cd !important; transition: background .3s; }
+tr.ev-flash td { background: #fff3cd; }
+.ws-ref-notfound { font-size: 10.5px; color: var(--danger); }
+
 /* 深色旧上下文条样式废弃（保留类名兼容，不再使用） */
 @media (max-width: 1100px) {
   .conclusion { grid-template-columns: 1fr; }
@@ -2844,9 +2863,9 @@ body.mod-research .stage { padding: 20px 24px 40px; }
   .ro-bar .ro-tag { margin-left: auto; opacity: .7; }
 </style>
 <div class="ro-bar">
-  <b>DiffLine · 只读预览（2026-10-12 快照 v4 · Cockpit 重设计）</b>
+  <b>DiffLine · 只读预览（2026-10-12 快照 v5 · 引用追溯 + 框选 + 滚动统计）</b>
   <a href="readonly.html">首页</a>
-  <a href="readonly-workspace.html">研究工作台（Cockpit v2）</a>
+  <a href="readonly-workspace.html">研究工作台（Cockpit v5）</a>
   <a href="readonly-legacy.html">legacy 降级视图</a>
   <span class="ro-tag">静态快照 · 无需登录 · 非交互 · 数据截止 2026-10-09</span>
 </div>
@@ -2892,7 +2911,7 @@ body.mod-research .stage { padding: 20px 24px 40px; }
         <span class="ctx-chip ctx-chip-light" title="Knowledge cutoff">cutoff 2026-09-30</span>
       </div>
       <div class="ctx-strip-right">
-        <label class="ws-runlabel">Run <select id="wsRunSelect" class="mono"><option value="run-2026-09-30-b6ce28">run-2026-09-30-b6ce28 · 2026-09-30</option><option value="run-2026-09-30-cf9771">run-2026-09-30-cf9771 · 2026-09-30</option><option value="run-2026-09-30-d9fe7d">run-2026-09-30-d9fe7d · 2026-09-30</option><option value="run-2026-09-30-19dc26">run-2026-09-30-19dc26 · 2026-09-30</option><option value="run-2026-09-30-68710b">run-2026-09-30-68710b · 2026-09-30</option><option value="run-2026-09-30-10f69c">run-2026-09-30-10f69c · 2026-09-30</option><option value="run-2026-09-30-df4374">run-2026-09-30-df4374 · 2026-09-30</option><option value="run-2026-09-30-d5824e">run-2026-09-30-d5824e · 2026-09-30</option><option value="run-2026-09-30-62293c">run-2026-09-30-62293c · 2026-09-30</option><option value="run-2026-09-30-11896f">run-2026-09-30-11896f · 2026-09-30</option><option value="run-2026-09-30-3d0a2a">run-2026-09-30-3d0a2a · 2026-09-30</option><option value="run-2026-09-30-f20e9f">run-2026-09-30-f20e9f · 2026-09-30</option><option value="run-2026-09-30-53f416">run-2026-09-30-53f416 · 2026-09-30</option><option value="run-2026-09-30-ff01c0">run-2026-09-30-ff01c0 · 2026-09-30</option><option value="run-2026-09-30-5f4b99" selected="">run-2026-09-30-5f4b99 · 2026-09-30</option><option value="run-2026-09-30-4fbd05">run-2026-09-30-4fbd05 · 2026-09-30</option><option value="run-2026-10-09-da76e4">run-2026-10-09-da76e4 · 2026-10-09</option><option value="run-2026-09-16-b12775">run-2026-09-16-b12775 · 2026-09-16 · legacy</option><option value="run-2026-09-16-2bfccc">run-2026-09-16-2bfccc · 2026-09-16 · legacy</option><option value="run-2026-09-16-4d0d08">run-2026-09-16-4d0d08 · 2026-09-16 · legacy</option><option value="run-2026-09-16-3a2295">run-2026-09-16-3a2295 · 2026-09-16 · legacy</option><option value="run-2026-09-04-002c8a">run-2026-09-04-002c8a · 2026-09-04 · legacy</option><option value="run-2026-09-04-f81718">run-2026-09-04-f81718 · 2026-09-04 · legacy</option><option value="run-2026-09-04-b1d4b9">run-2026-09-04-b1d4b9 · 2026-09-04 · legacy</option><option value="run-2026-09-04-abf094">run-2026-09-04-abf094 · 2026-09-04 · legacy</option><option value="run-2026-09-04-50c77b">run-2026-09-04-50c77b · 2026-09-04 · legacy</option><option value="run-2026-09-04-9e878d">run-2026-09-04-9e878d · 2026-09-04 · legacy</option><option value="run-2026-09-04-da63de">run-2026-09-04-da63de · 2026-09-04 · legacy</option><option value="run-2026-09-04-d1e8d3">run-2026-09-04-d1e8d3 · 2026-09-04 · legacy</option><option value="run-2026-09-04-1d28e0">run-2026-09-04-1d28e0 · 2026-09-04 · legacy</option><option value="run-2026-09-04-abe2a9">run-2026-09-04-abe2a9 · 2026-09-04 · legacy</option><option value="run-2026-08-28-44ff04">run-2026-08-28-44ff04 · 2026-08-28 · legacy</option><option value="run-2026-08-21-8929a8">run-2026-08-21-8929a8 · 2026-08-21 · legacy</option><option value="run-2026-08-14-41be21">run-2026-08-14-41be21 · 2026-08-14 · legacy</option></select></label>
+        <label class="ws-runlabel">Run <select id="wsRunSelect" class="mono"><option value="run-2026-09-30-b6ce28">run-2026-09-30-b6ce28 · 2026-09-30</option><option value="run-2026-09-30-cf9771">run-2026-09-30-cf9771 · 2026-09-30</option><option value="run-2026-09-30-d9fe7d">run-2026-09-30-d9fe7d · 2026-09-30</option><option value="run-2026-09-30-19dc26">run-2026-09-30-19dc26 · 2026-09-30</option><option value="run-2026-09-30-68710b">run-2026-09-30-68710b · 2026-09-30</option><option value="run-2026-09-30-10f69c">run-2026-09-30-10f69c · 2026-09-30</option><option value="run-2026-09-30-df4374">run-2026-09-30-df4374 · 2026-09-30</option><option value="run-2026-09-30-d5824e">run-2026-09-30-d5824e · 2026-09-30</option><option value="run-2026-09-30-62293c">run-2026-09-30-62293c · 2026-09-30</option><option value="run-2026-09-30-11896f">run-2026-09-30-11896f · 2026-09-30</option><option value="run-2026-09-30-3d0a2a">run-2026-09-30-3d0a2a · 2026-09-30</option><option value="run-2026-09-30-f20e9f">run-2026-09-30-f20e9f · 2026-09-30</option><option value="run-2026-09-30-53f416">run-2026-09-30-53f416 · 2026-09-30</option><option value="run-2026-09-30-ff01c0">run-2026-09-30-ff01c0 · 2026-09-30</option><option value="run-2026-09-30-5f4b99" selected="">run-2026-09-30-5f4b99 · 2026-09-30</option><option value="run-2026-09-30-4fbd05">run-2026-09-30-4fbd05 · 2026-09-30</option><option value="run-2026-10-09-da76e4">run-2026-10-09-da76e4 · 2026-10-09</option><option value="run-2026-10-09-27e249">run-2026-10-09-27e249 · 2026-10-09</option><option value="run-2026-10-09-4c14ad">run-2026-10-09-4c14ad · 2026-10-09</option><option value="run-2026-09-16-b12775">run-2026-09-16-b12775 · 2026-09-16 · legacy</option><option value="run-2026-09-16-2bfccc">run-2026-09-16-2bfccc · 2026-09-16 · legacy</option><option value="run-2026-09-16-4d0d08">run-2026-09-16-4d0d08 · 2026-09-16 · legacy</option><option value="run-2026-09-16-3a2295">run-2026-09-16-3a2295 · 2026-09-16 · legacy</option><option value="run-2026-09-04-002c8a">run-2026-09-04-002c8a · 2026-09-04 · legacy</option><option value="run-2026-09-04-f81718">run-2026-09-04-f81718 · 2026-09-04 · legacy</option><option value="run-2026-09-04-b1d4b9">run-2026-09-04-b1d4b9 · 2026-09-04 · legacy</option><option value="run-2026-09-04-abf094">run-2026-09-04-abf094 · 2026-09-04 · legacy</option><option value="run-2026-09-04-50c77b">run-2026-09-04-50c77b · 2026-09-04 · legacy</option><option value="run-2026-09-04-9e878d">run-2026-09-04-9e878d · 2026-09-04 · legacy</option><option value="run-2026-09-04-da63de">run-2026-09-04-da63de · 2026-09-04 · legacy</option><option value="run-2026-09-04-d1e8d3">run-2026-09-04-d1e8d3 · 2026-09-04 · legacy</option><option value="run-2026-09-04-1d28e0">run-2026-09-04-1d28e0 · 2026-09-04 · legacy</option><option value="run-2026-09-04-abe2a9">run-2026-09-04-abe2a9 · 2026-09-04 · legacy</option><option value="run-2026-08-28-44ff04">run-2026-08-28-44ff04 · 2026-08-28 · legacy</option><option value="run-2026-08-21-8929a8">run-2026-08-21-8929a8 · 2026-08-21 · legacy</option><option value="run-2026-08-14-41be21">run-2026-08-14-41be21 · 2026-08-14 · legacy</option></select></label>
         <span class="ctx-chip ctx-chip-locklight" title="预测已锁定，指纹已绑定">🔒 LOCKED</span>
         <span class="ctx-chip ctx-chip-waitlight">
           Awaiting Outcome
@@ -3044,7 +3063,7 @@ body.mod-research .stage { padding: 20px 24px 40px; }
         
     <div class="ic-hero-head">
       <h2>Historical Rank IC · 历史成熟观测</h2>
-      <div class="ic-range-bar"><button type="button" class="ic-range on" data-icrange="all">全部</button><button type="button" class="ic-range" data-icrange="120">近 120</button><button type="button" class="ic-range" data-icrange="60">近 60</button><button type="button" class="ic-range" data-icrange="20">近 20</button><span class="ic-range-note">显示 290 / 290 个成熟观测</span></div>
+      <div class="ic-range-bar"><button type="button" class="ic-range on" data-icrange="all">全部</button><button type="button" class="ic-range" data-icrange="120">近 120</button><button type="button" class="ic-range" data-icrange="60">近 60</button><button type="button" class="ic-range" data-icrange="20">近 20</button><span class="ic-range-note">显示 290 / 290 个成熟观测 · 拖动主图可框选区间</span></div>
     </div>
     
       <section class="dlv-card dlv-signal">
@@ -4004,6 +4023,15 @@ body.mod-research .stage { padding: 20px 24px 40px; }
 
         <footer>Source · E01 · runs/run-2026-09-30-5f4b99/records.json#matureIcSeries</footer>
       </section>
+    <table class="data roll-table">
+        <thead><tr><th>滚动窗口</th><th>W20</th><th>W60</th><th>W120</th></tr></thead>
+        <tbody>
+          <tr><td>Mean IC</td><td class="mono">-0.0644</td><td class="mono">-0.1436</td><td class="mono">0.0310</td></tr>
+          <tr><td>ICIR</td><td class="mono">-0.2344</td><td class="mono">-0.4441</td><td class="mono">0.0924</td></tr>
+          <tr><td>有效观测</td><td class="mono">20</td><td class="mono">60</td><td class="mono">120</td></tr>
+        </tbody>
+      </table>
+      <p class="hm-note">滚动统计为 presentation 投影（researchState.factorHealthWindows 真实字段）；窗口均值与主图当前显示范围无关。</p>
       </section>
 
       <div class="charts-row">
@@ -4428,7 +4456,7 @@ body.mod-research .stage { padding: 20px 24px 40px; }
       
         <div class="tm-runs">
           <span class="tm-runs-label">该日期已存档研究 Run（点击进入研究链路）：</span>
-                 <button type="button" class="tm-run-chip mono" data-tm-run="run-2026-10-09-da76e4">run-2026-10-09-da76e4</button>
+                 <button type="button" class="tm-run-chip mono" data-tm-run="run-2026-10-09-27e249">run-2026-10-09-27e249</button><button type="button" class="tm-run-chip mono" data-tm-run="run-2026-10-09-4c14ad">run-2026-10-09-4c14ad</button><button type="button" class="tm-run-chip mono" data-tm-run="run-2026-10-09-da76e4">run-2026-10-09-da76e4</button>
         </div>
         
       <p class="tm-source mono">排名：runCrossSection（asOf 截断快照，point-in-time）· resultHash <span class="mono">2eb7e1e2e3923dca</span> · 配置 cfg-default-v0 v0 · configHash <span class="mono">c0b15ef2b6b8</span></p>
@@ -4450,7 +4478,7 @@ body.mod-research .stage { padding: 20px 24px 40px; }
           <h2>Evidence · 证据</h2>
           <div class="table-wrap"><table class="data">
     <thead><tr><th>Evidence</th><th>Kind</th><th>Claim</th><th>Direction</th><th>Source</th></tr></thead>
-    <tbody><tr><td class="mono">run-2026-09-30-5f4b99-ms</td><td>market_state</td><td>波动 0.0352 · 相关 0.0271 · 动量均值 -0.1101 · 广度 0.2083</td><td>unknown</td><td class="mono">MarketSnapshot:default:2026-09-30</td></tr><tr><td class="mono">run-2026-09-30-5f4b99-fh</td><td>factor_health</td><td>mom20 Rank IC 近 20 有效观测 mean=-0.0644 ICIR=-0.2344 正比例=0.4500</td><td>unknown</td><td class="mono">RankICSeries:mom20:h10</td></tr><tr><td class="mono">run-2026-09-30-5f4b99-ood-exp</td><td>ood</td><td>OOD expanding historicalUsed=891 overallIsOOD=false distance=0.6033</td><td>unknown</td><td class="mono">MarketStateHistory&lt;2026-09-30</td></tr><tr><td class="mono">run-2026-09-30-5f4b99-ood-roll</td><td>ood</td><td>OOD rolling120 historicalUsed=120 overallIsOOD=false distance=1.2485</td><td>unknown</td><td class="mono">MarketStateHistory rolling120 &lt;2026-09-30</td></tr><tr><td class="mono">run-2026-09-30-5f4b99-cd</td><td>concept_drift</td><td>recentMean=-0.0644 baselineMean=0.0549 delta=-0.1193 effectSize=-0.3708 shift=false</td><td>unknown</td><td class="mono">mature IC ≤ 2026-09-30</td></tr><tr><td class="mono">run-2026-09-30-5f4b99-ic</td><td>rank_ic</td><td>mom20 → forwardReturn(10) 最近成熟 IC=0.3123 · 有效观测 290</td><td>unknown</td><td class="mono">bars date≤2026-09-30</td></tr><tr><td class="mono">run-2026-09-30-5f4b99-ch-latest-ic</td><td>rank_ic</td><td>challenge inspect_latest_ic: latestMatureIC=0.3123 date=2026-09-15；对照 recentMeanIC=-0.0644。再读最近成熟 IC 0.3123（2026-09-15）与 recentMeanIC -0.0644 方向不一致。最新一条观测不支持把近窗负均值直接延续。</td><td>unknown</td><td class="mono">RankIC observation date=2026-09-15 ≤ 2026-09-30</td></tr></tbody></table></div>
+    <tbody><tr id="ev-run-2026-09-30-5f4b99-ms"><td class="mono">run-2026-09-30-5f4b99-ms</td><td>market_state</td><td>波动 0.0352 · 相关 0.0271 · 动量均值 -0.1101 · 广度 0.2083</td><td>unknown</td><td class="mono">MarketSnapshot:default:2026-09-30</td></tr><tr id="ev-run-2026-09-30-5f4b99-fh"><td class="mono">run-2026-09-30-5f4b99-fh</td><td>factor_health</td><td>mom20 Rank IC 近 20 有效观测 mean=-0.0644 ICIR=-0.2344 正比例=0.4500</td><td>unknown</td><td class="mono">RankICSeries:mom20:h10</td></tr><tr id="ev-run-2026-09-30-5f4b99-ood-exp"><td class="mono">run-2026-09-30-5f4b99-ood-exp</td><td>ood</td><td>OOD expanding historicalUsed=891 overallIsOOD=false distance=0.6033</td><td>unknown</td><td class="mono">MarketStateHistory&lt;2026-09-30</td></tr><tr id="ev-run-2026-09-30-5f4b99-ood-roll"><td class="mono">run-2026-09-30-5f4b99-ood-roll</td><td>ood</td><td>OOD rolling120 historicalUsed=120 overallIsOOD=false distance=1.2485</td><td>unknown</td><td class="mono">MarketStateHistory rolling120 &lt;2026-09-30</td></tr><tr id="ev-run-2026-09-30-5f4b99-cd"><td class="mono">run-2026-09-30-5f4b99-cd</td><td>concept_drift</td><td>recentMean=-0.0644 baselineMean=0.0549 delta=-0.1193 effectSize=-0.3708 shift=false</td><td>unknown</td><td class="mono">mature IC ≤ 2026-09-30</td></tr><tr id="ev-run-2026-09-30-5f4b99-ic"><td class="mono">run-2026-09-30-5f4b99-ic</td><td>rank_ic</td><td>mom20 → forwardReturn(10) 最近成熟 IC=0.3123 · 有效观测 290</td><td>unknown</td><td class="mono">bars date≤2026-09-30</td></tr><tr id="ev-run-2026-09-30-5f4b99-ch-latest-ic"><td class="mono">run-2026-09-30-5f4b99-ch-latest-ic</td><td>rank_ic</td><td>challenge inspect_latest_ic: latestMatureIC=0.3123 date=2026-09-15；对照 recentMeanIC=-0.0644。再读最近成熟 IC 0.3123（2026-09-15）与 recentMeanIC -0.0644 方向不一致。最新一条观测不支持把近窗负均值直接延续。</td><td>unknown</td><td class="mono">RankIC observation date=2026-09-15 ≤ 2026-09-30</td></tr></tbody></table></div>
         </section>
         <section class="panel rws-panel rws-story-card">
           <h2>Competing Hypotheses · 竞争假设</h2>
@@ -4459,7 +4487,7 @@ body.mod-research .stage { padding: 20px 24px 40px; }
         <div class="ws-hyp-head"><span class="mono">run-2026-09-30-5f4b99-hyp</span><span class="ws-tag">working</span></div>
         <p class="ws-hyp-title">Factor Health（run-2026-09-30-5f4b99-fh）近 20 有效 IC mean=-0.0644。Concept Drift（run-2026-09-30-5f4b99-cd）recentMean=-0.0644，baselineMean=0.0549，effectSize=-0.3708，relationshipShift=false。最近一条成熟 Rank IC（run-2026-09-30-5f4b99-ic）=0.3123（2026-09-15）。OOD expanding（run-2026-09-30-5f4b99-ood-exp）=false，rolling120（run-2026-09-30-5f4b99-ood-roll）=false。</p>
         <p class="ws-hyp-statement">Factor Health（run-2026-09-30-5f4b99-fh）近 20 有效 IC mean=-0.0644。Concept Drift（run-2026-09-30-5f4b99-cd）recentMean=-0.0644，baselineMean=0.0549，effectSize=-0.3708，relationshipShift=false。最近一条成熟 Rank IC（run-2026-09-30-5f4b99-ic）=0.3123（2026-09-15）。OOD expanding（run-2026-09-30-5f4b99-ood-exp）=false，rolling120（run-2026-09-30-5f4b99-ood-roll）=false。 存在 3 处证据冲突（sign_recent_vs_baseline、mean_vs_latest_ic、health_vs_drift_threshold）。近窗偏弱不能直接写成关系已经反转，也不能直接写成关系没有变化。</p>
-        <div class="ws-hyp-refs"><span class="mono ws-ref ws-ref-supporting">⊕ run-2026-09-30-5f4b99-fh</span> <span class="mono ws-ref ws-ref-supporting">⊕ run-2026-09-30-5f4b99-cd</span> <span class="mono ws-ref ws-ref-counter">⊖ run-2026-09-30-5f4b99-ic</span> <span class="mono ws-ref ws-ref-counter">⊖ run-2026-09-30-5f4b99-cd</span></div>
+        <div class="ws-hyp-refs"><button type="button" class="mono ws-ref ws-ref-supporting" data-eid="run-2026-09-30-5f4b99-fh" title="点击定位到证据表对应条目">⊕ run-2026-09-30-5f4b99-fh</button> <button type="button" class="mono ws-ref ws-ref-supporting" data-eid="run-2026-09-30-5f4b99-cd" title="点击定位到证据表对应条目">⊕ run-2026-09-30-5f4b99-cd</button> <button type="button" class="mono ws-ref ws-ref-counter" data-eid="run-2026-09-30-5f4b99-ic" title="点击定位到证据表对应条目">⊖ run-2026-09-30-5f4b99-ic</button> <button type="button" class="mono ws-ref ws-ref-counter" data-eid="run-2026-09-30-5f4b99-cd" title="点击定位到证据表对应条目">⊖ run-2026-09-30-5f4b99-cd</button></div>
       </div>
         </section>
       </div>
@@ -5205,18 +5233,18 @@ body.mod-research .stage { padding: 20px 24px 40px; }
     </div>
     <div class="rws-header-meta">
       <div class="ws-meta-row"><span>研究对象</span><b class="mono">1</b></div>
-      <div class="ws-meta-row"><span>有效 ResearchRun</span><b class="mono">17</b></div>
+      <div class="ws-meta-row"><span>有效 ResearchRun</span><b class="mono">19</b></div>
       <div class="ws-meta-row"><span>legacy / 损坏跳过</span><b class="mono">17</b></div>
-      <div class="ws-meta-row"><span>扫描 run 目录</span><b class="mono">34</b></div>
+      <div class="ws-meta-row"><span>扫描 run 目录</span><b class="mono">36</b></div>
       <div class="ws-meta-row"><span>Outcome 关联</span><b class="mono">0</b></div>
       <div class="ws-meta-note">17 条 run 记录不是有效 ResearchRun（legacy 或损坏），已跳过且不影响其余记录。</div><div class="ws-meta-note">本轮只装配 ResearchRun 自身字段；Outcome 关联由独立只读路径处理，recordsWithOutcomeLink 恒为 0。</div>
     </div>
   </header>
   <section class="panel rws-panel">
     <div class="rws-stat">
-      <div class="rws-stat-cell"><span>索引记录</span><b>17</b></div>
+      <div class="rws-stat-cell"><span>索引记录</span><b>19</b></div>
       <div class="rws-stat-cell"><span>身份跳过</span><b>0</b></div>
-      <div class="rws-stat-cell"><span>已锁定预测</span><b>17 / 17</b></div>
+      <div class="rws-stat-cell"><span>已锁定预测</span><b>19 / 19</b></div>
       <div class="rws-stat-cell"><span>历史快照</span><b>0</b></div>
     </div>
     <p class="muted" style="font-size:11.5px">
@@ -5233,7 +5261,7 @@ body.mod-research .stage { padding: 20px 24px 40px; }
           <span class="rws-loop-name">Research</span>
           <span class="ws-badge ws-badge-ok">COMPLETE</span>
         </div>
-        <div class="rws-loop-note">17 条有效 ResearchRun · 1 个研究对象 · 17 条 legacy 跳过</div>
+        <div class="rws-loop-note">19 条有效 ResearchRun · 1 个研究对象 · 17 条 legacy 跳过</div>
       </div>
       <div class="rws-loop-arrow" aria-hidden="true">→</div>
       <div class="rws-loop-node is-complete">
@@ -5260,7 +5288,7 @@ body.mod-research .stage { padding: 20px 24px 40px; }
           <span class="rws-loop-name">Prediction · LOCK</span>
           <span class="ws-badge ws-badge-ok">COMPLETE</span>
         </div>
-        <div class="rws-loop-note">17 / 17 条预测已锁定 · 当前 mom20 | 10D</div>
+        <div class="rws-loop-note">19 / 19 条预测已锁定 · 当前 mom20 | 10D</div>
       </div>
       <div class="rws-loop-arrow" aria-hidden="true">→</div>
       <div class="rws-loop-node is-waiting">
@@ -5325,7 +5353,7 @@ body.mod-research .stage { padding: 20px 24px 40px; }
       <div class="rws-subject-head">
         <span class="ws-badge ws-badge-info mono">mom20 | 10D</span>
         <b class="mono">f10342b7a9d6c9a9</b>
-        <span class="muted">17 次运行 · 2026-09-30 → 2026-10-09</span>
+        <span class="muted">19 次运行 · 2026-09-30 → 2026-10-09</span>
       </div>
       <ol class="rws-tl">
       <li class="rws-tl-group">
@@ -5418,12 +5446,22 @@ body.mod-research .stage { padding: 20px 24px 40px; }
       <li class="rws-tl-group">
         <div class="rws-tl-date">
           <span class="mono">2026-10-09</span>
-          <span class="muted">1 条</span>
+          <span class="muted">3 条</span>
         </div>
         <div class="rws-tl-items">
     <button type="button" class="rws-tl-node" data-tl-run="run-2026-10-09-da76e4" title="run-2026-10-09-da76e4">
       <span class="rws-tl-run mono">run-2026-10-09-da76e4</span>
       <span class="rws-tl-time mono">2026-10-11 22:49:03Z</span>
+      <span class="rws-tl-flags"><span class="rws-tl-flag on">EVID</span><span class="rws-tl-flag on">HYP</span><span class="rws-tl-flag pending">no-outcome</span></span>
+    </button>
+    <button type="button" class="rws-tl-node" data-tl-run="run-2026-10-09-27e249" title="run-2026-10-09-27e249">
+      <span class="rws-tl-run mono">run-2026-10-09-27e249</span>
+      <span class="rws-tl-time mono">2026-10-11 23:04:11Z</span>
+      <span class="rws-tl-flags"><span class="rws-tl-flag on">EVID</span><span class="rws-tl-flag on">HYP</span><span class="rws-tl-flag pending">no-outcome</span></span>
+    </button>
+    <button type="button" class="rws-tl-node" data-tl-run="run-2026-10-09-4c14ad" title="run-2026-10-09-4c14ad">
+      <span class="rws-tl-run mono">run-2026-10-09-4c14ad</span>
+      <span class="rws-tl-time mono">2026-10-11 23:04:24Z</span>
       <span class="rws-tl-flags"><span class="rws-tl-flag on">EVID</span><span class="rws-tl-flag on">HYP</span><span class="rws-tl-flag pending">no-outcome</span></span>
     </button></div>
       </li></ol>

@@ -714,6 +714,25 @@ textarea:focus, .steer-row input:focus { outline: 1px solid var(--brand); outlin
 .sd-item { font-size: 11.5px; padding: 6px 8px; background: var(--paper-soft, #f7f8f5); border-radius: 6px; }
 .sd-item p { margin: 4px 0 0; line-height: 1.6; }
 
+/* IC 主图去重（§五.5）：组件内的题头文字与指标块和结论区/外层标题重复，
+   保留图例（dlv-legend）与图表本体，隐藏重复文本层。 */
+.ic-hero .dlv-head > div { display: none; }
+.ic-hero .dlv-head { justify-content: flex-end; }
+.ic-hero .dlv-metrics { display: none; }
+.ic-hero .dlv-card > footer { display: none; } /* Source 行由图表下方 rolling note 与结论区口径承担 */
+.ic-range-custom { cursor: default; }
+
+/* 滚动窗口统计条（A4） */
+.roll-table { margin-top: 10px; }
+.roll-table th, .roll-table td { font-size: 11px; padding: 4px 10px; }
+
+/* 证据引用定位（B2） */
+button.ws-ref { background: none; border: 1px solid var(--line-soft); border-radius: 5px; cursor: pointer; padding: 1px 6px; font-size: 10.5px; }
+button.ws-ref:hover { border-color: var(--brand-deep); color: var(--brand-deep); }
+.ev-flash { background: #fff3cd !important; transition: background .3s; }
+tr.ev-flash td { background: #fff3cd; }
+.ws-ref-notfound { font-size: 10.5px; color: var(--danger); }
+
 /* 深色旧上下文条样式废弃（保留类名兼容，不再使用） */
 @media (max-width: 1100px) {
   .conclusion { grid-template-columns: 1fr; }
@@ -2844,9 +2863,9 @@ body.mod-research .stage { padding: 20px 24px 40px; }
   .ro-bar .ro-tag { margin-left: auto; opacity: .7; }
 </style>
 <div class="ro-bar">
-  <b>DiffLine · 只读预览（2026-10-12 快照 v4 · Cockpit 重设计）</b>
+  <b>DiffLine · 只读预览（2026-10-12 快照 v5 · 引用追溯 + 框选 + 滚动统计）</b>
   <a href="readonly.html">首页</a>
-  <a href="readonly-workspace.html">研究工作台（Cockpit v2）</a>
+  <a href="readonly-workspace.html">研究工作台（Cockpit v5）</a>
   <a href="readonly-legacy.html">legacy 降级视图</a>
   <span class="ro-tag">静态快照 · 无需登录 · 非交互 · 数据截止 2026-10-09</span>
 </div>
@@ -2899,7 +2918,7 @@ body.mod-research .stage { padding: 20px 24px 40px; }
       <article class="dh-answer">
         <span class="dh-answer-q">正在研究什么</span>
         <strong class="dh-answer-value">mom20 · 10 日</strong>
-        <p class="dh-answer-detail">17 条研究记录 · 2026-09-30 → 2026-10-09</p>
+        <p class="dh-answer-detail">19 条研究记录 · 2026-09-30 → 2026-10-09</p>
       </article>
         
       <article class="dh-answer">
@@ -2910,7 +2929,7 @@ body.mod-research .stage { padding: 20px 24px 40px; }
         
       <article class="dh-answer">
         <span class="dh-answer-q">预测处于什么状态</span>
-        <strong class="dh-answer-value">17 / 17 条等待验证</strong>
+        <strong class="dh-answer-value">19 / 19 条等待验证</strong>
         <p class="dh-answer-detail">已成熟待归类 0 · 通过 0 · 未通过 0；等待验证不等于预测失败。</p>
       </article>
         
@@ -2950,14 +2969,14 @@ body.mod-research .stage { padding: 20px 24px 40px; }
               
       <button class="dh-metric" type="button" data-home-action="predictions">
         <span class="dh-metric-label">已锁定预测</span>
-        <strong class="dh-metric-value">17</strong>
+        <strong class="dh-metric-value">19</strong>
         <span class="dh-metric-note">所有状态的预测记录</span>
         <span class="dh-metric-link">查看详情 ↗</span>
       </button>
               
       <button class="dh-metric" type="button" data-home-action="predictions">
         <span class="dh-metric-label">等待现实验证</span>
-        <strong class="dh-metric-value">17</strong>
+        <strong class="dh-metric-value">19</strong>
         <span class="dh-metric-note">尚未达到成熟条件</span>
         <span class="dh-metric-link">查看详情 ↗</span>
       </button>
@@ -2979,7 +2998,7 @@ body.mod-research .stage { padding: 20px 24px 40px; }
             <div class="dh-integrity-note">
               <span class="dh-integrity-mark">i</span>
               当前预测状态：正确 0 · 错误 0 ·
-              已成熟待归类 0 · 等待验证 17。
+              已成熟待归类 0 · 等待验证 19。
               等待验证不等于预测失败。
             </div>
           
@@ -3032,7 +3051,7 @@ body.mod-research .stage { padding: 20px 24px 40px; }
           <strong>Prediction · LOCK</strong>
           <span>留下可验证的预测</span>
         </span>
-        <span class="dh-stage-status">17 条记录</span>
+        <span class="dh-stage-status">19 条记录</span>
         <span class="dh-stage-arrow">↗</span>
       </button>
             
