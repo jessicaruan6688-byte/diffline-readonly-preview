@@ -1,5 +1,5 @@
 <html lang="zh-CN"><head>
-    <base href="https://diffline-research.app.workbuddy.host/">
+    <base href="https://jessicaruan6688-byte.github.io/diffline-readonly-preview/">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>DiffLine · 相对强弱周报</title>
@@ -637,6 +637,40 @@ textarea:focus, .steer-row input:focus { outline: 1px solid var(--brand); outlin
 .deg-artifact summary { cursor: pointer; color: var(--brand-deep); font-weight: 600; }
 .deg-artifact-none { color: var(--ink-muted); }
 .deg-md { max-height: 320px; overflow: auto; white-space: pre-wrap; font-size: 11px; background: var(--paper-soft, #fafaf8); border: 1px solid var(--line-soft); border-radius: 6px; padding: 10px; }
+
+/* 结论速览 hero（真实数据投影） */
+.hero-conclusion { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 12px; padding: 14px 16px; }
+.hero-cell { min-width: 120px; display: flex; flex-direction: column; gap: 3px; }
+.hero-cell-wide { flex: 1 1 320px; }
+.hero-label { font-size: 10.5px; letter-spacing: .06em; color: var(--ink-muted); text-transform: uppercase; }
+.hero-value { font-size: 20px; color: var(--brand-deep); font-variant-numeric: tabular-nums; }
+.hero-question { font-size: 13.5px; color: var(--ink-soft); line-height: 1.5; }
+.hero-sub { font-size: 10.5px; color: var(--ink-muted); }
+
+/* 闭环时间线 */
+.lt-flow { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; margin: 0; padding: 0; align-items: stretch; }
+.lt-cell { flex: 1 1 100px; min-width: 96px; border: 1px solid var(--line-soft); border-radius: 8px; padding: 8px 9px; display: flex; flex-direction: column; gap: 2px; background: var(--paper-soft, #fafaf8); }
+.lt-idx { font-size: 10px; color: var(--ink-muted); }
+.lt-label { font-size: 12px; font-weight: 600; color: var(--brand-deep); }
+.lt-state { font-size: 10px; letter-spacing: .05em; }
+.lt-complete .lt-state { color: var(--ok); }
+.lt-waiting .lt-state { color: #b8860b; }
+.lt-available .lt-state { color: var(--brand-deep); }
+.lt-unavailable { opacity: .6; }
+.lt-time { font-size: 10.5px; color: var(--ink-soft); }
+.lt-timelabel { font-size: 9.5px; color: var(--ink-muted); }
+.lt-detail { font-size: 10px; color: var(--ink-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.lt-arrow { align-self: center; color: var(--ink-muted); font-size: 11px; }
+
+/* 因子×期限热力图 */
+.hm-table { border-collapse: separate; border-spacing: 4px; width: 100%; }
+.hm-table th { font-size: 11px; color: var(--ink-muted); font-weight: 600; text-align: center; }
+.hm-row { text-align: right !important; padding-right: 6px; }
+.hm-cell { text-align: center; padding: 10px 6px; border-radius: 6px; font-size: 13px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.hm-cell .hm-n { display: block; font-size: 9px; font-weight: 400; opacity: .85; }
+.hm-na { background: var(--line-soft); color: var(--ink-muted); }
+.hm-note { font-size: 10.5px; color: var(--ink-muted); margin: 8px 0 0; }
+.hm-warn { color: #b8860b; }
 
 .rws-grid { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 12px; align-items: start; }
 .rws-maincol { min-width: 0; }
@@ -2672,7 +2706,7 @@ body.mod-research .stage { padding: 20px 24px 40px; }
   .ro-bar .ro-tag { margin-left: auto; opacity: .7; }
 </style>
 <div class="ro-bar">
-  <b>DiffLine · 只读预览（2026-10-12 快照）</b>
+  <b>DiffLine · 只读预览（2026-10-12 快照 v2）</b>
   <a href="readonly.html">首页</a>
   <a href="readonly-workspace.html">研究工作台（真实评分 + 编排）</a>
   <a href="readonly-legacy.html">legacy 降级视图</a>
@@ -2745,9 +2779,133 @@ body.mod-research .stage { padding: 20px 24px 40px; }
       
     <div class="orch-strip" role="status" aria-label="研究闭环编排阶段">
       <ol class="orch-flow"><li class="orch-step orch-done"><span class="orch-dot"></span>研究中</li><li class="orch-step orch-done"><span class="orch-dot"></span>假设已形成</li><li class="orch-step orch-done"><span class="orch-dot"></span>预测已锁定</li><li class="orch-step orch-current"><span class="orch-dot"></span>等待现实成熟</li><li class="orch-step orch-todo"><span class="orch-dot"></span>结果已评估</li><li class="orch-step orch-todo"><span class="orch-dot"></span>已完成归因</li><li class="orch-step orch-todo"><span class="orch-dot"></span>已沉淀学习</li></ol>
-      <span class="orch-persisted">事件日志 0 条 · 日志态 研究中</span>
+      <span class="orch-persisted">事件日志 2 条 · 日志态 预测已锁定</span>
     </div>
     </header>
+
+    
+  <section class="panel hero-conclusion">
+    <div class="hero-cell hero-cell-wide">
+      <span class="hero-label">研究结论速览（全部来自真实数据投影）</span>
+      <b class="hero-question">截至 2026-09-30，mom20 对未来 10 个交易日收益的截面预测关系，是否相对更早基线发生了可度量变化？</b>
+    </div>
+    
+    <div class="hero-cell">
+      <span class="hero-label">最新成熟 RankIC</span>
+      <b class="hero-value">0.3123</b>
+      <span class="hero-sub">2026-09-15</span>
+    </div>
+    
+    <div class="hero-cell">
+      <span class="hero-label">近窗 / 基准均值</span>
+      <b class="hero-value">-0.064 / 0.055</b>
+      <span class="hero-sub">concept drift</span>
+    </div>
+    
+    <div class="hero-cell">
+      <span class="hero-label">Baseline 评分</span>
+      <b class="hero-value">0.2647</b>
+      <span class="hero-sub">baseline-rankic-icir-v1 </span>
+    </div>
+    
+    <div class="hero-cell">
+      <span class="hero-label">闭环阶段</span>
+      <b class="hero-value">等待现实成熟</b>
+      <span class="hero-sub">事件日志 2 条</span>
+    </div>
+    
+    <div class="hero-cell">
+      <span class="hero-label">Reality</span>
+      <b class="hero-value">WAITING</b>
+      <span class="hero-sub">评估窗口未成熟</span>
+    </div>
+  </section>
+
+    <section class="panel rws-panel" id="loop-timeline">
+      <h2>研究闭环时间线 · Research → Learning（真实阶段状态与时间）</h2>
+      <ol class="lt-flow">
+      <li class="lt-cell lt-complete">
+        <div class="lt-idx mono">01</div>
+        <div class="lt-label">Research</div>
+        <div class="lt-state">完成</div>
+        <div class="lt-time mono">2026-10-11 23:05</div>
+        <div class="lt-timelabel">研究创建</div>
+        <div class="lt-detail" title="asOf 2026-09-30 · mom20×10">asOf 2026-09-30 · mom20×10</div>
+      </li>
+      <li class="lt-arrow" aria-hidden="true">→</li>
+      <li class="lt-cell lt-complete">
+        <div class="lt-idx mono">02</div>
+        <div class="lt-label">Evidence</div>
+        <div class="lt-state">完成</div>
+        <div class="lt-time mono">2026-10-11 23:05</div>
+        <div class="lt-timelabel">证据生成</div>
+        <div class="lt-detail" title="7 条证据">7 条证据</div>
+      </li>
+      <li class="lt-arrow" aria-hidden="true">→</li>
+      <li class="lt-cell lt-complete">
+        <div class="lt-idx mono">03</div>
+        <div class="lt-label">Hypothesis</div>
+        <div class="lt-state">完成</div>
+        <div class="lt-time mono">2026-10-11 23:05</div>
+        <div class="lt-timelabel">假设形成</div>
+        <div class="lt-detail" title="run-2026-09-30-5f4b99-hyp">run-2026-09-30-5f4b99-hyp</div>
+      </li>
+      <li class="lt-arrow" aria-hidden="true">→</li>
+      <li class="lt-cell lt-complete">
+        <div class="lt-idx mono">04</div>
+        <div class="lt-label">Prediction LOCK</div>
+        <div class="lt-state">完成</div>
+        <div class="lt-time mono">2026-10-11 23:05</div>
+        <div class="lt-timelabel">锁定时间</div>
+        <div class="lt-detail" title="方向 negative · 指纹已绑定">方向 negative · 指纹已绑定</div>
+      </li>
+      <li class="lt-arrow" aria-hidden="true">→</li>
+      <li class="lt-cell lt-waiting">
+        <div class="lt-idx mono">05</div>
+        <div class="lt-label">Reality</div>
+        <div class="lt-state">WAITING</div>
+        <div class="lt-time mono">—</div>
+        
+        <div class="lt-detail" title="未成熟：未来 bar 1/10">未成熟：未来 bar 1/10</div>
+      </li>
+      <li class="lt-arrow" aria-hidden="true">→</li>
+      <li class="lt-cell lt-waiting">
+        <div class="lt-idx mono">06</div>
+        <div class="lt-label">Reality Diff</div>
+        <div class="lt-state">WAITING</div>
+        <div class="lt-time mono">—</div>
+        
+        
+      </li>
+      <li class="lt-arrow" aria-hidden="true">→</li>
+      <li class="lt-cell lt-waiting">
+        <div class="lt-idx mono">07</div>
+        <div class="lt-label">Attribution</div>
+        <div class="lt-state">WAITING</div>
+        <div class="lt-time mono">—</div>
+        
+        
+      </li>
+      <li class="lt-arrow" aria-hidden="true">→</li>
+      <li class="lt-cell lt-waiting">
+        <div class="lt-idx mono">08</div>
+        <div class="lt-label">Learning</div>
+        <div class="lt-state">WAITING</div>
+        <div class="lt-time mono">—</div>
+        
+        
+      </li>
+      <li class="lt-arrow" aria-hidden="true">→</li>
+      <li class="lt-cell lt-waiting">
+        <div class="lt-idx mono">09</div>
+        <div class="lt-label">Next Experiment</div>
+        <div class="lt-state">WAITING</div>
+        <div class="lt-time mono">2026-09-30</div>
+        <div class="lt-timelabel">决策生成</div>
+        <div class="lt-detail" title="selected f10342b7…">selected f10342b7…</div>
+      </li>
+      </ol>
+    </section>
 
     <nav class="rws-story-nav" aria-label="研究流程">
       <a href="#story-context">研究上下文</a>
@@ -3885,6 +4043,55 @@ body.mod-research .stage { padding: 20px 24px 40px; }
                 </span>
               </div>
       </section>
+      </section>
+
+      <section class="panel rws-panel rws-story-card" id="story-score-heatmap">
+        <h2>因子 × 期限评分热力图 · Baseline RankIC ICIR</h2>
+        
+    <table class="hm-table">
+      <thead><tr><th></th><th>5D</th><th>10D</th><th>20D</th></tr></thead>
+      <tbody><tr><th class="hm-row">mom20</th><td class="hm-cell" style="background:rgba(47,107,69,0.27);color:#fff" title="mom20×5 · ICIR 0.085357 · n=297 · 窗口 2025-07-10 → 2026-09-24">
+        0.09
+        <span class="hm-n">n=297</span>
+      </td><td class="hm-cell" style="background:rgba(47,107,69,0.50);color:#fff" title="mom20×10 · ICIR 0.257342 · n=292 · 窗口 2025-07-10 → 2026-09-17">
+        0.26
+        <span class="hm-n">n=292</span>
+      </td><td class="hm-cell" style="background:rgba(47,107,69,0.51);color:#fff" title="mom20×20 · ICIR 0.258432 · n=282 · 窗口 2025-07-10 → 2026-09-03">
+        0.26
+        <span class="hm-n">n=282</span>
+      </td></tr><tr><th class="hm-row">mom60</th><td class="hm-cell" style="background:rgba(47,107,69,0.27);color:#fff" title="mom60×5 · ICIR 0.086017 · n=257 · 窗口 2025-09-04 → 2026-09-24">
+        0.09
+        <span class="hm-n">n=257</span>
+      </td><td class="hm-cell" style="background:rgba(47,107,69,0.30);color:#fff" title="mom60×10 · ICIR 0.107382 · n=252 · 窗口 2025-09-04 → 2026-09-17">
+        0.11
+        <span class="hm-n">n=252</span>
+      </td><td class="hm-cell" style="background:rgba(47,107,69,0.37);color:#fff" title="mom60×20 · ICIR 0.159751 · n=242 · 窗口 2025-09-04 → 2026-09-03">
+        0.16
+        <span class="hm-n">n=242</span>
+      </td></tr><tr><th class="hm-row">vol20</th><td class="hm-cell" style="background:rgba(47,107,69,0.37);color:#fff" title="vol20×5 · ICIR 0.162839 · n=297 · 窗口 2025-07-10 → 2026-09-24">
+        0.16
+        <span class="hm-n">n=297</span>
+      </td><td class="hm-cell" style="background:rgba(47,107,69,0.50);color:#fff" title="vol20×10 · ICIR 0.254822 · n=292 · 窗口 2025-07-10 → 2026-09-17">
+        0.25
+        <span class="hm-n">n=292</span>
+      </td><td class="hm-cell" style="background:rgba(47,107,69,0.66);color:#fff" title="vol20×20 · ICIR 0.371239 · n=282 · 窗口 2025-07-10 → 2026-09-03">
+        0.37
+        <span class="hm-n">n=282</span>
+      </td></tr><tr><th class="hm-row">turn20</th><td class="hm-cell" style="background:rgba(163,59,50,0.35);color:#fff" title="turn20×5 · ICIR -0.148468 · n=298 · 窗口 2025-07-09 → 2026-09-24">
+        -0.15
+        <span class="hm-n">n=298</span>
+      </td><td class="hm-cell" style="background:rgba(163,59,50,0.46);color:#fff" title="turn20×10 · ICIR -0.225332 · n=293 · 窗口 2025-07-09 → 2026-09-17">
+        -0.23
+        <span class="hm-n">n=293</span>
+      </td><td class="hm-cell" style="background:rgba(163,59,50,0.38);color:#fff" title="turn20×20 · ICIR -0.170704 · n=283 · 窗口 2025-07-09 → 2026-09-03">
+        -0.17
+        <span class="hm-n">n=283</span>
+      </td></tr></tbody>
+    </table>
+    <p class="hm-note">
+      baseline-rankic-icir-v1 · ICIR of matured RankIC ≤ 2026-10-09 · minSamples 20 · 窗口不完全可比 · 数据日 2026-10-09
+      <br><span class="hm-warn">⚠ 各候选的成熟 IC 窗口不一致（因子前缀长度与 horizon 成熟期不同，见 entries 的 window）；评分基于各自真实窗口，不构成同一时间窗上的完全可比对照。</span>
+    </p>
       </section>
 
       <section class="panel rws-panel rws-story-card" id="story-cross-section">
