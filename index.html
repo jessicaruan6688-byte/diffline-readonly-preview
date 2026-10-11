@@ -638,29 +638,86 @@ textarea:focus, .steer-row input:focus { outline: 1px solid var(--brand); outlin
 .deg-artifact-none { color: var(--ink-muted); }
 .deg-md { max-height: 320px; overflow: auto; white-space: pre-wrap; font-size: 11px; background: var(--paper-soft, #fafaf8); border: 1px solid var(--line-soft); border-radius: 6px; padding: 10px; }
 
-/* 结论速览 hero（真实数据投影） */
-.hero-conclusion { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 12px; padding: 14px 16px; }
-.hero-cell { min-width: 120px; display: flex; flex-direction: column; gap: 3px; }
-.hero-cell-wide { flex: 1 1 320px; }
-.hero-label { font-size: 10.5px; letter-spacing: .06em; color: var(--ink-muted); text-transform: uppercase; }
-.hero-value { font-size: 20px; color: var(--brand-deep); font-variant-numeric: tabular-nums; }
-.hero-question { font-size: 13.5px; color: var(--ink-soft); line-height: 1.5; }
-.hero-sub { font-size: 10.5px; color: var(--ink-muted); }
+/* ── Cockpit 重设计：上下文条 / KPI 带 / 图表主体 / 链路 ─────────────── */
 
-/* 闭环时间线 */
-.lt-flow { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; margin: 0; padding: 0; align-items: stretch; }
-.lt-cell { flex: 1 1 100px; min-width: 96px; border: 1px solid var(--line-soft); border-radius: 8px; padding: 8px 9px; display: flex; flex-direction: column; gap: 2px; background: var(--paper-soft, #fafaf8); }
-.lt-idx { font-size: 10px; color: var(--ink-muted); }
-.lt-label { font-size: 12px; font-weight: 600; color: var(--brand-deep); }
-.lt-state { font-size: 10px; letter-spacing: .05em; }
+/* A. 顶部研究上下文条（深色、吸顶、高信息密度） */
+.rws-contextbar {
+  position: sticky; top: 0; z-index: 50;
+  display: flex; justify-content: space-between; align-items: center; gap: 18px;
+  background: var(--brand-deep); color: #e8eef6;
+  border-radius: 10px; padding: 12px 18px; margin-bottom: 12px;
+  box-shadow: 0 2px 10px rgba(0, 47, 92, .18);
+}
+.rws-contextbar .rc-kicker { color: #9fc4ee; font-size: 10px; letter-spacing: .12em; }
+.rws-contextbar-question { margin: 2px 0 0; font-size: 14.5px; font-weight: 600; line-height: 1.45; color: #fff; }
+.rws-contextbar-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+.rws-contextbar .ws-runlabel { color: #9fc4ee; font-size: 11px; }
+.rws-contextbar select { background: #0d3f74; color: #e8eef6; border: 1px solid #2a5d94; border-radius: 6px; padding: 4px 6px; font-size: 11px; max-width: 240px; }
+.ctx-chip { font-size: 11px; padding: 3px 9px; border-radius: 999px; background: rgba(255,255,255,.1); color: #dbe7f4; white-space: nowrap; }
+.ctx-chip-lock { background: rgba(87, 171, 120, .25); color: #a9e0bd; }
+.ctx-chip-ok { background: rgba(87, 171, 120, .25); color: #a9e0bd; }
+.ctx-chip-wait { background: rgba(184, 134, 11, .28); color: #f0d9a0; }
+.ctx-chip-dim { opacity: .75; font-size: 10px; }
+
+/* B. KPI 核心发现带 */
+.kpi-band {
+  display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px;
+  margin-bottom: 12px;
+}
+.kpi-cell {
+  background: var(--panel-bg, #fff); border: 1px solid var(--line-soft); border-radius: 10px;
+  padding: 12px 14px; display: flex; flex-direction: column; gap: 4px;
+}
+.kpi-label { font-size: 10px; letter-spacing: .08em; color: var(--ink-muted); text-transform: uppercase; }
+.kpi-value { font-size: 26px; font-weight: 700; color: var(--brand-deep); font-variant-numeric: tabular-nums; line-height: 1.15; }
+.kpi-sub { font-size: 10.5px; color: var(--ink-muted); }
+.kpi-pos .kpi-value { color: var(--ok); }
+.kpi-neg .kpi-value { color: var(--danger); }
+.kpi-wait .kpi-value { color: #b8860b; font-size: 20px; }
+
+/* C. 图表主体网格：左大图 + 右列 */
+.charts-grid { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: 12px; align-items: stretch; }
+.charts-main { display: flex; flex-direction: column; }
+.charts-main .dlv-chart { min-height: 320px; }
+.charts-side { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.charts-side .rws-panel { margin-bottom: 0; }
+
+/* D. 闭环链路（连接式时间线） */
+.lt-panel-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.lt-panel-head h2 { margin: 0; }
+.lt-persisted { font-size: 10.5px; color: var(--ink-muted); }
+.lt-flow { display: flex; gap: 0; list-style: none; margin: 10px 0 0; padding: 0; align-items: stretch; }
+.lt-cell {
+  flex: 1 1 0; min-width: 0; border-top: 3px solid var(--line-soft);
+  padding: 8px 10px 8px 0; display: flex; flex-direction: column; gap: 2px; position: relative;
+}
+.lt-cell::before {
+  content: ''; position: absolute; top: -6.5px; left: 0; width: 10px; height: 10px;
+  border-radius: 50%; background: var(--line-soft);
+}
+.lt-complete { border-top-color: var(--ok); }
+.lt-complete::before { background: var(--ok); }
 .lt-complete .lt-state { color: var(--ok); }
+.lt-waiting { border-top-color: #b8860b; }
+.lt-waiting::before { background: #b8860b; }
 .lt-waiting .lt-state { color: #b8860b; }
+.lt-available { border-top-color: var(--brand-deep); }
+.lt-available::before { background: var(--brand-deep); }
 .lt-available .lt-state { color: var(--brand-deep); }
-.lt-unavailable { opacity: .6; }
-.lt-time { font-size: 10.5px; color: var(--ink-soft); }
-.lt-timelabel { font-size: 9.5px; color: var(--ink-muted); }
-.lt-detail { font-size: 10px; color: var(--ink-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.lt-arrow { align-self: center; color: var(--ink-muted); font-size: 11px; }
+.lt-unavailable { opacity: .55; }
+.lt-arrow { display: none; } /* 连接线由 border-top 承担 */
+.lt-idx { font-size: 9.5px; color: var(--ink-muted); }
+.lt-label { font-size: 12px; font-weight: 600; color: var(--brand-deep); }
+.lt-state { font-size: 10px; letter-spacing: .05em; font-weight: 600; }
+.lt-time { font-size: 10px; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+.lt-timelabel { font-size: 9px; color: var(--ink-muted); }
+.lt-detail { font-size: 9.5px; color: var(--ink-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+@media (max-width: 1100px) {
+  .lt-flow { flex-wrap: wrap; }
+  .lt-cell { flex: 1 1 30%; border-top-width: 2px; }
+  .charts-grid { grid-template-columns: 1fr; }
+  .kpi-band { grid-template-columns: repeat(2, 1fr); }
+}
 
 /* 因子×期限热力图 */
 .hm-table { border-collapse: separate; border-spacing: 4px; width: 100%; }
@@ -1678,6 +1735,25 @@ textarea:focus, .steer-row input:focus { outline: 1px solid var(--brand); outlin
 .dlv-zero {
   stroke: var(--ink-muted, #70798a);
   stroke-dasharray: 5 4;
+}
+
+.dlv-ref-recent {
+  stroke: #b8860b;
+  stroke-width: 1.4;
+  stroke-dasharray: 6 4;
+}
+
+.dlv-ref-baseline {
+  stroke: var(--brand-deep, #002f5c);
+  stroke-width: 1.2;
+  stroke-dasharray: 2 4;
+  opacity: .8;
+}
+
+.dlv-ref-label {
+  font-size: 9.5px;
+  fill: var(--ink-muted, #666);
+  font-family: inherit;
 }
 
 .dlv-recent {
@@ -2706,9 +2782,9 @@ body.mod-research .stage { padding: 20px 24px 40px; }
   .ro-bar .ro-tag { margin-left: auto; opacity: .7; }
 </style>
 <div class="ro-bar">
-  <b>DiffLine · 只读预览（2026-10-12 快照 v2）</b>
+  <b>DiffLine · 只读预览（2026-10-12 快照 v3 · Cockpit 重设计）</b>
   <a href="readonly.html">首页</a>
-  <a href="readonly-workspace.html">研究工作台（真实评分 + 编排）</a>
+  <a href="readonly-workspace.html">研究工作台（Cockpit 版）</a>
   <a href="readonly-legacy.html">legacy 降级视图</a>
   <span class="ro-tag">静态快照 · 无需登录 · 非交互 · 数据截止 2026-10-09</span>
 </div>
@@ -3005,10 +3081,10 @@ body.mod-research .stage { padding: 20px 24px 40px; }
       </div>
     </div>
     <!-- Research Cockpit 展示组件（纯展示层，无业务计算）：经典脚本，先于模块脚本同步执行 -->
-    <!-- script removed for static snapshot -->
-    <!-- script removed for static snapshot -->
-    <!-- script removed for static snapshot -->
-    <!-- script removed for static snapshot -->
+    <!-- script removed -->
+    <!-- script removed -->
+    <!-- script removed -->
+    <!-- script removed -->
   
 
 </body></html>
