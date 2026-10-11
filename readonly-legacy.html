@@ -638,26 +638,88 @@ textarea:focus, .steer-row input:focus { outline: 1px solid var(--brand); outlin
 .deg-artifact-none { color: var(--ink-muted); }
 .deg-md { max-height: 320px; overflow: auto; white-space: pre-wrap; font-size: 11px; background: var(--paper-soft, #fafaf8); border: 1px solid var(--line-soft); border-radius: 6px; padding: 10px; }
 
-/* ── Cockpit 重设计：上下文条 / KPI 带 / 图表主体 / 链路 ─────────────── */
+/* ── Cockpit 重设计 v2：浅色紧凑上下文条 / 结论区 / IC 主图 / 链路抽屉 ─────────────── */
 
-/* A. 顶部研究上下文条（深色、吸顶、高信息密度） */
-.rws-contextbar {
+/* A. 顶部研究上下文条（浅色、紧凑、有层级） */
+.ctx-strip {
   position: sticky; top: 0; z-index: 50;
-  display: flex; justify-content: space-between; align-items: center; gap: 18px;
-  background: var(--brand-deep); color: #e8eef6;
-  border-radius: 10px; padding: 12px 18px; margin-bottom: 12px;
-  box-shadow: 0 2px 10px rgba(0, 47, 92, .18);
+  display: flex; justify-content: space-between; align-items: center; gap: 14px;
+  background: var(--panel-bg, #fff); border: 1px solid var(--line-soft);
+  border-left: 3px solid var(--brand-deep);
+  border-radius: 8px; padding: 8px 14px; margin-bottom: 10px;
 }
-.rws-contextbar .rc-kicker { color: #9fc4ee; font-size: 10px; letter-spacing: .12em; }
-.rws-contextbar-question { margin: 2px 0 0; font-size: 14.5px; font-weight: 600; line-height: 1.45; color: #fff; }
-.rws-contextbar-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
-.rws-contextbar .ws-runlabel { color: #9fc4ee; font-size: 11px; }
-.rws-contextbar select { background: #0d3f74; color: #e8eef6; border: 1px solid #2a5d94; border-radius: 6px; padding: 4px 6px; font-size: 11px; max-width: 240px; }
-.ctx-chip { font-size: 11px; padding: 3px 9px; border-radius: 999px; background: rgba(255,255,255,.1); color: #dbe7f4; white-space: nowrap; }
-.ctx-chip-lock { background: rgba(87, 171, 120, .25); color: #a9e0bd; }
-.ctx-chip-ok { background: rgba(87, 171, 120, .25); color: #a9e0bd; }
-.ctx-chip-wait { background: rgba(184, 134, 11, .28); color: #f0d9a0; }
-.ctx-chip-dim { opacity: .75; font-size: 10px; }
+.ctx-strip-left { display: flex; align-items: center; gap: 8px; min-width: 0; flex-wrap: wrap; }
+.ctx-strip-brand { font-size: 10px; letter-spacing: .12em; color: var(--brand-deep); font-weight: 700; }
+.ctx-strip-right { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+.ctx-strip .ws-runlabel { color: var(--ink-muted); font-size: 11px; display: flex; align-items: center; gap: 6px; }
+.ctx-strip select { background: #fff; color: var(--ink-soft); border: 1px solid var(--line-soft); border-radius: 6px; padding: 3px 6px; font-size: 11px; max-width: 260px; }
+.ctx-chip { font-size: 11px; padding: 2px 9px; border-radius: 999px; white-space: nowrap; background: var(--paper-soft, #f4f5f2); color: var(--ink-soft); border: 1px solid var(--line-soft); }
+.ctx-chip-light { color: var(--ink-muted); }
+.ctx-chip-locklight { background: #e8f3ec; color: var(--ok); border-color: #c4ddcd; }
+.ctx-chip-waitlight { background: #faf3df; color: #8a6508; border-color: #ecd9a8; }
+
+/* B. 研究结论区（结论文字 + 带口径的指标芯片） */
+.conclusion {
+  display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 14px;
+  background: var(--panel-bg, #fff); border: 1px solid var(--line-soft); border-radius: 10px;
+  padding: 14px 18px; margin-bottom: 12px;
+}
+.concl-eyebrow { font-size: 10px; letter-spacing: .1em; color: var(--brand-deep); font-weight: 700; margin-bottom: 6px; }
+.concl-statement { margin: 0; font-size: 13.5px; line-height: 1.65; color: var(--ink-soft); }
+.concl-contract { margin: 8px 0 0; font-size: 11px; color: var(--ink-muted); }
+.concl-metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.cm-chip { border: 1px solid var(--line-soft); border-radius: 8px; padding: 8px 10px; display: flex; flex-direction: column; gap: 2px; }
+.cm-label { font-size: 9.5px; letter-spacing: .07em; color: var(--ink-muted); text-transform: uppercase; }
+.cm-chip b { font-size: 19px; font-variant-numeric: tabular-nums; color: var(--brand-deep); }
+.cm-meta { font-size: 9.5px; color: var(--ink-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cm-pos b { color: var(--ok); }
+.cm-neg b { color: var(--danger); }
+.cm-wait b { color: #8a6508; }
+
+/* C. IC 主图（页面核心，整宽 + 范围切换） */
+.ic-hero { padding: 14px 18px; }
+.ic-hero-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-bottom: 4px; }
+.ic-hero-head h2 { margin: 0; font-size: 15px; color: var(--brand-deep); }
+.ic-hero .dlv-card { border: none; padding: 0; }
+.ic-hero .dlv-chart { min-height: 340px; }
+.ic-range-bar { display: flex; gap: 6px; align-items: center; }
+.ic-range { font-size: 11px; padding: 3px 10px; border-radius: 999px; border: 1px solid var(--line-soft); background: #fff; color: var(--ink-muted); cursor: pointer; }
+.ic-range.on { background: var(--brand-deep); color: #fff; border-color: var(--brand-deep); }
+.ic-range-note { font-size: 10px; color: var(--ink-muted); margin-left: 6px; }
+
+/* D. 漂移 + 热力图同行 */
+.charts-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; margin-top: 12px; }
+.charts-row .rws-panel { margin-bottom: 0; }
+
+/* 热力图图例与详情 */
+.hm-legend { display: flex; align-items: center; gap: 8px; margin-top: 8px; font-size: 10px; color: var(--ink-muted); }
+.hm-legend-bar { flex: 0 0 120px; height: 8px; border-radius: 4px; background: linear-gradient(to right, rgba(163,59,50,.7), rgba(228,228,224,.9), rgba(47,107,69,.7)); }
+.hm-cell { cursor: pointer; }
+.hm-cell-selected { outline: 2px solid var(--brand-deep); outline-offset: 1px; }
+.hm-detail { margin-top: 10px; border-top: 1px dashed var(--line-soft); padding-top: 10px; font-size: 12px; }
+
+/* 链路单元格可点击 + 详情抽屉 */
+.lt-cell { cursor: pointer; }
+.lt-cell:hover { background: var(--paper-soft, #f7f8f5); }
+.lt-selected { background: #eef3f9; }
+.lt-selected::after { content: ''; position: absolute; bottom: -1px; left: 0; right: 0; height: 2px; background: var(--brand-deep); }
+.lt-drawer { margin-top: 12px; border: 1px solid var(--line-soft); border-radius: 10px; background: #fff; }
+.lt-drawer-head { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; border-bottom: 1px solid var(--line-soft); font-size: 13px; color: var(--brand-deep); }
+.lt-drawer-close { border: none; background: none; cursor: pointer; color: var(--ink-muted); font-size: 13px; }
+.lt-drawer-body { padding: 12px 14px; font-size: 12.5px; }
+.sd-row { display: flex; justify-content: space-between; gap: 14px; padding: 4px 0; border-bottom: 1px dashed var(--line-soft); }
+.sd-row span { color: var(--ink-muted); flex: 0 0 auto; }
+.sd-row b { text-align: right; word-break: break-all; }
+.sd-list { margin-top: 8px; display: flex; flex-direction: column; gap: 4px; }
+.sd-item { font-size: 11.5px; padding: 6px 8px; background: var(--paper-soft, #f7f8f5); border-radius: 6px; }
+.sd-item p { margin: 4px 0 0; line-height: 1.6; }
+
+/* 深色旧上下文条样式废弃（保留类名兼容，不再使用） */
+@media (max-width: 1100px) {
+  .conclusion { grid-template-columns: 1fr; }
+  .charts-row { grid-template-columns: 1fr; }
+}
+
 
 /* B. KPI 核心发现带 */
 .kpi-band {
@@ -2782,9 +2844,9 @@ body.mod-research .stage { padding: 20px 24px 40px; }
   .ro-bar .ro-tag { margin-left: auto; opacity: .7; }
 </style>
 <div class="ro-bar">
-  <b>DiffLine · 只读预览（2026-10-12 快照 v3 · Cockpit 重设计）</b>
+  <b>DiffLine · 只读预览（2026-10-12 快照 v4 · Cockpit 重设计）</b>
   <a href="readonly.html">首页</a>
-  <a href="readonly-workspace.html">研究工作台（Cockpit 版）</a>
+  <a href="readonly-workspace.html">研究工作台（Cockpit v2）</a>
   <a href="readonly-legacy.html">legacy 降级视图</a>
   <span class="ro-tag">静态快照 · 无需登录 · 非交互 · 数据截止 2026-10-09</span>
 </div>
@@ -2832,18 +2894,18 @@ body.mod-research .stage { padding: 20px 24px 40px; }
     </div>
     <div class="rws-header-meta">
       <div class="ws-meta-row"><span>研究对象</span><b class="mono">1</b></div>
-      <div class="ws-meta-row"><span>有效 ResearchRun</span><b class="mono">16</b></div>
+      <div class="ws-meta-row"><span>有效 ResearchRun</span><b class="mono">17</b></div>
       <div class="ws-meta-row"><span>legacy / 损坏跳过</span><b class="mono">17</b></div>
-      <div class="ws-meta-row"><span>扫描 run 目录</span><b class="mono">33</b></div>
+      <div class="ws-meta-row"><span>扫描 run 目录</span><b class="mono">34</b></div>
       <div class="ws-meta-row"><span>Outcome 关联</span><b class="mono">0</b></div>
       <div class="ws-meta-note">17 条 run 记录不是有效 ResearchRun（legacy 或损坏），已跳过且不影响其余记录。</div><div class="ws-meta-note">本轮只装配 ResearchRun 自身字段；Outcome 关联由独立只读路径处理，recordsWithOutcomeLink 恒为 0。</div>
     </div>
   </header>
   <section class="panel rws-panel">
     <div class="rws-stat">
-      <div class="rws-stat-cell"><span>索引记录</span><b>16</b></div>
+      <div class="rws-stat-cell"><span>索引记录</span><b>17</b></div>
       <div class="rws-stat-cell"><span>身份跳过</span><b>0</b></div>
-      <div class="rws-stat-cell"><span>已锁定预测</span><b>16 / 16</b></div>
+      <div class="rws-stat-cell"><span>已锁定预测</span><b>17 / 17</b></div>
       <div class="rws-stat-cell"><span>历史快照</span><b>0</b></div>
     </div>
     <p class="muted" style="font-size:11.5px">
@@ -2860,7 +2922,7 @@ body.mod-research .stage { padding: 20px 24px 40px; }
           <span class="rws-loop-name">Research</span>
           <span class="ws-badge ws-badge-ok">COMPLETE</span>
         </div>
-        <div class="rws-loop-note">16 条有效 ResearchRun · 1 个研究对象 · 17 条 legacy 跳过</div>
+        <div class="rws-loop-note">17 条有效 ResearchRun · 1 个研究对象 · 17 条 legacy 跳过</div>
       </div>
       <div class="rws-loop-arrow" aria-hidden="true">→</div>
       <div class="rws-loop-node is-available">
@@ -2887,7 +2949,7 @@ body.mod-research .stage { padding: 20px 24px 40px; }
           <span class="rws-loop-name">Prediction · LOCK</span>
           <span class="ws-badge ws-badge-ok">COMPLETE</span>
         </div>
-        <div class="rws-loop-note">16 / 16 条预测已锁定</div>
+        <div class="rws-loop-note">17 / 17 条预测已锁定</div>
       </div>
       <div class="rws-loop-arrow" aria-hidden="true">→</div>
       <div class="rws-loop-node is-waiting">
@@ -2952,7 +3014,7 @@ body.mod-research .stage { padding: 20px 24px 40px; }
       <div class="rws-subject-head">
         <span class="ws-badge ws-badge-info mono">mom20 | 10D</span>
         <b class="mono">f10342b7a9d6c9a9</b>
-        <span class="muted">16 次运行 · 2026-09-30 → 2026-09-30</span>
+        <span class="muted">17 次运行 · 2026-09-30 → 2026-10-09</span>
       </div>
       <ol class="rws-tl">
       <li class="rws-tl-group">
@@ -3041,6 +3103,18 @@ body.mod-research .stage { padding: 20px 24px 40px; }
       <span class="rws-tl-time mono">2026-10-11 15:06:15Z</span>
       <span class="rws-tl-flags"><span class="rws-tl-flag on">EVID</span><span class="rws-tl-flag on">HYP</span><span class="rws-tl-flag pending">no-outcome</span></span>
     </button></div>
+      </li>
+      <li class="rws-tl-group">
+        <div class="rws-tl-date">
+          <span class="mono">2026-10-09</span>
+          <span class="muted">1 条</span>
+        </div>
+        <div class="rws-tl-items">
+    <button type="button" class="rws-tl-node" data-tl-run="run-2026-10-09-da76e4" title="run-2026-10-09-da76e4">
+      <span class="rws-tl-run mono">run-2026-10-09-da76e4</span>
+      <span class="rws-tl-time mono">2026-10-11 22:49:03Z</span>
+      <span class="rws-tl-flags"><span class="rws-tl-flag on">EVID</span><span class="rws-tl-flag on">HYP</span><span class="rws-tl-flag pending">no-outcome</span></span>
+    </button></div>
       </li></ol>
     </div>
     <div class="rws-skipped">
@@ -3050,7 +3124,7 @@ body.mod-research .stage { padding: 20px 24px 40px; }
   </section>
       <section class="panel rws-panel">
         <h2>Selected Run · 降级视图（历史记录不完整）</h2>
-        <label class="ws-runlabel">Run <select id="wsRunSelect" class="mono"><option value="run-2026-09-30-b6ce28">run-2026-09-30-b6ce28 · 2026-09-30</option><option value="run-2026-09-30-cf9771">run-2026-09-30-cf9771 · 2026-09-30</option><option value="run-2026-09-30-d9fe7d">run-2026-09-30-d9fe7d · 2026-09-30</option><option value="run-2026-09-30-19dc26">run-2026-09-30-19dc26 · 2026-09-30</option><option value="run-2026-09-30-68710b">run-2026-09-30-68710b · 2026-09-30</option><option value="run-2026-09-30-10f69c">run-2026-09-30-10f69c · 2026-09-30</option><option value="run-2026-09-30-df4374">run-2026-09-30-df4374 · 2026-09-30</option><option value="run-2026-09-30-d5824e">run-2026-09-30-d5824e · 2026-09-30</option><option value="run-2026-09-30-62293c">run-2026-09-30-62293c · 2026-09-30</option><option value="run-2026-09-30-11896f">run-2026-09-30-11896f · 2026-09-30</option><option value="run-2026-09-30-3d0a2a">run-2026-09-30-3d0a2a · 2026-09-30</option><option value="run-2026-09-30-f20e9f">run-2026-09-30-f20e9f · 2026-09-30</option><option value="run-2026-09-30-53f416">run-2026-09-30-53f416 · 2026-09-30</option><option value="run-2026-09-30-ff01c0">run-2026-09-30-ff01c0 · 2026-09-30</option><option value="run-2026-09-30-5f4b99">run-2026-09-30-5f4b99 · 2026-09-30</option><option value="run-2026-09-30-4fbd05">run-2026-09-30-4fbd05 · 2026-09-30</option><option value="run-2026-09-16-b12775">run-2026-09-16-b12775 · 2026-09-16 · legacy</option><option value="run-2026-09-16-2bfccc">run-2026-09-16-2bfccc · 2026-09-16 · legacy</option><option value="run-2026-09-16-4d0d08">run-2026-09-16-4d0d08 · 2026-09-16 · legacy</option><option value="run-2026-09-16-3a2295">run-2026-09-16-3a2295 · 2026-09-16 · legacy</option><option value="run-2026-09-04-002c8a">run-2026-09-04-002c8a · 2026-09-04 · legacy</option><option value="run-2026-09-04-f81718">run-2026-09-04-f81718 · 2026-09-04 · legacy</option><option value="run-2026-09-04-b1d4b9">run-2026-09-04-b1d4b9 · 2026-09-04 · legacy</option><option value="run-2026-09-04-abf094">run-2026-09-04-abf094 · 2026-09-04 · legacy</option><option value="run-2026-09-04-50c77b">run-2026-09-04-50c77b · 2026-09-04 · legacy</option><option value="run-2026-09-04-9e878d">run-2026-09-04-9e878d · 2026-09-04 · legacy</option><option value="run-2026-09-04-da63de">run-2026-09-04-da63de · 2026-09-04 · legacy</option><option value="run-2026-09-04-d1e8d3">run-2026-09-04-d1e8d3 · 2026-09-04 · legacy</option><option value="run-2026-09-04-1d28e0">run-2026-09-04-1d28e0 · 2026-09-04 · legacy</option><option value="run-2026-09-04-abe2a9">run-2026-09-04-abe2a9 · 2026-09-04 · legacy</option><option value="run-2026-08-28-44ff04">run-2026-08-28-44ff04 · 2026-08-28 · legacy</option><option value="run-2026-08-21-8929a8">run-2026-08-21-8929a8 · 2026-08-21 · legacy</option><option value="run-2026-08-14-41be21" selected="">run-2026-08-14-41be21 · 2026-08-14 · legacy</option></select></label>
+        <label class="ws-runlabel">Run <select id="wsRunSelect" class="mono"><option value="run-2026-09-30-b6ce28">run-2026-09-30-b6ce28 · 2026-09-30</option><option value="run-2026-09-30-cf9771">run-2026-09-30-cf9771 · 2026-09-30</option><option value="run-2026-09-30-d9fe7d">run-2026-09-30-d9fe7d · 2026-09-30</option><option value="run-2026-09-30-19dc26">run-2026-09-30-19dc26 · 2026-09-30</option><option value="run-2026-09-30-68710b">run-2026-09-30-68710b · 2026-09-30</option><option value="run-2026-09-30-10f69c">run-2026-09-30-10f69c · 2026-09-30</option><option value="run-2026-09-30-df4374">run-2026-09-30-df4374 · 2026-09-30</option><option value="run-2026-09-30-d5824e">run-2026-09-30-d5824e · 2026-09-30</option><option value="run-2026-09-30-62293c">run-2026-09-30-62293c · 2026-09-30</option><option value="run-2026-09-30-11896f">run-2026-09-30-11896f · 2026-09-30</option><option value="run-2026-09-30-3d0a2a">run-2026-09-30-3d0a2a · 2026-09-30</option><option value="run-2026-09-30-f20e9f">run-2026-09-30-f20e9f · 2026-09-30</option><option value="run-2026-09-30-53f416">run-2026-09-30-53f416 · 2026-09-30</option><option value="run-2026-09-30-ff01c0">run-2026-09-30-ff01c0 · 2026-09-30</option><option value="run-2026-09-30-5f4b99">run-2026-09-30-5f4b99 · 2026-09-30</option><option value="run-2026-09-30-4fbd05">run-2026-09-30-4fbd05 · 2026-09-30</option><option value="run-2026-10-09-da76e4">run-2026-10-09-da76e4 · 2026-10-09</option><option value="run-2026-09-16-b12775">run-2026-09-16-b12775 · 2026-09-16 · legacy</option><option value="run-2026-09-16-2bfccc">run-2026-09-16-2bfccc · 2026-09-16 · legacy</option><option value="run-2026-09-16-4d0d08">run-2026-09-16-4d0d08 · 2026-09-16 · legacy</option><option value="run-2026-09-16-3a2295">run-2026-09-16-3a2295 · 2026-09-16 · legacy</option><option value="run-2026-09-04-002c8a">run-2026-09-04-002c8a · 2026-09-04 · legacy</option><option value="run-2026-09-04-f81718">run-2026-09-04-f81718 · 2026-09-04 · legacy</option><option value="run-2026-09-04-b1d4b9">run-2026-09-04-b1d4b9 · 2026-09-04 · legacy</option><option value="run-2026-09-04-abf094">run-2026-09-04-abf094 · 2026-09-04 · legacy</option><option value="run-2026-09-04-50c77b">run-2026-09-04-50c77b · 2026-09-04 · legacy</option><option value="run-2026-09-04-9e878d">run-2026-09-04-9e878d · 2026-09-04 · legacy</option><option value="run-2026-09-04-da63de">run-2026-09-04-da63de · 2026-09-04 · legacy</option><option value="run-2026-09-04-d1e8d3">run-2026-09-04-d1e8d3 · 2026-09-04 · legacy</option><option value="run-2026-09-04-1d28e0">run-2026-09-04-1d28e0 · 2026-09-04 · legacy</option><option value="run-2026-09-04-abe2a9">run-2026-09-04-abe2a9 · 2026-09-04 · legacy</option><option value="run-2026-08-28-44ff04">run-2026-08-28-44ff04 · 2026-08-28 · legacy</option><option value="run-2026-08-21-8929a8">run-2026-08-21-8929a8 · 2026-08-21 · legacy</option><option value="run-2026-08-14-41be21" selected="">run-2026-08-14-41be21 · 2026-08-14 · legacy</option></select></label>
         <div class="ws-dt-empty deg-banner">
           <p class="empty">该历史 Run 没有通过完整性校验的研究记录（researchRun）。以下为降级视图：只展示实际存在的产物，缺失的研究阶段如实列出，不做任何补造。</p>
           <p class="empty mono">校验结论：records.json 没有 researchRun 字段</p>

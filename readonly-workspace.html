@@ -638,26 +638,88 @@ textarea:focus, .steer-row input:focus { outline: 1px solid var(--brand); outlin
 .deg-artifact-none { color: var(--ink-muted); }
 .deg-md { max-height: 320px; overflow: auto; white-space: pre-wrap; font-size: 11px; background: var(--paper-soft, #fafaf8); border: 1px solid var(--line-soft); border-radius: 6px; padding: 10px; }
 
-/* ── Cockpit 重设计：上下文条 / KPI 带 / 图表主体 / 链路 ─────────────── */
+/* ── Cockpit 重设计 v2：浅色紧凑上下文条 / 结论区 / IC 主图 / 链路抽屉 ─────────────── */
 
-/* A. 顶部研究上下文条（深色、吸顶、高信息密度） */
-.rws-contextbar {
+/* A. 顶部研究上下文条（浅色、紧凑、有层级） */
+.ctx-strip {
   position: sticky; top: 0; z-index: 50;
-  display: flex; justify-content: space-between; align-items: center; gap: 18px;
-  background: var(--brand-deep); color: #e8eef6;
-  border-radius: 10px; padding: 12px 18px; margin-bottom: 12px;
-  box-shadow: 0 2px 10px rgba(0, 47, 92, .18);
+  display: flex; justify-content: space-between; align-items: center; gap: 14px;
+  background: var(--panel-bg, #fff); border: 1px solid var(--line-soft);
+  border-left: 3px solid var(--brand-deep);
+  border-radius: 8px; padding: 8px 14px; margin-bottom: 10px;
 }
-.rws-contextbar .rc-kicker { color: #9fc4ee; font-size: 10px; letter-spacing: .12em; }
-.rws-contextbar-question { margin: 2px 0 0; font-size: 14.5px; font-weight: 600; line-height: 1.45; color: #fff; }
-.rws-contextbar-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
-.rws-contextbar .ws-runlabel { color: #9fc4ee; font-size: 11px; }
-.rws-contextbar select { background: #0d3f74; color: #e8eef6; border: 1px solid #2a5d94; border-radius: 6px; padding: 4px 6px; font-size: 11px; max-width: 240px; }
-.ctx-chip { font-size: 11px; padding: 3px 9px; border-radius: 999px; background: rgba(255,255,255,.1); color: #dbe7f4; white-space: nowrap; }
-.ctx-chip-lock { background: rgba(87, 171, 120, .25); color: #a9e0bd; }
-.ctx-chip-ok { background: rgba(87, 171, 120, .25); color: #a9e0bd; }
-.ctx-chip-wait { background: rgba(184, 134, 11, .28); color: #f0d9a0; }
-.ctx-chip-dim { opacity: .75; font-size: 10px; }
+.ctx-strip-left { display: flex; align-items: center; gap: 8px; min-width: 0; flex-wrap: wrap; }
+.ctx-strip-brand { font-size: 10px; letter-spacing: .12em; color: var(--brand-deep); font-weight: 700; }
+.ctx-strip-right { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+.ctx-strip .ws-runlabel { color: var(--ink-muted); font-size: 11px; display: flex; align-items: center; gap: 6px; }
+.ctx-strip select { background: #fff; color: var(--ink-soft); border: 1px solid var(--line-soft); border-radius: 6px; padding: 3px 6px; font-size: 11px; max-width: 260px; }
+.ctx-chip { font-size: 11px; padding: 2px 9px; border-radius: 999px; white-space: nowrap; background: var(--paper-soft, #f4f5f2); color: var(--ink-soft); border: 1px solid var(--line-soft); }
+.ctx-chip-light { color: var(--ink-muted); }
+.ctx-chip-locklight { background: #e8f3ec; color: var(--ok); border-color: #c4ddcd; }
+.ctx-chip-waitlight { background: #faf3df; color: #8a6508; border-color: #ecd9a8; }
+
+/* B. 研究结论区（结论文字 + 带口径的指标芯片） */
+.conclusion {
+  display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 14px;
+  background: var(--panel-bg, #fff); border: 1px solid var(--line-soft); border-radius: 10px;
+  padding: 14px 18px; margin-bottom: 12px;
+}
+.concl-eyebrow { font-size: 10px; letter-spacing: .1em; color: var(--brand-deep); font-weight: 700; margin-bottom: 6px; }
+.concl-statement { margin: 0; font-size: 13.5px; line-height: 1.65; color: var(--ink-soft); }
+.concl-contract { margin: 8px 0 0; font-size: 11px; color: var(--ink-muted); }
+.concl-metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.cm-chip { border: 1px solid var(--line-soft); border-radius: 8px; padding: 8px 10px; display: flex; flex-direction: column; gap: 2px; }
+.cm-label { font-size: 9.5px; letter-spacing: .07em; color: var(--ink-muted); text-transform: uppercase; }
+.cm-chip b { font-size: 19px; font-variant-numeric: tabular-nums; color: var(--brand-deep); }
+.cm-meta { font-size: 9.5px; color: var(--ink-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cm-pos b { color: var(--ok); }
+.cm-neg b { color: var(--danger); }
+.cm-wait b { color: #8a6508; }
+
+/* C. IC 主图（页面核心，整宽 + 范围切换） */
+.ic-hero { padding: 14px 18px; }
+.ic-hero-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-bottom: 4px; }
+.ic-hero-head h2 { margin: 0; font-size: 15px; color: var(--brand-deep); }
+.ic-hero .dlv-card { border: none; padding: 0; }
+.ic-hero .dlv-chart { min-height: 340px; }
+.ic-range-bar { display: flex; gap: 6px; align-items: center; }
+.ic-range { font-size: 11px; padding: 3px 10px; border-radius: 999px; border: 1px solid var(--line-soft); background: #fff; color: var(--ink-muted); cursor: pointer; }
+.ic-range.on { background: var(--brand-deep); color: #fff; border-color: var(--brand-deep); }
+.ic-range-note { font-size: 10px; color: var(--ink-muted); margin-left: 6px; }
+
+/* D. 漂移 + 热力图同行 */
+.charts-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; margin-top: 12px; }
+.charts-row .rws-panel { margin-bottom: 0; }
+
+/* 热力图图例与详情 */
+.hm-legend { display: flex; align-items: center; gap: 8px; margin-top: 8px; font-size: 10px; color: var(--ink-muted); }
+.hm-legend-bar { flex: 0 0 120px; height: 8px; border-radius: 4px; background: linear-gradient(to right, rgba(163,59,50,.7), rgba(228,228,224,.9), rgba(47,107,69,.7)); }
+.hm-cell { cursor: pointer; }
+.hm-cell-selected { outline: 2px solid var(--brand-deep); outline-offset: 1px; }
+.hm-detail { margin-top: 10px; border-top: 1px dashed var(--line-soft); padding-top: 10px; font-size: 12px; }
+
+/* 链路单元格可点击 + 详情抽屉 */
+.lt-cell { cursor: pointer; }
+.lt-cell:hover { background: var(--paper-soft, #f7f8f5); }
+.lt-selected { background: #eef3f9; }
+.lt-selected::after { content: ''; position: absolute; bottom: -1px; left: 0; right: 0; height: 2px; background: var(--brand-deep); }
+.lt-drawer { margin-top: 12px; border: 1px solid var(--line-soft); border-radius: 10px; background: #fff; }
+.lt-drawer-head { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; border-bottom: 1px solid var(--line-soft); font-size: 13px; color: var(--brand-deep); }
+.lt-drawer-close { border: none; background: none; cursor: pointer; color: var(--ink-muted); font-size: 13px; }
+.lt-drawer-body { padding: 12px 14px; font-size: 12.5px; }
+.sd-row { display: flex; justify-content: space-between; gap: 14px; padding: 4px 0; border-bottom: 1px dashed var(--line-soft); }
+.sd-row span { color: var(--ink-muted); flex: 0 0 auto; }
+.sd-row b { text-align: right; word-break: break-all; }
+.sd-list { margin-top: 8px; display: flex; flex-direction: column; gap: 4px; }
+.sd-item { font-size: 11.5px; padding: 6px 8px; background: var(--paper-soft, #f7f8f5); border-radius: 6px; }
+.sd-item p { margin: 4px 0 0; line-height: 1.6; }
+
+/* 深色旧上下文条样式废弃（保留类名兼容，不再使用） */
+@media (max-width: 1100px) {
+  .conclusion { grid-template-columns: 1fr; }
+  .charts-row { grid-template-columns: 1fr; }
+}
+
 
 /* B. KPI 核心发现带 */
 .kpi-band {
@@ -2782,9 +2844,9 @@ body.mod-research .stage { padding: 20px 24px 40px; }
   .ro-bar .ro-tag { margin-left: auto; opacity: .7; }
 </style>
 <div class="ro-bar">
-  <b>DiffLine · 只读预览（2026-10-12 快照 v3 · Cockpit 重设计）</b>
+  <b>DiffLine · 只读预览（2026-10-12 快照 v4 · Cockpit 重设计）</b>
   <a href="readonly.html">首页</a>
-  <a href="readonly-workspace.html">研究工作台（Cockpit 版）</a>
+  <a href="readonly-workspace.html">研究工作台（Cockpit v2）</a>
   <a href="readonly-legacy.html">legacy 降级视图</a>
   <span class="ro-tag">静态快照 · 无需登录 · 非交互 · 数据截止 2026-10-09</span>
 </div>
@@ -2823,64 +2885,59 @@ body.mod-research .stage { padding: 20px 24px 40px; }
         <div class="workspace">
           <main class="stage" id="main">
   <div class="rws rws-story">
-    <header class="rws-contextbar" id="research-context">
-      <div class="rws-contextbar-main">
-        <div class="rc-kicker">DIFFLINE / RESEARCH COCKPIT</div>
-        <h1 class="rws-contextbar-question">截至 2026-09-30，mom20 对未来 10 个交易日收益的截面预测关系，是否相对更早基线发生了可度量变化？</h1>
-      </div>
-      <div class="rws-contextbar-meta">
-        <label class="ws-runlabel">Run <select id="wsRunSelect" class="mono"><option value="run-2026-09-30-b6ce28">run-2026-09-30-b6ce28 · 2026-09-30</option><option value="run-2026-09-30-cf9771">run-2026-09-30-cf9771 · 2026-09-30</option><option value="run-2026-09-30-d9fe7d">run-2026-09-30-d9fe7d · 2026-09-30</option><option value="run-2026-09-30-19dc26">run-2026-09-30-19dc26 · 2026-09-30</option><option value="run-2026-09-30-68710b">run-2026-09-30-68710b · 2026-09-30</option><option value="run-2026-09-30-10f69c">run-2026-09-30-10f69c · 2026-09-30</option><option value="run-2026-09-30-df4374">run-2026-09-30-df4374 · 2026-09-30</option><option value="run-2026-09-30-d5824e">run-2026-09-30-d5824e · 2026-09-30</option><option value="run-2026-09-30-62293c">run-2026-09-30-62293c · 2026-09-30</option><option value="run-2026-09-30-11896f">run-2026-09-30-11896f · 2026-09-30</option><option value="run-2026-09-30-3d0a2a">run-2026-09-30-3d0a2a · 2026-09-30</option><option value="run-2026-09-30-f20e9f">run-2026-09-30-f20e9f · 2026-09-30</option><option value="run-2026-09-30-53f416">run-2026-09-30-53f416 · 2026-09-30</option><option value="run-2026-09-30-ff01c0">run-2026-09-30-ff01c0 · 2026-09-30</option><option value="run-2026-09-30-5f4b99" selected="">run-2026-09-30-5f4b99 · 2026-09-30</option><option value="run-2026-09-30-4fbd05">run-2026-09-30-4fbd05 · 2026-09-30</option><option value="run-2026-09-16-b12775">run-2026-09-16-b12775 · 2026-09-16 · legacy</option><option value="run-2026-09-16-2bfccc">run-2026-09-16-2bfccc · 2026-09-16 · legacy</option><option value="run-2026-09-16-4d0d08">run-2026-09-16-4d0d08 · 2026-09-16 · legacy</option><option value="run-2026-09-16-3a2295">run-2026-09-16-3a2295 · 2026-09-16 · legacy</option><option value="run-2026-09-04-002c8a">run-2026-09-04-002c8a · 2026-09-04 · legacy</option><option value="run-2026-09-04-f81718">run-2026-09-04-f81718 · 2026-09-04 · legacy</option><option value="run-2026-09-04-b1d4b9">run-2026-09-04-b1d4b9 · 2026-09-04 · legacy</option><option value="run-2026-09-04-abf094">run-2026-09-04-abf094 · 2026-09-04 · legacy</option><option value="run-2026-09-04-50c77b">run-2026-09-04-50c77b · 2026-09-04 · legacy</option><option value="run-2026-09-04-9e878d">run-2026-09-04-9e878d · 2026-09-04 · legacy</option><option value="run-2026-09-04-da63de">run-2026-09-04-da63de · 2026-09-04 · legacy</option><option value="run-2026-09-04-d1e8d3">run-2026-09-04-d1e8d3 · 2026-09-04 · legacy</option><option value="run-2026-09-04-1d28e0">run-2026-09-04-1d28e0 · 2026-09-04 · legacy</option><option value="run-2026-09-04-abe2a9">run-2026-09-04-abe2a9 · 2026-09-04 · legacy</option><option value="run-2026-08-28-44ff04">run-2026-08-28-44ff04 · 2026-08-28 · legacy</option><option value="run-2026-08-21-8929a8">run-2026-08-21-8929a8 · 2026-08-21 · legacy</option><option value="run-2026-08-14-41be21">run-2026-08-14-41be21 · 2026-08-14 · legacy</option></select></label>
+    <header class="ctx-strip" id="research-context">
+      <div class="ctx-strip-left">
+        <span class="ctx-strip-brand">DIFFLINE · RESEARCH COCKPIT</span>
         <span class="ctx-chip" title="研究对象（factor × horizon）">mom20 · 10D</span>
-        <span class="ctx-chip" title="Knowledge cutoff">cutoff 2026-09-30</span>
-        <span class="ctx-chip ctx-chip-lock" title="预测已锁定，指纹已绑定">🔒 LOCKED</span>
-        <span class="ctx-chip ctx-chip-wait" title="Outcome 状态">
+        <span class="ctx-chip ctx-chip-light" title="Knowledge cutoff">cutoff 2026-09-30</span>
+      </div>
+      <div class="ctx-strip-right">
+        <label class="ws-runlabel">Run <select id="wsRunSelect" class="mono"><option value="run-2026-09-30-b6ce28">run-2026-09-30-b6ce28 · 2026-09-30</option><option value="run-2026-09-30-cf9771">run-2026-09-30-cf9771 · 2026-09-30</option><option value="run-2026-09-30-d9fe7d">run-2026-09-30-d9fe7d · 2026-09-30</option><option value="run-2026-09-30-19dc26">run-2026-09-30-19dc26 · 2026-09-30</option><option value="run-2026-09-30-68710b">run-2026-09-30-68710b · 2026-09-30</option><option value="run-2026-09-30-10f69c">run-2026-09-30-10f69c · 2026-09-30</option><option value="run-2026-09-30-df4374">run-2026-09-30-df4374 · 2026-09-30</option><option value="run-2026-09-30-d5824e">run-2026-09-30-d5824e · 2026-09-30</option><option value="run-2026-09-30-62293c">run-2026-09-30-62293c · 2026-09-30</option><option value="run-2026-09-30-11896f">run-2026-09-30-11896f · 2026-09-30</option><option value="run-2026-09-30-3d0a2a">run-2026-09-30-3d0a2a · 2026-09-30</option><option value="run-2026-09-30-f20e9f">run-2026-09-30-f20e9f · 2026-09-30</option><option value="run-2026-09-30-53f416">run-2026-09-30-53f416 · 2026-09-30</option><option value="run-2026-09-30-ff01c0">run-2026-09-30-ff01c0 · 2026-09-30</option><option value="run-2026-09-30-5f4b99" selected="">run-2026-09-30-5f4b99 · 2026-09-30</option><option value="run-2026-09-30-4fbd05">run-2026-09-30-4fbd05 · 2026-09-30</option><option value="run-2026-10-09-da76e4">run-2026-10-09-da76e4 · 2026-10-09</option><option value="run-2026-09-16-b12775">run-2026-09-16-b12775 · 2026-09-16 · legacy</option><option value="run-2026-09-16-2bfccc">run-2026-09-16-2bfccc · 2026-09-16 · legacy</option><option value="run-2026-09-16-4d0d08">run-2026-09-16-4d0d08 · 2026-09-16 · legacy</option><option value="run-2026-09-16-3a2295">run-2026-09-16-3a2295 · 2026-09-16 · legacy</option><option value="run-2026-09-04-002c8a">run-2026-09-04-002c8a · 2026-09-04 · legacy</option><option value="run-2026-09-04-f81718">run-2026-09-04-f81718 · 2026-09-04 · legacy</option><option value="run-2026-09-04-b1d4b9">run-2026-09-04-b1d4b9 · 2026-09-04 · legacy</option><option value="run-2026-09-04-abf094">run-2026-09-04-abf094 · 2026-09-04 · legacy</option><option value="run-2026-09-04-50c77b">run-2026-09-04-50c77b · 2026-09-04 · legacy</option><option value="run-2026-09-04-9e878d">run-2026-09-04-9e878d · 2026-09-04 · legacy</option><option value="run-2026-09-04-da63de">run-2026-09-04-da63de · 2026-09-04 · legacy</option><option value="run-2026-09-04-d1e8d3">run-2026-09-04-d1e8d3 · 2026-09-04 · legacy</option><option value="run-2026-09-04-1d28e0">run-2026-09-04-1d28e0 · 2026-09-04 · legacy</option><option value="run-2026-09-04-abe2a9">run-2026-09-04-abe2a9 · 2026-09-04 · legacy</option><option value="run-2026-08-28-44ff04">run-2026-08-28-44ff04 · 2026-08-28 · legacy</option><option value="run-2026-08-21-8929a8">run-2026-08-21-8929a8 · 2026-08-21 · legacy</option><option value="run-2026-08-14-41be21">run-2026-08-14-41be21 · 2026-08-14 · legacy</option></select></label>
+        <span class="ctx-chip ctx-chip-locklight" title="预测已锁定，指纹已绑定">🔒 LOCKED</span>
+        <span class="ctx-chip ctx-chip-waitlight">
           Awaiting Outcome
         </span>
-        <span class="ctx-chip ctx-chip-dim mono" title="Run ID">run-2026-09-30-5f4b99</span>
       </div>
     </header>
 
     
-  <section class="kpi-band" id="kpi">
-    
-    <div class="kpi-cell kpi-pos">
-      <span class="kpi-label">最新成熟 RankIC</span>
-      <b class="kpi-value">0.3123</b>
-      <span class="kpi-sub">2026-09-15</span>
+  <section class="conclusion" id="conclusion">
+    <div class="concl-main">
+      <div class="concl-eyebrow">研究结论 · 当前状态（等待现实成熟）</div>
+      <p class="concl-statement">Factor Health（run-2026-09-30-5f4b99-fh）近 20 有效 IC mean=-0.0644。Concept Drift（run-2026-09-30-5f4b99-cd）recentMean=-0.0644，baselineMean=0.0549，effectSize=-0.3708，relationshipShift=false。最近一条成熟 Rank IC（run-2026-09-30-5f4b99-ic）=0.3123（2026-09-15）。OOD expanding（run-2026-09-30-5f4b99-ood-exp）=false，rolling120（run-2026-09-30-5f4b99-ood-roll）=false。</p>
+      <p class="concl-contract">评估合同：pass ⟺ actual &lt; 0 · 方向 negative · 指纹 93a3f214…</p>
     </div>
-    
-    <div class="kpi-cell kpi-pos">
-      <span class="kpi-label">Baseline ICIR 评分</span>
-      <b class="kpi-value">0.2647</b>
-      <span class="kpi-sub">baseline-rankic-icir-v1 </span>
-    </div>
-    
-    <div class="kpi-cell kpi-neg">
-      <span class="kpi-label">近窗 vs 基准均值</span>
-      <b class="kpi-value">-0.064 / 0.055</b>
-      <span class="kpi-sub">Δ -0.119 · concept drift</span>
-    </div>
-    
-    <div class="kpi-cell ">
-      <span class="kpi-label">闭环阶段</span>
-      <b class="kpi-value">等待现实成熟</b>
-      <span class="kpi-sub">事件日志 2 条</span>
-    </div>
-    
-    <div class="kpi-cell kpi-wait">
-      <span class="kpi-label">Reality</span>
-      <b class="kpi-value">WAITING</b>
-      <span class="kpi-sub">评估窗口未成熟</span>
+    <div class="concl-metrics">
+      <div class="cm-chip cm-pos">
+        <span class="cm-label">最新成熟 RankIC</span>
+        <b>0.3123</b>
+        <span class="cm-meta">2026-09-15 · 序列 n=290</span>
+      </div>
+      <div class="cm-chip cm-pos">
+        <span class="cm-label">Baseline ICIR</span>
+        <b>0.2647</b>
+        <span class="cm-meta">baseline-rankic-icir-v1 · ICIR of matured RankIC ≤ 2026-09-30 · minSamples 20</span>
+      </div>
+      <div class="cm-chip cm-neg">
+        <span class="cm-label">概念漂移 ΔIC</span>
+        <b>-0.1193</b>
+        <span class="cm-meta">近窗 n=20 vs 基准 n=120 · 非因果解释</span>
+      </div>
+      <div class="cm-chip cm-wait">
+        <span class="cm-label">Reality</span>
+        <b>WAITING</b>
+        <span class="cm-meta">未成熟：未来 bar 1/10</span>
+      </div>
     </div>
   </section>
 
     <section class="panel rws-panel lt-panel" id="loop-timeline">
       <div class="lt-panel-head">
-        <h2>研究闭环 · Research → Learning</h2>
+        <h2>研究闭环 · 点击阶段查看真实记录</h2>
         <span class="lt-persisted mono">事件日志 2 条 · 日志态 预测已锁定</span>
       </div>
       <ol class="lt-flow">
-      <li class="lt-cell lt-complete">
+      <li class="lt-cell lt-complete" data-ltstage="research" role="button" tabindex="0" title="点击查看 Research 的真实记录">
         <div class="lt-idx mono">01</div>
         <div class="lt-label">Research</div>
         <div class="lt-state">完成</div>
@@ -2889,7 +2946,7 @@ body.mod-research .stage { padding: 20px 24px 40px; }
         <div class="lt-detail" title="asOf 2026-09-30 · mom20×10">asOf 2026-09-30 · mom20×10</div>
       </li>
       <li class="lt-arrow" aria-hidden="true">→</li>
-      <li class="lt-cell lt-complete">
+      <li class="lt-cell lt-complete" data-ltstage="evidence" role="button" tabindex="0" title="点击查看 Evidence 的真实记录">
         <div class="lt-idx mono">02</div>
         <div class="lt-label">Evidence</div>
         <div class="lt-state">完成</div>
@@ -2898,7 +2955,7 @@ body.mod-research .stage { padding: 20px 24px 40px; }
         <div class="lt-detail" title="7 条证据">7 条证据</div>
       </li>
       <li class="lt-arrow" aria-hidden="true">→</li>
-      <li class="lt-cell lt-complete">
+      <li class="lt-cell lt-complete" data-ltstage="hypothesis" role="button" tabindex="0" title="点击查看 Hypothesis 的真实记录">
         <div class="lt-idx mono">03</div>
         <div class="lt-label">Hypothesis</div>
         <div class="lt-state">完成</div>
@@ -2907,7 +2964,7 @@ body.mod-research .stage { padding: 20px 24px 40px; }
         <div class="lt-detail" title="run-2026-09-30-5f4b99-hyp">run-2026-09-30-5f4b99-hyp</div>
       </li>
       <li class="lt-arrow" aria-hidden="true">→</li>
-      <li class="lt-cell lt-complete">
+      <li class="lt-cell lt-complete" data-ltstage="lock" role="button" tabindex="0" title="点击查看 Prediction LOCK 的真实记录">
         <div class="lt-idx mono">04</div>
         <div class="lt-label">Prediction LOCK</div>
         <div class="lt-state">完成</div>
@@ -2916,7 +2973,7 @@ body.mod-research .stage { padding: 20px 24px 40px; }
         <div class="lt-detail" title="方向 negative · 指纹已绑定">方向 negative · 指纹已绑定</div>
       </li>
       <li class="lt-arrow" aria-hidden="true">→</li>
-      <li class="lt-cell lt-waiting">
+      <li class="lt-cell lt-waiting" data-ltstage="reality" role="button" tabindex="0" title="点击查看 Reality 的真实记录">
         <div class="lt-idx mono">05</div>
         <div class="lt-label">Reality</div>
         <div class="lt-state">WAITING</div>
@@ -2925,7 +2982,7 @@ body.mod-research .stage { padding: 20px 24px 40px; }
         <div class="lt-detail" title="未成熟：未来 bar 1/10">未成熟：未来 bar 1/10</div>
       </li>
       <li class="lt-arrow" aria-hidden="true">→</li>
-      <li class="lt-cell lt-waiting">
+      <li class="lt-cell lt-waiting" data-ltstage="reality_diff" role="button" tabindex="0" title="点击查看 Reality Diff 的真实记录">
         <div class="lt-idx mono">06</div>
         <div class="lt-label">Reality Diff</div>
         <div class="lt-state">WAITING</div>
@@ -2934,7 +2991,7 @@ body.mod-research .stage { padding: 20px 24px 40px; }
         
       </li>
       <li class="lt-arrow" aria-hidden="true">→</li>
-      <li class="lt-cell lt-waiting">
+      <li class="lt-cell lt-waiting" data-ltstage="attribution" role="button" tabindex="0" title="点击查看 Attribution 的真实记录">
         <div class="lt-idx mono">07</div>
         <div class="lt-label">Attribution</div>
         <div class="lt-state">WAITING</div>
@@ -2943,7 +3000,7 @@ body.mod-research .stage { padding: 20px 24px 40px; }
         
       </li>
       <li class="lt-arrow" aria-hidden="true">→</li>
-      <li class="lt-cell lt-waiting">
+      <li class="lt-cell lt-waiting" data-ltstage="learning" role="button" tabindex="0" title="点击查看 Learning 的真实记录">
         <div class="lt-idx mono">08</div>
         <div class="lt-label">Learning</div>
         <div class="lt-state">WAITING</div>
@@ -2952,7 +3009,7 @@ body.mod-research .stage { padding: 20px 24px 40px; }
         
       </li>
       <li class="lt-arrow" aria-hidden="true">→</li>
-      <li class="lt-cell lt-waiting">
+      <li class="lt-cell lt-waiting" data-ltstage="next_experiment" role="button" tabindex="0" title="点击查看 Next Experiment 的真实记录">
         <div class="lt-idx mono">09</div>
         <div class="lt-label">Next Experiment</div>
         <div class="lt-state">WAITING</div>
@@ -2961,11 +3018,13 @@ body.mod-research .stage { padding: 20px 24px 40px; }
         <div class="lt-detail" title="selected f10342b7…">selected f10342b7…</div>
       </li>
       </ol>
+      
     </section>
 
     <nav class="rws-story-nav" aria-label="研究流程">
-      <a href="#kpi">核心发现</a>
-      <a href="#story-charts">图表主体</a>
+      <a href="#conclusion">研究结论</a>
+      <a href="#story-charts">图表</a>
+      <a href="#loop-timeline">研究闭环</a>
       <a href="#story-thesis">论点与证据</a>
       <a href="#story-prediction">预测锁定</a>
       <a href="#story-reality">现实检验</a>
@@ -2976,17 +3035,16 @@ body.mod-research .stage { padding: 20px 24px 40px; }
       <div class="rws-story-heading">
         <span class="rws-story-index">01 / CHARTS</span>
         <div>
-          <h2>图表主体</h2>
-          <p>历史 Rank IC 序列、概念漂移对照与因子×期限评分——全部来自真实引擎输出。</p>
+          <h2>图表</h2>
+          <p>历史 Rank IC 主图、概念漂移对照、因子×期限评分——全部来自真实引擎输出。</p>
         </div>
       </div>
 
-      <div class="charts-grid">
-        <section class="panel rws-panel rws-story-card charts-main" id="story-ic-chart">
-          
-    <div class="ws-sig-head">
-      <div class="ws-sig-label">Historical Rank IC</div>
-      <div class="ws-sig-legend"><span class="ws-sig-key"><i class="ws-sig-key-main"></i>full series</span><span class="ws-sig-key"><i class="ws-sig-key-recent"></i>recent window</span></div>
+      <section class="panel rws-panel ic-hero" id="story-ic-chart">
+        
+    <div class="ic-hero-head">
+      <h2>Historical Rank IC · 历史成熟观测</h2>
+      <div class="ic-range-bar"><button type="button" class="ic-range on" data-icrange="all">全部</button><button type="button" class="ic-range" data-icrange="120">近 120</button><button type="button" class="ic-range" data-icrange="60">近 60</button><button type="button" class="ic-range" data-icrange="20">近 20</button><span class="ic-range-note">显示 290 / 290 个成熟观测</span></div>
     </div>
     
       <section class="dlv-card dlv-signal">
@@ -3946,21 +4004,11 @@ body.mod-research .stage { padding: 20px 24px 40px; }
 
         <footer>Source · E01 · runs/run-2026-09-30-5f4b99/records.json#matureIcSeries</footer>
       </section>
-    <div class="ws-sig-meta">
-        <span>Recent window: <b class="mono">20</b></span>
-        <span>Marked recent: <b class="mono">20</b></span>
-        <span>Observed: <b class="mono">290</b></span>
-        <span>Source: <b class="mono">E01 — Factor IC Baseline</b></span>
-        <span class="mono ws-sig-ref">runs/run-2026-09-30-5f4b99/records.json#matureIcSeries</span>
-      </div>
-    <div class="ws-sig-groups">
-      <div class="ws-sig-group"><div class="ws-sig-group-title">Factor Health</div><div class="ws-field"><span>Factor Health Window</span><b class="mono">20</b></div><div class="ws-field"><span>Sample Size</span><b class="mono">20</b></div><div class="ws-field"><span>Mean IC</span><b class="mono">-0.06442687747030001</b></div><div class="ws-field"><span>Std IC</span><b class="mono">0.2748066839781249</b></div><div class="ws-field"><span>ICIR</span><b class="mono">-0.2344443611692811</b></div><div class="ws-field"><span>Positive IC Rate</span><b class="mono">0.45</b></div></div><div class="ws-sig-group"><div class="ws-sig-group-title">Research State</div><div class="ws-field"><span>Universe Size</span><b class="mono">24</b></div><div class="ws-field"><span>Market Volatility (20)</span><b class="mono">0.035152828256090195</b></div><div class="ws-field"><span>Avg Pairwise Correlation (20)</span><b class="mono">0.02713667532945754</b></div><div class="ws-field"><span>Momentum Mean (20)</span><b class="mono">-0.11012943722298152</b></div><div class="ws-field"><span>Momentum Std (20)</span><b class="mono">0.2362975461940251</b></div><div class="ws-field"><span>Breadth Positive (20)</span><b class="mono">0.20833333333333334</b></div></div><div class="ws-sig-group"><div class="ws-sig-group-title">OOD / Concept Drift Diagnostics</div><div class="ws-field"><span>OOD Expanding History Used</span><b class="mono">891</b></div><div class="ws-field"><span>OOD Expanding Distance</span><b class="mono">0.6032702324590646</b></div><div class="ws-field"><span>OOD Rolling Window</span><b class="mono">120</b></div><div class="ws-field"><span>OOD Rolling History Used</span><b class="mono">120</b></div><div class="ws-field"><span>OOD Rolling Distance</span><b class="mono">1.24851265832211</b></div><div class="ws-field"><span>Concept Drift Matured Samples</span><b class="mono">290</b></div><div class="ws-field"><span>Concept Drift Recent Samples</span><b class="mono">20</b></div><div class="ws-field"><span>Concept Drift Baseline Samples</span><b class="mono">120</b></div><div class="ws-field"><span>Concept Drift Recent Mean IC</span><b class="mono">-0.06442687747030001</b></div><div class="ws-field"><span>Concept Drift Baseline Mean IC</span><b class="mono">0.05485664484209998</b></div><div class="ws-field"><span>Concept Drift Delta IC</span><b class="mono">-0.1192835223124</b></div><div class="ws-field"><span>Concept Drift Effect Size</span><b class="mono">-0.3707542111077982</b></div></div>
-    </div>
-        </section>
-        <div class="charts-side">
-          <section class="panel rws-panel rws-story-card" id="story-concept-drift">
-            <h2>Concept Drift · 近期 vs 基准</h2>
-            
+      </section>
+
+      <div class="charts-row">
+        <section class="panel rws-panel rws-story-card" id="story-concept-drift">
+          
       <section class="dlv-card">
         <header class="dlv-head">
           <div>
@@ -4019,56 +4067,60 @@ body.mod-research .stage { padding: 20px 24px 40px; }
                 </span>
               </div>
       </section>
-          </section>
-          <section class="panel rws-panel rws-story-card" id="story-score-heatmap">
-            <h2>因子 × 期限评分 · Baseline RankIC ICIR</h2>
-            
+        </section>
+        <section class="panel rws-panel rws-story-card" id="story-score-heatmap">
+          
+    <h2>因子 × 期限评分 · Baseline RankIC ICIR</h2>
     <table class="hm-table">
       <thead><tr><th></th><th>5D</th><th>10D</th><th>20D</th></tr></thead>
-      <tbody><tr><th class="hm-row">mom20</th><td class="hm-cell" style="background:rgba(47,107,69,0.27);color:#fff" title="mom20×5 · ICIR 0.085357 · n=297 · 窗口 2025-07-10 → 2026-09-24">
+      <tbody><tr><th class="hm-row">mom20</th><td class="hm-cell" style="background:rgba(47,107,69,0.27);color:#fff" title="mom20×5 · ICIR 0.085357 · n=297 · 窗口 2025-07-10 → 2026-09-24（点击查看详情）" data-hmcell="mom20|5">
         0.09
         <span class="hm-n">n=297</span>
-      </td><td class="hm-cell" style="background:rgba(47,107,69,0.50);color:#fff" title="mom20×10 · ICIR 0.257342 · n=292 · 窗口 2025-07-10 → 2026-09-17">
+      </td><td class="hm-cell" style="background:rgba(47,107,69,0.50);color:#fff" title="mom20×10 · ICIR 0.257342 · n=292 · 窗口 2025-07-10 → 2026-09-17（点击查看详情）" data-hmcell="mom20|10">
         0.26
         <span class="hm-n">n=292</span>
-      </td><td class="hm-cell" style="background:rgba(47,107,69,0.51);color:#fff" title="mom20×20 · ICIR 0.258432 · n=282 · 窗口 2025-07-10 → 2026-09-03">
+      </td><td class="hm-cell" style="background:rgba(47,107,69,0.51);color:#fff" title="mom20×20 · ICIR 0.258432 · n=282 · 窗口 2025-07-10 → 2026-09-03（点击查看详情）" data-hmcell="mom20|20">
         0.26
         <span class="hm-n">n=282</span>
-      </td></tr><tr><th class="hm-row">mom60</th><td class="hm-cell" style="background:rgba(47,107,69,0.27);color:#fff" title="mom60×5 · ICIR 0.086017 · n=257 · 窗口 2025-09-04 → 2026-09-24">
+      </td></tr><tr><th class="hm-row">mom60</th><td class="hm-cell" style="background:rgba(47,107,69,0.27);color:#fff" title="mom60×5 · ICIR 0.086017 · n=257 · 窗口 2025-09-04 → 2026-09-24（点击查看详情）" data-hmcell="mom60|5">
         0.09
         <span class="hm-n">n=257</span>
-      </td><td class="hm-cell" style="background:rgba(47,107,69,0.30);color:#fff" title="mom60×10 · ICIR 0.107382 · n=252 · 窗口 2025-09-04 → 2026-09-17">
+      </td><td class="hm-cell" style="background:rgba(47,107,69,0.30);color:#fff" title="mom60×10 · ICIR 0.107382 · n=252 · 窗口 2025-09-04 → 2026-09-17（点击查看详情）" data-hmcell="mom60|10">
         0.11
         <span class="hm-n">n=252</span>
-      </td><td class="hm-cell" style="background:rgba(47,107,69,0.37);color:#fff" title="mom60×20 · ICIR 0.159751 · n=242 · 窗口 2025-09-04 → 2026-09-03">
+      </td><td class="hm-cell" style="background:rgba(47,107,69,0.37);color:#fff" title="mom60×20 · ICIR 0.159751 · n=242 · 窗口 2025-09-04 → 2026-09-03（点击查看详情）" data-hmcell="mom60|20">
         0.16
         <span class="hm-n">n=242</span>
-      </td></tr><tr><th class="hm-row">vol20</th><td class="hm-cell" style="background:rgba(47,107,69,0.37);color:#fff" title="vol20×5 · ICIR 0.162839 · n=297 · 窗口 2025-07-10 → 2026-09-24">
+      </td></tr><tr><th class="hm-row">vol20</th><td class="hm-cell" style="background:rgba(47,107,69,0.37);color:#fff" title="vol20×5 · ICIR 0.162839 · n=297 · 窗口 2025-07-10 → 2026-09-24（点击查看详情）" data-hmcell="vol20|5">
         0.16
         <span class="hm-n">n=297</span>
-      </td><td class="hm-cell" style="background:rgba(47,107,69,0.50);color:#fff" title="vol20×10 · ICIR 0.254822 · n=292 · 窗口 2025-07-10 → 2026-09-17">
+      </td><td class="hm-cell" style="background:rgba(47,107,69,0.50);color:#fff" title="vol20×10 · ICIR 0.254822 · n=292 · 窗口 2025-07-10 → 2026-09-17（点击查看详情）" data-hmcell="vol20|10">
         0.25
         <span class="hm-n">n=292</span>
-      </td><td class="hm-cell" style="background:rgba(47,107,69,0.66);color:#fff" title="vol20×20 · ICIR 0.371239 · n=282 · 窗口 2025-07-10 → 2026-09-03">
+      </td><td class="hm-cell" style="background:rgba(47,107,69,0.66);color:#fff" title="vol20×20 · ICIR 0.371239 · n=282 · 窗口 2025-07-10 → 2026-09-03（点击查看详情）" data-hmcell="vol20|20">
         0.37
         <span class="hm-n">n=282</span>
-      </td></tr><tr><th class="hm-row">turn20</th><td class="hm-cell" style="background:rgba(163,59,50,0.35);color:#fff" title="turn20×5 · ICIR -0.148468 · n=298 · 窗口 2025-07-09 → 2026-09-24">
+      </td></tr><tr><th class="hm-row">turn20</th><td class="hm-cell" style="background:rgba(163,59,50,0.35);color:#fff" title="turn20×5 · ICIR -0.148468 · n=298 · 窗口 2025-07-09 → 2026-09-24（点击查看详情）" data-hmcell="turn20|5">
         -0.15
         <span class="hm-n">n=298</span>
-      </td><td class="hm-cell" style="background:rgba(163,59,50,0.46);color:#fff" title="turn20×10 · ICIR -0.225332 · n=293 · 窗口 2025-07-09 → 2026-09-17">
+      </td><td class="hm-cell" style="background:rgba(163,59,50,0.46);color:#fff" title="turn20×10 · ICIR -0.225332 · n=293 · 窗口 2025-07-09 → 2026-09-17（点击查看详情）" data-hmcell="turn20|10">
         -0.23
         <span class="hm-n">n=293</span>
-      </td><td class="hm-cell" style="background:rgba(163,59,50,0.38);color:#fff" title="turn20×20 · ICIR -0.170704 · n=283 · 窗口 2025-07-09 → 2026-09-03">
+      </td><td class="hm-cell" style="background:rgba(163,59,50,0.38);color:#fff" title="turn20×20 · ICIR -0.170704 · n=283 · 窗口 2025-07-09 → 2026-09-03（点击查看详情）" data-hmcell="turn20|20">
         -0.17
         <span class="hm-n">n=283</span>
       </td></tr></tbody>
     </table>
+    <div class="hm-legend">
+      <span>−0.4</span><i class="hm-legend-bar"></i><span>+0.4</span>
+      <span class="hm-legend-note">绿=正 ICIR · 红=负 ICIR · 灰=不可用（不填 0）</span>
+    </div>
+    
     <p class="hm-note">
       baseline-rankic-icir-v1 · ICIR of matured RankIC ≤ 2026-10-09 · minSamples 20 · 窗口不完全可比 · 数据日 2026-10-09
       <br><span class="hm-warn">⚠ 各候选的成熟 IC 窗口不一致（因子前缀长度与 horizon 成熟期不同，见 entries 的 window）；评分基于各自真实窗口，不构成同一时间窗上的完全可比对照。</span>
     </p>
-          </section>
-        </div>
+        </section>
       </div>
 
       <section class="panel rws-panel rws-story-card" id="story-cross-section">
@@ -4077,13 +4129,13 @@ body.mod-research .stage { padding: 20px 24px 40px; }
     <p class="tm-scope">横截面引擎报告（ENGINE_ONLY）· 非候选评分 · 非决策 trace</p>
     
     <label class="tm-datelist">研究日期
-      <select id="tmDateSelect" class="mono"><option value="2026-10-09">2026-10-09</option><option value="2026-10-08">2026-10-08</option><option value="2026-09-30" selected="">2026-09-30</option><option value="2026-09-29">2026-09-29</option><option value="2026-09-28">2026-09-28</option><option value="2026-09-24">2026-09-24</option><option value="2026-09-23">2026-09-23</option><option value="2026-09-22">2026-09-22</option><option value="2026-09-21">2026-09-21</option><option value="2026-09-18">2026-09-18</option><option value="2026-09-17">2026-09-17</option><option value="2026-09-16">2026-09-16</option><option value="2026-09-15">2026-09-15</option><option value="2026-09-14">2026-09-14</option><option value="2026-09-11">2026-09-11</option><option value="2026-09-10">2026-09-10</option><option value="2026-09-09">2026-09-09</option><option value="2026-09-08">2026-09-08</option><option value="2026-09-07">2026-09-07</option><option value="2026-09-04">2026-09-04</option><option value="2026-09-03">2026-09-03</option><option value="2026-09-02">2026-09-02</option><option value="2026-09-01">2026-09-01</option><option value="2026-08-31">2026-08-31</option><option value="2026-08-28">2026-08-28</option><option value="2026-08-27">2026-08-27</option><option value="2026-08-26">2026-08-26</option><option value="2026-08-25">2026-08-25</option><option value="2026-08-24">2026-08-24</option><option value="2026-08-21">2026-08-21</option><option value="2026-08-20">2026-08-20</option><option value="2026-08-19">2026-08-19</option><option value="2026-08-18">2026-08-18</option><option value="2026-08-17">2026-08-17</option><option value="2026-08-14">2026-08-14</option><option value="2026-08-13">2026-08-13</option><option value="2026-08-12">2026-08-12</option><option value="2026-08-11">2026-08-11</option><option value="2026-08-10">2026-08-10</option><option value="2026-08-07">2026-08-07</option><option value="2026-08-06">2026-08-06</option><option value="2026-08-05">2026-08-05</option><option value="2026-08-04">2026-08-04</option><option value="2026-08-03">2026-08-03</option><option value="2026-07-31">2026-07-31</option><option value="2026-07-30">2026-07-30</option><option value="2026-07-29">2026-07-29</option><option value="2026-07-28">2026-07-28</option><option value="2026-07-27">2026-07-27</option><option value="2026-07-24">2026-07-24</option><option value="2026-07-23">2026-07-23</option><option value="2026-07-22">2026-07-22</option><option value="2026-07-21">2026-07-21</option><option value="2026-07-20">2026-07-20</option><option value="2026-07-17">2026-07-17</option><option value="2026-07-16">2026-07-16</option><option value="2026-07-15">2026-07-15</option><option value="2026-07-14">2026-07-14</option><option value="2026-07-13">2026-07-13</option><option value="2026-07-10">2026-07-10</option><option value="2026-07-09">2026-07-09</option><option value="2026-07-08">2026-07-08</option><option value="2026-07-07">2026-07-07</option><option value="2026-07-06">2026-07-06</option><option value="2026-07-03">2026-07-03</option><option value="2026-07-02">2026-07-02</option><option value="2026-07-01">2026-07-01</option><option value="2026-06-30">2026-06-30</option><option value="2026-06-29">2026-06-29</option><option value="2026-06-26">2026-06-26</option><option value="2026-06-25">2026-06-25</option><option value="2026-06-24">2026-06-24</option><option value="2026-06-23">2026-06-23</option><option value="2026-06-22">2026-06-22</option><option value="2026-06-18">2026-06-18</option><option value="2026-06-17">2026-06-17</option><option value="2026-06-16">2026-06-16</option><option value="2026-06-15">2026-06-15</option><option value="2026-06-12">2026-06-12</option><option value="2026-06-11">2026-06-11</option><option value="2026-06-10">2026-06-10</option><option value="2026-06-09">2026-06-09</option><option value="2026-06-08">2026-06-08</option><option value="2026-06-05">2026-06-05</option><option value="2026-06-04">2026-06-04</option><option value="2026-06-03">2026-06-03</option><option value="2026-06-02">2026-06-02</option><option value="2026-06-01">2026-06-01</option><option value="2026-05-29">2026-05-29</option><option value="2026-05-28">2026-05-28</option><option value="2026-05-27">2026-05-27</option><option value="2026-05-26">2026-05-26</option><option value="2026-05-25">2026-05-25</option><option value="2026-05-22">2026-05-22</option><option value="2026-05-21">2026-05-21</option><option value="2026-05-20">2026-05-20</option><option value="2026-05-19">2026-05-19</option><option value="2026-05-18">2026-05-18</option><option value="2026-05-15">2026-05-15</option><option value="2026-05-14">2026-05-14</option><option value="2026-05-13">2026-05-13</option><option value="2026-05-12">2026-05-12</option><option value="2026-05-11">2026-05-11</option><option value="2026-05-08">2026-05-08</option><option value="2026-05-07">2026-05-07</option><option value="2026-05-06">2026-05-06</option><option value="2026-04-30">2026-04-30</option><option value="2026-04-29">2026-04-29</option><option value="2026-04-28">2026-04-28</option><option value="2026-04-27">2026-04-27</option><option value="2026-04-24">2026-04-24</option><option value="2026-04-23">2026-04-23</option><option value="2026-04-22">2026-04-22</option><option value="2026-04-21">2026-04-21</option><option value="2026-04-20">2026-04-20</option><option value="2026-04-17">2026-04-17</option><option value="2026-04-16">2026-04-16</option><option value="2026-04-15">2026-04-15</option><option value="2026-04-14">2026-04-14</option><option value="2026-04-13">2026-04-13</option><option value="2026-04-10">2026-04-10</option><option value="2026-04-09">2026-04-09</option><option value="2026-04-08">2026-04-08</option><option value="2026-04-07">2026-04-07</option><option value="2026-04-03">2026-04-03</option><option value="2026-04-02">2026-04-02</option><option value="2026-04-01">2026-04-01</option><option value="2026-03-31">2026-03-31</option><option value="2026-03-30">2026-03-30</option><option value="2026-03-27">2026-03-27</option><option value="2026-03-26">2026-03-26</option><option value="2026-03-25">2026-03-25</option><option value="2026-03-24">2026-03-24</option><option value="2026-03-23">2026-03-23</option><option value="2026-03-20">2026-03-20</option><option value="2026-03-19">2026-03-19</option><option value="2026-03-18">2026-03-18</option><option value="2026-03-17">2026-03-17</option><option value="2026-03-16">2026-03-16</option><option value="2026-03-13">2026-03-13</option><option value="2026-03-12">2026-03-12</option><option value="2026-03-11">2026-03-11</option><option value="2026-03-10">2026-03-10</option><option value="2026-03-09">2026-03-09</option><option value="2026-03-06">2026-03-06</option><option value="2026-03-05">2026-03-05</option><option value="2026-03-04">2026-03-04</option><option value="2026-03-03">2026-03-03</option><option value="2026-03-02">2026-03-02</option><option value="2026-02-27">2026-02-27</option><option value="2026-02-26">2026-02-26</option><option value="2026-02-25">2026-02-25</option><option value="2026-02-24">2026-02-24</option><option value="2026-02-13">2026-02-13</option><option value="2026-02-12">2026-02-12</option><option value="2026-02-11">2026-02-11</option><option value="2026-02-10">2026-02-10</option><option value="2026-02-09">2026-02-09</option><option value="2026-02-06">2026-02-06</option><option value="2026-02-05">2026-02-05</option><option value="2026-02-04">2026-02-04</option><option value="2026-02-03">2026-02-03</option><option value="2026-02-02">2026-02-02</option><option value="2026-01-30">2026-01-30</option><option value="2026-01-29">2026-01-29</option><option value="2026-01-28">2026-01-28</option><option value="2026-01-27">2026-01-27</option><option value="2026-01-26">2026-01-26</option><option value="2026-01-23">2026-01-23</option><option value="2026-01-22">2026-01-22</option><option value="2026-01-21">2026-01-21</option><option value="2026-01-20">2026-01-20</option><option value="2026-01-19">2026-01-19</option><option value="2026-01-16">2026-01-16</option><option value="2026-01-15">2026-01-15</option><option value="2026-01-14">2026-01-14</option><option value="2026-01-13">2026-01-13</option><option value="2026-01-12">2026-01-12</option><option value="2026-01-09">2026-01-09</option><option value="2026-01-08">2026-01-08</option><option value="2026-01-07">2026-01-07</option><option value="2026-01-06">2026-01-06</option><option value="2026-01-05">2026-01-05</option><option value="2025-12-31">2025-12-31</option><option value="2025-12-30">2025-12-30</option><option value="2025-12-29">2025-12-29</option><option value="2025-12-26">2025-12-26</option><option value="2025-12-25">2025-12-25</option><option value="2025-12-24">2025-12-24</option><option value="2025-12-23">2025-12-23</option><option value="2025-12-22">2025-12-22</option><option value="2025-12-19">2025-12-19</option><option value="2025-12-18">2025-12-18</option><option value="2025-12-17">2025-12-17</option><option value="2025-12-16">2025-12-16</option><option value="2025-12-15">2025-12-15</option><option value="2025-12-12">2025-12-12</option><option value="2025-12-11">2025-12-11</option><option value="2025-12-10">2025-12-10</option><option value="2025-12-09">2025-12-09</option><option value="2025-12-08">2025-12-08</option><option value="2025-12-05">2025-12-05</option><option value="2025-12-04">2025-12-04</option><option value="2025-12-03">2025-12-03</option><option value="2025-12-02">2025-12-02</option><option value="2025-12-01">2025-12-01</option><option value="2025-11-28">2025-11-28</option><option value="2025-11-27">2025-11-27</option><option value="2025-11-26">2025-11-26</option><option value="2025-11-25">2025-11-25</option><option value="2025-11-24">2025-11-24</option><option value="2025-11-21">2025-11-21</option><option value="2025-11-20">2025-11-20</option><option value="2025-11-19">2025-11-19</option><option value="2025-11-18">2025-11-18</option><option value="2025-11-17">2025-11-17</option><option value="2025-11-14">2025-11-14</option><option value="2025-11-13">2025-11-13</option><option value="2025-11-12">2025-11-12</option><option value="2025-11-11">2025-11-11</option><option value="2025-11-10">2025-11-10</option><option value="2025-11-07">2025-11-07</option><option value="2025-11-06">2025-11-06</option><option value="2025-11-05">2025-11-05</option><option value="2025-11-04">2025-11-04</option><option value="2025-11-03">2025-11-03</option><option value="2025-10-31">2025-10-31</option><option value="2025-10-30">2025-10-30</option><option value="2025-10-29">2025-10-29</option><option value="2025-10-28">2025-10-28</option><option value="2025-10-27">2025-10-27</option><option value="2025-10-24">2025-10-24</option><option value="2025-10-23">2025-10-23</option><option value="2025-10-22">2025-10-22</option><option value="2025-10-21">2025-10-21</option><option value="2025-10-20">2025-10-20</option><option value="2025-10-17">2025-10-17</option><option value="2025-10-16">2025-10-16</option><option value="2025-10-15">2025-10-15</option><option value="2025-10-14">2025-10-14</option><option value="2025-10-13">2025-10-13</option><option value="2025-10-10">2025-10-10</option><option value="2025-10-09">2025-10-09</option><option value="2025-09-30">2025-09-30</option><option value="2025-09-29">2025-09-29</option><option value="2025-09-26">2025-09-26</option><option value="2025-09-25">2025-09-25</option><option value="2025-09-24">2025-09-24</option><option value="2025-09-23">2025-09-23</option><option value="2025-09-22">2025-09-22</option><option value="2025-09-19">2025-09-19</option><option value="2025-09-18">2025-09-18</option><option value="2025-09-17">2025-09-17</option><option value="2025-09-16">2025-09-16</option><option value="2025-09-15">2025-09-15</option><option value="2025-09-12">2025-09-12</option><option value="2025-09-11">2025-09-11</option><option value="2025-09-10">2025-09-10</option><option value="2025-09-09">2025-09-09</option><option value="2025-09-08">2025-09-08</option><option value="2025-09-05">2025-09-05</option><option value="2025-09-04">2025-09-04</option><option value="2025-09-03">2025-09-03</option><option value="2025-09-02">2025-09-02</option><option value="2025-09-01">2025-09-01</option><option value="2025-08-29">2025-08-29</option><option value="2025-08-28">2025-08-28</option><option value="2025-08-27">2025-08-27</option><option value="2025-08-26">2025-08-26</option><option value="2025-08-25">2025-08-25</option><option value="2025-08-22">2025-08-22</option><option value="2025-08-21">2025-08-21</option><option value="2025-08-20">2025-08-20</option><option value="2025-08-19">2025-08-19</option><option value="2025-08-18">2025-08-18</option><option value="2025-08-15">2025-08-15</option><option value="2025-08-14">2025-08-14</option><option value="2025-08-13">2025-08-13</option><option value="2025-08-12">2025-08-12</option><option value="2025-08-11">2025-08-11</option><option value="2025-08-08">2025-08-08</option><option value="2025-08-07">2025-08-07</option><option value="2025-08-06">2025-08-06</option><option value="2025-08-05">2025-08-05</option><option value="2025-08-04">2025-08-04</option><option value="2025-08-01">2025-08-01</option><option value="2025-07-31">2025-07-31</option><option value="2025-07-30">2025-07-30</option><option value="2025-07-29">2025-07-29</option><option value="2025-07-28">2025-07-28</option><option value="2025-07-25">2025-07-25</option><option value="2025-07-24">2025-07-24</option><option value="2025-07-23">2025-07-23</option><option value="2025-07-22">2025-07-22</option><option value="2025-07-21">2025-07-21</option><option value="2025-07-18">2025-07-18</option><option value="2025-07-17">2025-07-17</option><option value="2025-07-16">2025-07-16</option><option value="2025-07-15">2025-07-15</option><option value="2025-07-14">2025-07-14</option><option value="2025-07-11">2025-07-11</option><option value="2025-07-10">2025-07-10</option><option value="2025-07-09">2025-07-09</option><option value="2025-07-08">2025-07-08</option><option value="2025-07-07">2025-07-07</option><option value="2025-07-04">2025-07-04</option><option value="2025-07-03">2025-07-03</option><option value="2025-07-02">2025-07-02</option><option value="2025-07-01">2025-07-01</option><option value="2025-06-30">2025-06-30</option><option value="2025-06-27">2025-06-27</option><option value="2025-06-26">2025-06-26</option><option value="2025-06-25">2025-06-25</option><option value="2025-06-24">2025-06-24</option><option value="2025-06-23">2025-06-23</option><option value="2025-06-20">2025-06-20</option><option value="2025-06-19">2025-06-19</option><option value="2025-06-18">2025-06-18</option><option value="2025-06-17">2025-06-17</option><option value="2025-06-16">2025-06-16</option><option value="2025-06-13">2025-06-13</option><option value="2025-06-12">2025-06-12</option><option value="2025-06-11">2025-06-11</option><option value="2025-06-10">2025-06-10</option><option value="2025-06-09">2025-06-09</option><option value="2025-06-06">2025-06-06</option><option value="2025-06-05">2025-06-05</option><option value="2025-06-04">2025-06-04</option><option value="2025-06-03">2025-06-03</option><option value="2025-05-30">2025-05-30</option><option value="2025-05-29">2025-05-29</option><option value="2025-05-28">2025-05-28</option><option value="2023-07-11">2023-07-11</option><option value="2023-07-10">2023-07-10</option><option value="2023-07-07">2023-07-07</option><option value="2023-07-06">2023-07-06</option><option value="2023-07-05">2023-07-05</option><option value="2023-07-04">2023-07-04</option><option value="2023-07-03">2023-07-03</option><option value="2023-06-30">2023-06-30</option><option value="2023-06-29">2023-06-29</option><option value="2023-06-28">2023-06-28</option><option value="2023-06-27">2023-06-27</option><option value="2023-06-26">2023-06-26</option><option value="2023-06-21">2023-06-21</option><option value="2023-06-20">2023-06-20</option><option value="2023-06-19">2023-06-19</option><option value="2023-04-28">2023-04-28</option><option value="2023-04-27">2023-04-27</option><option value="2023-04-26">2023-04-26</option><option value="2023-04-25">2023-04-25</option><option value="2023-04-24">2023-04-24</option><option value="2023-04-21">2023-04-21</option><option value="2023-04-20">2023-04-20</option><option value="2023-04-19">2023-04-19</option><option value="2023-04-18">2023-04-18</option><option value="2023-04-17">2023-04-17</option><option value="2023-04-14">2023-04-14</option><option value="2023-04-13">2023-04-13</option><option value="2023-04-12">2023-04-12</option><option value="2023-04-11">2023-04-11</option><option value="2023-04-10">2023-04-10</option><option value="2023-04-07">2023-04-07</option><option value="2023-04-06">2023-04-06</option><option value="2023-04-04">2023-04-04</option><option value="2023-04-03">2023-04-03</option><option value="2023-03-31">2023-03-31</option><option value="2023-03-30">2023-03-30</option><option value="2023-03-29">2023-03-29</option><option value="2023-03-28">2023-03-28</option><option value="2023-03-27">2023-03-27</option><option value="2023-03-24">2023-03-24</option><option value="2023-03-23">2023-03-23</option><option value="2023-03-22">2023-03-22</option><option value="2023-03-21">2023-03-21</option><option value="2023-03-20">2023-03-20</option><option value="2023-03-17">2023-03-17</option><option value="2023-03-16">2023-03-16</option><option value="2023-03-15">2023-03-15</option><option value="2023-03-14">2023-03-14</option><option value="2023-03-13">2023-03-13</option><option value="2023-03-10">2023-03-10</option><option value="2023-03-09">2023-03-09</option><option value="2023-03-08">2023-03-08</option><option value="2023-03-07">2023-03-07</option><option value="2023-03-06">2023-03-06</option><option value="2023-03-03">2023-03-03</option><option value="2023-03-02">2023-03-02</option><option value="2023-03-01">2023-03-01</option><option value="2023-02-28">2023-02-28</option><option value="2023-02-27">2023-02-27</option><option value="2023-02-24">2023-02-24</option><option value="2023-02-23">2023-02-23</option><option value="2023-02-22">2023-02-22</option><option value="2023-02-21">2023-02-21</option><option value="2023-02-20">2023-02-20</option><option value="2023-02-17">2023-02-17</option><option value="2023-02-16">2023-02-16</option><option value="2023-02-15">2023-02-15</option><option value="2023-02-14">2023-02-14</option><option value="2023-02-13">2023-02-13</option><option value="2023-02-10">2023-02-10</option><option value="2023-02-09">2023-02-09</option><option value="2023-02-08">2023-02-08</option><option value="2023-02-07">2023-02-07</option><option value="2023-02-06">2023-02-06</option><option value="2023-02-03">2023-02-03</option><option value="2023-02-02">2023-02-02</option><option value="2023-02-01">2023-02-01</option><option value="2023-01-31">2023-01-31</option><option value="2023-01-30">2023-01-30</option><option value="2023-01-20">2023-01-20</option><option value="2023-01-19">2023-01-19</option><option value="2023-01-18">2023-01-18</option><option value="2023-01-17">2023-01-17</option><option value="2023-01-16">2023-01-16</option><option value="2023-01-13">2023-01-13</option><option value="2023-01-12">2023-01-12</option><option value="2023-01-11">2023-01-11</option><option value="2023-01-10">2023-01-10</option><option value="2023-01-09">2023-01-09</option><option value="2023-01-06">2023-01-06</option><option value="2023-01-05">2023-01-05</option><option value="2023-01-04">2023-01-04</option><option value="2023-01-03">2023-01-03</option><option value="2022-12-30">2022-12-30</option><option value="2022-12-29">2022-12-29</option><option value="2022-12-28">2022-12-28</option><option value="2022-12-27">2022-12-27</option><option value="2022-12-26">2022-12-26</option><option value="2022-12-23">2022-12-23</option><option value="2022-12-22">2022-12-22</option><option value="2022-12-21">2022-12-21</option><option value="2022-12-20">2022-12-20</option><option value="2022-12-19">2022-12-19</option><option value="2022-12-16">2022-12-16</option><option value="2022-12-15">2022-12-15</option><option value="2022-12-14">2022-12-14</option><option value="2022-12-13">2022-12-13</option><option value="2022-12-12">2022-12-12</option><option value="2022-12-09">2022-12-09</option><option value="2022-12-08">2022-12-08</option><option value="2022-12-07">2022-12-07</option><option value="2022-12-06">2022-12-06</option><option value="2022-12-05">2022-12-05</option><option value="2022-12-02">2022-12-02</option><option value="2022-12-01">2022-12-01</option><option value="2022-11-30">2022-11-30</option><option value="2022-11-29">2022-11-29</option><option value="2022-11-28">2022-11-28</option><option value="2022-11-25">2022-11-25</option><option value="2022-11-24">2022-11-24</option><option value="2022-11-23">2022-11-23</option><option value="2022-11-22">2022-11-22</option><option value="2022-11-21">2022-11-21</option><option value="2022-11-18">2022-11-18</option><option value="2022-11-17">2022-11-17</option><option value="2022-11-16">2022-11-16</option><option value="2022-11-15">2022-11-15</option><option value="2022-11-14">2022-11-14</option><option value="2022-11-11">2022-11-11</option><option value="2022-11-10">2022-11-10</option><option value="2022-11-09">2022-11-09</option><option value="2022-11-08">2022-11-08</option><option value="2022-11-07">2022-11-07</option><option value="2022-11-04">2022-11-04</option><option value="2022-11-03">2022-11-03</option><option value="2022-11-02">2022-11-02</option><option value="2022-11-01">2022-11-01</option><option value="2022-10-31">2022-10-31</option><option value="2022-10-28">2022-10-28</option><option value="2022-10-27">2022-10-27</option><option value="2022-10-26">2022-10-26</option><option value="2022-10-25">2022-10-25</option><option value="2022-10-24">2022-10-24</option><option value="2022-10-21">2022-10-21</option><option value="2022-10-20">2022-10-20</option><option value="2022-10-19">2022-10-19</option><option value="2022-10-18">2022-10-18</option><option value="2022-10-17">2022-10-17</option><option value="2022-10-14">2022-10-14</option><option value="2022-10-13">2022-10-13</option><option value="2022-10-12">2022-10-12</option><option value="2022-10-11">2022-10-11</option><option value="2022-10-10">2022-10-10</option><option value="2022-09-30">2022-09-30</option><option value="2022-09-29">2022-09-29</option><option value="2022-09-28">2022-09-28</option><option value="2022-09-27">2022-09-27</option><option value="2022-09-26">2022-09-26</option><option value="2022-09-23">2022-09-23</option><option value="2022-09-22">2022-09-22</option><option value="2022-09-21">2022-09-21</option><option value="2022-09-20">2022-09-20</option><option value="2022-09-19">2022-09-19</option><option value="2022-09-16">2022-09-16</option><option value="2022-09-15">2022-09-15</option><option value="2022-09-14">2022-09-14</option><option value="2022-09-13">2022-09-13</option><option value="2022-09-09">2022-09-09</option><option value="2022-09-08">2022-09-08</option><option value="2022-09-07">2022-09-07</option><option value="2022-09-06">2022-09-06</option><option value="2022-09-05">2022-09-05</option><option value="2022-09-02">2022-09-02</option><option value="2022-09-01">2022-09-01</option><option value="2022-08-31">2022-08-31</option><option value="2022-08-30">2022-08-30</option><option value="2022-08-29">2022-08-29</option><option value="2022-08-26">2022-08-26</option><option value="2022-08-25">2022-08-25</option><option value="2022-08-24">2022-08-24</option><option value="2022-08-23">2022-08-23</option><option value="2022-08-22">2022-08-22</option><option value="2022-08-19">2022-08-19</option><option value="2022-08-18">2022-08-18</option><option value="2022-08-17">2022-08-17</option><option value="2022-08-16">2022-08-16</option><option value="2022-08-15">2022-08-15</option><option value="2022-08-12">2022-08-12</option><option value="2022-08-11">2022-08-11</option><option value="2022-08-10">2022-08-10</option><option value="2022-08-09">2022-08-09</option><option value="2022-08-08">2022-08-08</option><option value="2022-08-05">2022-08-05</option><option value="2022-08-04">2022-08-04</option><option value="2022-08-03">2022-08-03</option><option value="2022-08-02">2022-08-02</option><option value="2022-08-01">2022-08-01</option><option value="2022-07-29">2022-07-29</option><option value="2022-07-28">2022-07-28</option><option value="2022-07-27">2022-07-27</option><option value="2022-07-26">2022-07-26</option><option value="2022-07-25">2022-07-25</option><option value="2022-07-22">2022-07-22</option><option value="2022-07-21">2022-07-21</option><option value="2022-07-20">2022-07-20</option><option value="2022-07-19">2022-07-19</option><option value="2022-07-18">2022-07-18</option><option value="2022-07-15">2022-07-15</option><option value="2022-07-14">2022-07-14</option><option value="2022-07-13">2022-07-13</option><option value="2022-07-12">2022-07-12</option><option value="2022-07-11">2022-07-11</option><option value="2022-07-08">2022-07-08</option><option value="2022-07-07">2022-07-07</option><option value="2022-07-06">2022-07-06</option><option value="2022-07-05">2022-07-05</option><option value="2022-07-04">2022-07-04</option><option value="2022-07-01">2022-07-01</option><option value="2022-06-30">2022-06-30</option><option value="2022-06-29">2022-06-29</option><option value="2022-06-28">2022-06-28</option><option value="2022-06-27">2022-06-27</option><option value="2022-06-24">2022-06-24</option><option value="2022-06-23">2022-06-23</option><option value="2022-06-22">2022-06-22</option><option value="2022-06-21">2022-06-21</option><option value="2022-06-20">2022-06-20</option><option value="2022-06-17">2022-06-17</option><option value="2022-06-16">2022-06-16</option><option value="2022-06-15">2022-06-15</option><option value="2022-06-14">2022-06-14</option><option value="2022-06-13">2022-06-13</option><option value="2022-06-10">2022-06-10</option><option value="2022-06-09">2022-06-09</option><option value="2022-06-08">2022-06-08</option><option value="2022-06-07">2022-06-07</option><option value="2022-06-06">2022-06-06</option><option value="2022-06-02">2022-06-02</option><option value="2022-06-01">2022-06-01</option><option value="2022-05-31">2022-05-31</option><option value="2022-05-30">2022-05-30</option><option value="2022-05-27">2022-05-27</option><option value="2022-05-26">2022-05-26</option><option value="2022-05-25">2022-05-25</option><option value="2022-05-24">2022-05-24</option><option value="2022-05-23">2022-05-23</option><option value="2022-05-20">2022-05-20</option><option value="2022-05-19">2022-05-19</option><option value="2022-05-18">2022-05-18</option><option value="2022-05-17">2022-05-17</option><option value="2022-05-16">2022-05-16</option><option value="2022-05-13">2022-05-13</option><option value="2022-05-12">2022-05-12</option><option value="2022-05-11">2022-05-11</option><option value="2022-05-10">2022-05-10</option><option value="2022-05-09">2022-05-09</option><option value="2022-05-06">2022-05-06</option><option value="2022-04-29">2022-04-29</option><option value="2022-04-28">2022-04-28</option><option value="2022-04-27">2022-04-27</option><option value="2022-04-26">2022-04-26</option><option value="2022-04-25">2022-04-25</option><option value="2022-04-22">2022-04-22</option><option value="2022-04-21">2022-04-21</option><option value="2022-04-20">2022-04-20</option><option value="2022-04-19">2022-04-19</option><option value="2022-04-18">2022-04-18</option><option value="2022-04-15">2022-04-15</option><option value="2022-04-14">2022-04-14</option><option value="2022-04-13">2022-04-13</option><option value="2022-04-12">2022-04-12</option><option value="2022-04-11">2022-04-11</option><option value="2022-04-08">2022-04-08</option><option value="2022-04-07">2022-04-07</option><option value="2022-04-06">2022-04-06</option><option value="2022-04-01">2022-04-01</option><option value="2022-03-31">2022-03-31</option><option value="2022-03-30">2022-03-30</option><option value="2022-03-29">2022-03-29</option><option value="2022-03-28">2022-03-28</option><option value="2022-03-25">2022-03-25</option><option value="2022-03-24">2022-03-24</option><option value="2022-03-23">2022-03-23</option><option value="2022-03-22">2022-03-22</option><option value="2022-03-21">2022-03-21</option><option value="2022-03-18">2022-03-18</option><option value="2022-03-17">2022-03-17</option><option value="2022-03-16">2022-03-16</option><option value="2022-03-15">2022-03-15</option><option value="2022-03-14">2022-03-14</option><option value="2022-03-11">2022-03-11</option><option value="2022-03-10">2022-03-10</option><option value="2022-03-09">2022-03-09</option><option value="2022-03-08">2022-03-08</option><option value="2022-03-07">2022-03-07</option><option value="2022-03-04">2022-03-04</option><option value="2022-03-03">2022-03-03</option><option value="2022-03-02">2022-03-02</option><option value="2022-03-01">2022-03-01</option><option value="2022-02-28">2022-02-28</option><option value="2022-02-25">2022-02-25</option><option value="2022-02-24">2022-02-24</option><option value="2022-02-23">2022-02-23</option><option value="2022-02-22">2022-02-22</option><option value="2022-02-21">2022-02-21</option><option value="2022-02-18">2022-02-18</option><option value="2022-02-17">2022-02-17</option><option value="2022-02-16">2022-02-16</option><option value="2022-02-15">2022-02-15</option><option value="2022-02-14">2022-02-14</option><option value="2022-02-11">2022-02-11</option><option value="2022-02-10">2022-02-10</option><option value="2022-02-09">2022-02-09</option><option value="2022-02-08">2022-02-08</option><option value="2022-02-07">2022-02-07</option><option value="2022-01-28">2022-01-28</option><option value="2022-01-27">2022-01-27</option><option value="2022-01-26">2022-01-26</option><option value="2022-01-25">2022-01-25</option><option value="2022-01-24">2022-01-24</option><option value="2022-01-21">2022-01-21</option><option value="2022-01-20">2022-01-20</option><option value="2022-01-19">2022-01-19</option><option value="2022-01-18">2022-01-18</option><option value="2022-01-17">2022-01-17</option><option value="2022-01-14">2022-01-14</option><option value="2022-01-13">2022-01-13</option><option value="2022-01-12">2022-01-12</option><option value="2022-01-11">2022-01-11</option><option value="2022-01-10">2022-01-10</option><option value="2022-01-07">2022-01-07</option><option value="2022-01-06">2022-01-06</option><option value="2022-01-05">2022-01-05</option><option value="2022-01-04">2022-01-04</option><option value="2021-12-31">2021-12-31</option><option value="2021-12-30">2021-12-30</option><option value="2021-12-29">2021-12-29</option><option value="2021-12-28">2021-12-28</option><option value="2021-12-27">2021-12-27</option><option value="2021-12-24">2021-12-24</option><option value="2021-12-23">2021-12-23</option><option value="2021-12-22">2021-12-22</option><option value="2021-12-21">2021-12-21</option><option value="2021-12-20">2021-12-20</option><option value="2021-12-17">2021-12-17</option><option value="2021-12-16">2021-12-16</option><option value="2021-12-15">2021-12-15</option><option value="2021-12-14">2021-12-14</option><option value="2021-12-13">2021-12-13</option><option value="2021-12-10">2021-12-10</option><option value="2021-12-09">2021-12-09</option><option value="2021-12-08">2021-12-08</option><option value="2021-12-07">2021-12-07</option><option value="2021-12-06">2021-12-06</option><option value="2021-12-03">2021-12-03</option><option value="2021-12-02">2021-12-02</option><option value="2021-12-01">2021-12-01</option><option value="2021-11-30">2021-11-30</option><option value="2021-11-29">2021-11-29</option><option value="2021-11-26">2021-11-26</option><option value="2021-11-25">2021-11-25</option><option value="2021-11-24">2021-11-24</option><option value="2021-11-23">2021-11-23</option><option value="2021-11-22">2021-11-22</option><option value="2021-11-19">2021-11-19</option><option value="2021-11-18">2021-11-18</option><option value="2021-11-17">2021-11-17</option><option value="2021-11-16">2021-11-16</option><option value="2021-11-15">2021-11-15</option><option value="2021-11-12">2021-11-12</option><option value="2021-11-11">2021-11-11</option><option value="2021-11-10">2021-11-10</option><option value="2021-11-09">2021-11-09</option><option value="2021-11-08">2021-11-08</option><option value="2021-11-05">2021-11-05</option><option value="2021-11-04">2021-11-04</option><option value="2021-11-03">2021-11-03</option><option value="2021-11-02">2021-11-02</option><option value="2021-11-01">2021-11-01</option><option value="2021-10-29">2021-10-29</option><option value="2021-10-28">2021-10-28</option><option value="2021-10-27">2021-10-27</option><option value="2021-10-26">2021-10-26</option><option value="2021-10-25">2021-10-25</option><option value="2021-10-22">2021-10-22</option><option value="2021-10-21">2021-10-21</option><option value="2021-10-20">2021-10-20</option><option value="2021-10-19">2021-10-19</option><option value="2021-10-18">2021-10-18</option><option value="2021-10-15">2021-10-15</option><option value="2021-10-14">2021-10-14</option><option value="2021-10-13">2021-10-13</option><option value="2021-10-12">2021-10-12</option><option value="2021-10-11">2021-10-11</option><option value="2021-10-08">2021-10-08</option><option value="2021-09-30">2021-09-30</option><option value="2021-09-29">2021-09-29</option><option value="2021-09-28">2021-09-28</option><option value="2021-09-27">2021-09-27</option><option value="2021-09-24">2021-09-24</option><option value="2021-09-23">2021-09-23</option><option value="2021-09-22">2021-09-22</option><option value="2021-09-17">2021-09-17</option><option value="2021-09-16">2021-09-16</option><option value="2021-09-15">2021-09-15</option><option value="2021-09-14">2021-09-14</option><option value="2021-09-13">2021-09-13</option><option value="2021-09-10">2021-09-10</option><option value="2021-09-09">2021-09-09</option><option value="2021-09-08">2021-09-08</option><option value="2021-09-07">2021-09-07</option><option value="2021-09-06">2021-09-06</option><option value="2021-09-03">2021-09-03</option><option value="2021-09-02">2021-09-02</option><option value="2021-09-01">2021-09-01</option><option value="2021-08-31">2021-08-31</option><option value="2021-08-30">2021-08-30</option><option value="2021-08-27">2021-08-27</option><option value="2021-08-26">2021-08-26</option><option value="2021-08-25">2021-08-25</option><option value="2021-08-24">2021-08-24</option><option value="2021-08-23">2021-08-23</option><option value="2021-08-20">2021-08-20</option><option value="2021-08-19">2021-08-19</option><option value="2021-08-18">2021-08-18</option><option value="2021-08-17">2021-08-17</option><option value="2021-08-16">2021-08-16</option><option value="2021-08-13">2021-08-13</option><option value="2021-08-12">2021-08-12</option><option value="2021-08-11">2021-08-11</option><option value="2021-08-10">2021-08-10</option><option value="2021-08-09">2021-08-09</option><option value="2021-08-06">2021-08-06</option><option value="2021-08-05">2021-08-05</option><option value="2021-08-04">2021-08-04</option><option value="2021-08-03">2021-08-03</option><option value="2021-08-02">2021-08-02</option><option value="2021-07-30">2021-07-30</option><option value="2021-07-29">2021-07-29</option><option value="2021-07-28">2021-07-28</option><option value="2021-07-27">2021-07-27</option><option value="2021-07-26">2021-07-26</option><option value="2021-07-23">2021-07-23</option><option value="2021-07-22">2021-07-22</option><option value="2021-07-21">2021-07-21</option><option value="2021-07-20">2021-07-20</option><option value="2021-07-19">2021-07-19</option><option value="2021-07-16">2021-07-16</option><option value="2021-07-15">2021-07-15</option><option value="2021-07-14">2021-07-14</option><option value="2021-07-13">2021-07-13</option><option value="2021-07-12">2021-07-12</option><option value="2021-07-09">2021-07-09</option><option value="2021-07-08">2021-07-08</option><option value="2021-07-07">2021-07-07</option><option value="2021-07-06">2021-07-06</option><option value="2021-07-05">2021-07-05</option><option value="2021-07-02">2021-07-02</option><option value="2021-07-01">2021-07-01</option><option value="2021-06-30">2021-06-30</option><option value="2021-06-29">2021-06-29</option><option value="2021-06-28">2021-06-28</option><option value="2021-06-25">2021-06-25</option><option value="2021-06-24">2021-06-24</option><option value="2021-06-23">2021-06-23</option><option value="2021-06-22">2021-06-22</option><option value="2021-06-21">2021-06-21</option><option value="2021-06-18">2021-06-18</option><option value="2021-06-17">2021-06-17</option><option value="2021-06-16">2021-06-16</option><option value="2021-06-15">2021-06-15</option><option value="2021-06-11">2021-06-11</option><option value="2021-06-10">2021-06-10</option><option value="2021-06-09">2021-06-09</option><option value="2021-06-08">2021-06-08</option><option value="2021-06-07">2021-06-07</option><option value="2021-06-04">2021-06-04</option><option value="2021-06-03">2021-06-03</option><option value="2021-06-02">2021-06-02</option><option value="2021-06-01">2021-06-01</option><option value="2021-05-31">2021-05-31</option><option value="2021-05-28">2021-05-28</option><option value="2021-05-27">2021-05-27</option><option value="2021-05-26">2021-05-26</option><option value="2021-05-25">2021-05-25</option><option value="2021-05-24">2021-05-24</option><option value="2021-05-21">2021-05-21</option><option value="2021-05-20">2021-05-20</option><option value="2021-05-19">2021-05-19</option><option value="2021-05-18">2021-05-18</option><option value="2021-05-17">2021-05-17</option><option value="2021-05-14">2021-05-14</option><option value="2021-05-13">2021-05-13</option><option value="2021-05-12">2021-05-12</option><option value="2021-05-11">2021-05-11</option><option value="2021-05-10">2021-05-10</option><option value="2021-05-07">2021-05-07</option><option value="2021-05-06">2021-05-06</option><option value="2021-04-29">2021-04-29</option><option value="2021-04-28">2021-04-28</option><option value="2021-04-27">2021-04-27</option><option value="2021-04-26">2021-04-26</option><option value="2021-04-23">2021-04-23</option><option value="2021-04-22">2021-04-22</option><option value="2021-04-21">2021-04-21</option><option value="2021-04-20">2021-04-20</option><option value="2021-04-19">2021-04-19</option><option value="2021-04-16">2021-04-16</option><option value="2021-04-15">2021-04-15</option><option value="2021-04-14">2021-04-14</option><option value="2021-04-13">2021-04-13</option><option value="2021-04-12">2021-04-12</option><option value="2021-04-09">2021-04-09</option><option value="2021-04-08">2021-04-08</option><option value="2021-04-07">2021-04-07</option><option value="2021-04-06">2021-04-06</option><option value="2021-04-02">2021-04-02</option><option value="2021-04-01">2021-04-01</option><option value="2021-03-31">2021-03-31</option><option value="2021-03-30">2021-03-30</option><option value="2021-03-29">2021-03-29</option><option value="2021-03-26">2021-03-26</option><option value="2021-03-25">2021-03-25</option><option value="2021-03-24">2021-03-24</option><option value="2021-03-23">2021-03-23</option><option value="2021-03-22">2021-03-22</option><option value="2021-03-19">2021-03-19</option><option value="2021-03-18">2021-03-18</option><option value="2021-03-17">2021-03-17</option><option value="2021-03-16">2021-03-16</option><option value="2021-03-15">2021-03-15</option><option value="2021-03-12">2021-03-12</option><option value="2021-03-11">2021-03-11</option><option value="2021-03-10">2021-03-10</option><option value="2021-03-09">2021-03-09</option><option value="2021-03-08">2021-03-08</option><option value="2021-03-05">2021-03-05</option><option value="2021-03-04">2021-03-04</option><option value="2021-03-03">2021-03-03</option><option value="2021-03-02">2021-03-02</option><option value="2021-03-01">2021-03-01</option><option value="2021-02-26">2021-02-26</option><option value="2021-02-25">2021-02-25</option><option value="2021-02-24">2021-02-24</option><option value="2021-02-23">2021-02-23</option><option value="2021-02-22">2021-02-22</option><option value="2021-02-19">2021-02-19</option><option value="2021-02-18">2021-02-18</option><option value="2021-02-10">2021-02-10</option><option value="2021-02-09">2021-02-09</option><option value="2021-02-08">2021-02-08</option><option value="2021-02-05">2021-02-05</option><option value="2021-02-04">2021-02-04</option><option value="2021-02-03">2021-02-03</option><option value="2021-02-02">2021-02-02</option><option value="2021-02-01">2021-02-01</option><option value="2021-01-29">2021-01-29</option><option value="2021-01-28">2021-01-28</option><option value="2021-01-27">2021-01-27</option><option value="2021-01-26">2021-01-26</option><option value="2021-01-25">2021-01-25</option><option value="2021-01-22">2021-01-22</option></select>
+      <select id="tmDateSelect" class="mono"><option value="2026-10-09" selected="">2026-10-09</option><option value="2026-10-08">2026-10-08</option><option value="2026-09-30">2026-09-30</option><option value="2026-09-29">2026-09-29</option><option value="2026-09-28">2026-09-28</option><option value="2026-09-24">2026-09-24</option><option value="2026-09-23">2026-09-23</option><option value="2026-09-22">2026-09-22</option><option value="2026-09-21">2026-09-21</option><option value="2026-09-18">2026-09-18</option><option value="2026-09-17">2026-09-17</option><option value="2026-09-16">2026-09-16</option><option value="2026-09-15">2026-09-15</option><option value="2026-09-14">2026-09-14</option><option value="2026-09-11">2026-09-11</option><option value="2026-09-10">2026-09-10</option><option value="2026-09-09">2026-09-09</option><option value="2026-09-08">2026-09-08</option><option value="2026-09-07">2026-09-07</option><option value="2026-09-04">2026-09-04</option><option value="2026-09-03">2026-09-03</option><option value="2026-09-02">2026-09-02</option><option value="2026-09-01">2026-09-01</option><option value="2026-08-31">2026-08-31</option><option value="2026-08-28">2026-08-28</option><option value="2026-08-27">2026-08-27</option><option value="2026-08-26">2026-08-26</option><option value="2026-08-25">2026-08-25</option><option value="2026-08-24">2026-08-24</option><option value="2026-08-21">2026-08-21</option><option value="2026-08-20">2026-08-20</option><option value="2026-08-19">2026-08-19</option><option value="2026-08-18">2026-08-18</option><option value="2026-08-17">2026-08-17</option><option value="2026-08-14">2026-08-14</option><option value="2026-08-13">2026-08-13</option><option value="2026-08-12">2026-08-12</option><option value="2026-08-11">2026-08-11</option><option value="2026-08-10">2026-08-10</option><option value="2026-08-07">2026-08-07</option><option value="2026-08-06">2026-08-06</option><option value="2026-08-05">2026-08-05</option><option value="2026-08-04">2026-08-04</option><option value="2026-08-03">2026-08-03</option><option value="2026-07-31">2026-07-31</option><option value="2026-07-30">2026-07-30</option><option value="2026-07-29">2026-07-29</option><option value="2026-07-28">2026-07-28</option><option value="2026-07-27">2026-07-27</option><option value="2026-07-24">2026-07-24</option><option value="2026-07-23">2026-07-23</option><option value="2026-07-22">2026-07-22</option><option value="2026-07-21">2026-07-21</option><option value="2026-07-20">2026-07-20</option><option value="2026-07-17">2026-07-17</option><option value="2026-07-16">2026-07-16</option><option value="2026-07-15">2026-07-15</option><option value="2026-07-14">2026-07-14</option><option value="2026-07-13">2026-07-13</option><option value="2026-07-10">2026-07-10</option><option value="2026-07-09">2026-07-09</option><option value="2026-07-08">2026-07-08</option><option value="2026-07-07">2026-07-07</option><option value="2026-07-06">2026-07-06</option><option value="2026-07-03">2026-07-03</option><option value="2026-07-02">2026-07-02</option><option value="2026-07-01">2026-07-01</option><option value="2026-06-30">2026-06-30</option><option value="2026-06-29">2026-06-29</option><option value="2026-06-26">2026-06-26</option><option value="2026-06-25">2026-06-25</option><option value="2026-06-24">2026-06-24</option><option value="2026-06-23">2026-06-23</option><option value="2026-06-22">2026-06-22</option><option value="2026-06-18">2026-06-18</option><option value="2026-06-17">2026-06-17</option><option value="2026-06-16">2026-06-16</option><option value="2026-06-15">2026-06-15</option><option value="2026-06-12">2026-06-12</option><option value="2026-06-11">2026-06-11</option><option value="2026-06-10">2026-06-10</option><option value="2026-06-09">2026-06-09</option><option value="2026-06-08">2026-06-08</option><option value="2026-06-05">2026-06-05</option><option value="2026-06-04">2026-06-04</option><option value="2026-06-03">2026-06-03</option><option value="2026-06-02">2026-06-02</option><option value="2026-06-01">2026-06-01</option><option value="2026-05-29">2026-05-29</option><option value="2026-05-28">2026-05-28</option><option value="2026-05-27">2026-05-27</option><option value="2026-05-26">2026-05-26</option><option value="2026-05-25">2026-05-25</option><option value="2026-05-22">2026-05-22</option><option value="2026-05-21">2026-05-21</option><option value="2026-05-20">2026-05-20</option><option value="2026-05-19">2026-05-19</option><option value="2026-05-18">2026-05-18</option><option value="2026-05-15">2026-05-15</option><option value="2026-05-14">2026-05-14</option><option value="2026-05-13">2026-05-13</option><option value="2026-05-12">2026-05-12</option><option value="2026-05-11">2026-05-11</option><option value="2026-05-08">2026-05-08</option><option value="2026-05-07">2026-05-07</option><option value="2026-05-06">2026-05-06</option><option value="2026-04-30">2026-04-30</option><option value="2026-04-29">2026-04-29</option><option value="2026-04-28">2026-04-28</option><option value="2026-04-27">2026-04-27</option><option value="2026-04-24">2026-04-24</option><option value="2026-04-23">2026-04-23</option><option value="2026-04-22">2026-04-22</option><option value="2026-04-21">2026-04-21</option><option value="2026-04-20">2026-04-20</option><option value="2026-04-17">2026-04-17</option><option value="2026-04-16">2026-04-16</option><option value="2026-04-15">2026-04-15</option><option value="2026-04-14">2026-04-14</option><option value="2026-04-13">2026-04-13</option><option value="2026-04-10">2026-04-10</option><option value="2026-04-09">2026-04-09</option><option value="2026-04-08">2026-04-08</option><option value="2026-04-07">2026-04-07</option><option value="2026-04-03">2026-04-03</option><option value="2026-04-02">2026-04-02</option><option value="2026-04-01">2026-04-01</option><option value="2026-03-31">2026-03-31</option><option value="2026-03-30">2026-03-30</option><option value="2026-03-27">2026-03-27</option><option value="2026-03-26">2026-03-26</option><option value="2026-03-25">2026-03-25</option><option value="2026-03-24">2026-03-24</option><option value="2026-03-23">2026-03-23</option><option value="2026-03-20">2026-03-20</option><option value="2026-03-19">2026-03-19</option><option value="2026-03-18">2026-03-18</option><option value="2026-03-17">2026-03-17</option><option value="2026-03-16">2026-03-16</option><option value="2026-03-13">2026-03-13</option><option value="2026-03-12">2026-03-12</option><option value="2026-03-11">2026-03-11</option><option value="2026-03-10">2026-03-10</option><option value="2026-03-09">2026-03-09</option><option value="2026-03-06">2026-03-06</option><option value="2026-03-05">2026-03-05</option><option value="2026-03-04">2026-03-04</option><option value="2026-03-03">2026-03-03</option><option value="2026-03-02">2026-03-02</option><option value="2026-02-27">2026-02-27</option><option value="2026-02-26">2026-02-26</option><option value="2026-02-25">2026-02-25</option><option value="2026-02-24">2026-02-24</option><option value="2026-02-13">2026-02-13</option><option value="2026-02-12">2026-02-12</option><option value="2026-02-11">2026-02-11</option><option value="2026-02-10">2026-02-10</option><option value="2026-02-09">2026-02-09</option><option value="2026-02-06">2026-02-06</option><option value="2026-02-05">2026-02-05</option><option value="2026-02-04">2026-02-04</option><option value="2026-02-03">2026-02-03</option><option value="2026-02-02">2026-02-02</option><option value="2026-01-30">2026-01-30</option><option value="2026-01-29">2026-01-29</option><option value="2026-01-28">2026-01-28</option><option value="2026-01-27">2026-01-27</option><option value="2026-01-26">2026-01-26</option><option value="2026-01-23">2026-01-23</option><option value="2026-01-22">2026-01-22</option><option value="2026-01-21">2026-01-21</option><option value="2026-01-20">2026-01-20</option><option value="2026-01-19">2026-01-19</option><option value="2026-01-16">2026-01-16</option><option value="2026-01-15">2026-01-15</option><option value="2026-01-14">2026-01-14</option><option value="2026-01-13">2026-01-13</option><option value="2026-01-12">2026-01-12</option><option value="2026-01-09">2026-01-09</option><option value="2026-01-08">2026-01-08</option><option value="2026-01-07">2026-01-07</option><option value="2026-01-06">2026-01-06</option><option value="2026-01-05">2026-01-05</option><option value="2025-12-31">2025-12-31</option><option value="2025-12-30">2025-12-30</option><option value="2025-12-29">2025-12-29</option><option value="2025-12-26">2025-12-26</option><option value="2025-12-25">2025-12-25</option><option value="2025-12-24">2025-12-24</option><option value="2025-12-23">2025-12-23</option><option value="2025-12-22">2025-12-22</option><option value="2025-12-19">2025-12-19</option><option value="2025-12-18">2025-12-18</option><option value="2025-12-17">2025-12-17</option><option value="2025-12-16">2025-12-16</option><option value="2025-12-15">2025-12-15</option><option value="2025-12-12">2025-12-12</option><option value="2025-12-11">2025-12-11</option><option value="2025-12-10">2025-12-10</option><option value="2025-12-09">2025-12-09</option><option value="2025-12-08">2025-12-08</option><option value="2025-12-05">2025-12-05</option><option value="2025-12-04">2025-12-04</option><option value="2025-12-03">2025-12-03</option><option value="2025-12-02">2025-12-02</option><option value="2025-12-01">2025-12-01</option><option value="2025-11-28">2025-11-28</option><option value="2025-11-27">2025-11-27</option><option value="2025-11-26">2025-11-26</option><option value="2025-11-25">2025-11-25</option><option value="2025-11-24">2025-11-24</option><option value="2025-11-21">2025-11-21</option><option value="2025-11-20">2025-11-20</option><option value="2025-11-19">2025-11-19</option><option value="2025-11-18">2025-11-18</option><option value="2025-11-17">2025-11-17</option><option value="2025-11-14">2025-11-14</option><option value="2025-11-13">2025-11-13</option><option value="2025-11-12">2025-11-12</option><option value="2025-11-11">2025-11-11</option><option value="2025-11-10">2025-11-10</option><option value="2025-11-07">2025-11-07</option><option value="2025-11-06">2025-11-06</option><option value="2025-11-05">2025-11-05</option><option value="2025-11-04">2025-11-04</option><option value="2025-11-03">2025-11-03</option><option value="2025-10-31">2025-10-31</option><option value="2025-10-30">2025-10-30</option><option value="2025-10-29">2025-10-29</option><option value="2025-10-28">2025-10-28</option><option value="2025-10-27">2025-10-27</option><option value="2025-10-24">2025-10-24</option><option value="2025-10-23">2025-10-23</option><option value="2025-10-22">2025-10-22</option><option value="2025-10-21">2025-10-21</option><option value="2025-10-20">2025-10-20</option><option value="2025-10-17">2025-10-17</option><option value="2025-10-16">2025-10-16</option><option value="2025-10-15">2025-10-15</option><option value="2025-10-14">2025-10-14</option><option value="2025-10-13">2025-10-13</option><option value="2025-10-10">2025-10-10</option><option value="2025-10-09">2025-10-09</option><option value="2025-09-30">2025-09-30</option><option value="2025-09-29">2025-09-29</option><option value="2025-09-26">2025-09-26</option><option value="2025-09-25">2025-09-25</option><option value="2025-09-24">2025-09-24</option><option value="2025-09-23">2025-09-23</option><option value="2025-09-22">2025-09-22</option><option value="2025-09-19">2025-09-19</option><option value="2025-09-18">2025-09-18</option><option value="2025-09-17">2025-09-17</option><option value="2025-09-16">2025-09-16</option><option value="2025-09-15">2025-09-15</option><option value="2025-09-12">2025-09-12</option><option value="2025-09-11">2025-09-11</option><option value="2025-09-10">2025-09-10</option><option value="2025-09-09">2025-09-09</option><option value="2025-09-08">2025-09-08</option><option value="2025-09-05">2025-09-05</option><option value="2025-09-04">2025-09-04</option><option value="2025-09-03">2025-09-03</option><option value="2025-09-02">2025-09-02</option><option value="2025-09-01">2025-09-01</option><option value="2025-08-29">2025-08-29</option><option value="2025-08-28">2025-08-28</option><option value="2025-08-27">2025-08-27</option><option value="2025-08-26">2025-08-26</option><option value="2025-08-25">2025-08-25</option><option value="2025-08-22">2025-08-22</option><option value="2025-08-21">2025-08-21</option><option value="2025-08-20">2025-08-20</option><option value="2025-08-19">2025-08-19</option><option value="2025-08-18">2025-08-18</option><option value="2025-08-15">2025-08-15</option><option value="2025-08-14">2025-08-14</option><option value="2025-08-13">2025-08-13</option><option value="2025-08-12">2025-08-12</option><option value="2025-08-11">2025-08-11</option><option value="2025-08-08">2025-08-08</option><option value="2025-08-07">2025-08-07</option><option value="2025-08-06">2025-08-06</option><option value="2025-08-05">2025-08-05</option><option value="2025-08-04">2025-08-04</option><option value="2025-08-01">2025-08-01</option><option value="2025-07-31">2025-07-31</option><option value="2025-07-30">2025-07-30</option><option value="2025-07-29">2025-07-29</option><option value="2025-07-28">2025-07-28</option><option value="2025-07-25">2025-07-25</option><option value="2025-07-24">2025-07-24</option><option value="2025-07-23">2025-07-23</option><option value="2025-07-22">2025-07-22</option><option value="2025-07-21">2025-07-21</option><option value="2025-07-18">2025-07-18</option><option value="2025-07-17">2025-07-17</option><option value="2025-07-16">2025-07-16</option><option value="2025-07-15">2025-07-15</option><option value="2025-07-14">2025-07-14</option><option value="2025-07-11">2025-07-11</option><option value="2025-07-10">2025-07-10</option><option value="2025-07-09">2025-07-09</option><option value="2025-07-08">2025-07-08</option><option value="2025-07-07">2025-07-07</option><option value="2025-07-04">2025-07-04</option><option value="2025-07-03">2025-07-03</option><option value="2025-07-02">2025-07-02</option><option value="2025-07-01">2025-07-01</option><option value="2025-06-30">2025-06-30</option><option value="2025-06-27">2025-06-27</option><option value="2025-06-26">2025-06-26</option><option value="2025-06-25">2025-06-25</option><option value="2025-06-24">2025-06-24</option><option value="2025-06-23">2025-06-23</option><option value="2025-06-20">2025-06-20</option><option value="2025-06-19">2025-06-19</option><option value="2025-06-18">2025-06-18</option><option value="2025-06-17">2025-06-17</option><option value="2025-06-16">2025-06-16</option><option value="2025-06-13">2025-06-13</option><option value="2025-06-12">2025-06-12</option><option value="2025-06-11">2025-06-11</option><option value="2025-06-10">2025-06-10</option><option value="2025-06-09">2025-06-09</option><option value="2025-06-06">2025-06-06</option><option value="2025-06-05">2025-06-05</option><option value="2025-06-04">2025-06-04</option><option value="2025-06-03">2025-06-03</option><option value="2025-05-30">2025-05-30</option><option value="2025-05-29">2025-05-29</option><option value="2025-05-28">2025-05-28</option><option value="2023-07-11">2023-07-11</option><option value="2023-07-10">2023-07-10</option><option value="2023-07-07">2023-07-07</option><option value="2023-07-06">2023-07-06</option><option value="2023-07-05">2023-07-05</option><option value="2023-07-04">2023-07-04</option><option value="2023-07-03">2023-07-03</option><option value="2023-06-30">2023-06-30</option><option value="2023-06-29">2023-06-29</option><option value="2023-06-28">2023-06-28</option><option value="2023-06-27">2023-06-27</option><option value="2023-06-26">2023-06-26</option><option value="2023-06-21">2023-06-21</option><option value="2023-06-20">2023-06-20</option><option value="2023-06-19">2023-06-19</option><option value="2023-04-28">2023-04-28</option><option value="2023-04-27">2023-04-27</option><option value="2023-04-26">2023-04-26</option><option value="2023-04-25">2023-04-25</option><option value="2023-04-24">2023-04-24</option><option value="2023-04-21">2023-04-21</option><option value="2023-04-20">2023-04-20</option><option value="2023-04-19">2023-04-19</option><option value="2023-04-18">2023-04-18</option><option value="2023-04-17">2023-04-17</option><option value="2023-04-14">2023-04-14</option><option value="2023-04-13">2023-04-13</option><option value="2023-04-12">2023-04-12</option><option value="2023-04-11">2023-04-11</option><option value="2023-04-10">2023-04-10</option><option value="2023-04-07">2023-04-07</option><option value="2023-04-06">2023-04-06</option><option value="2023-04-04">2023-04-04</option><option value="2023-04-03">2023-04-03</option><option value="2023-03-31">2023-03-31</option><option value="2023-03-30">2023-03-30</option><option value="2023-03-29">2023-03-29</option><option value="2023-03-28">2023-03-28</option><option value="2023-03-27">2023-03-27</option><option value="2023-03-24">2023-03-24</option><option value="2023-03-23">2023-03-23</option><option value="2023-03-22">2023-03-22</option><option value="2023-03-21">2023-03-21</option><option value="2023-03-20">2023-03-20</option><option value="2023-03-17">2023-03-17</option><option value="2023-03-16">2023-03-16</option><option value="2023-03-15">2023-03-15</option><option value="2023-03-14">2023-03-14</option><option value="2023-03-13">2023-03-13</option><option value="2023-03-10">2023-03-10</option><option value="2023-03-09">2023-03-09</option><option value="2023-03-08">2023-03-08</option><option value="2023-03-07">2023-03-07</option><option value="2023-03-06">2023-03-06</option><option value="2023-03-03">2023-03-03</option><option value="2023-03-02">2023-03-02</option><option value="2023-03-01">2023-03-01</option><option value="2023-02-28">2023-02-28</option><option value="2023-02-27">2023-02-27</option><option value="2023-02-24">2023-02-24</option><option value="2023-02-23">2023-02-23</option><option value="2023-02-22">2023-02-22</option><option value="2023-02-21">2023-02-21</option><option value="2023-02-20">2023-02-20</option><option value="2023-02-17">2023-02-17</option><option value="2023-02-16">2023-02-16</option><option value="2023-02-15">2023-02-15</option><option value="2023-02-14">2023-02-14</option><option value="2023-02-13">2023-02-13</option><option value="2023-02-10">2023-02-10</option><option value="2023-02-09">2023-02-09</option><option value="2023-02-08">2023-02-08</option><option value="2023-02-07">2023-02-07</option><option value="2023-02-06">2023-02-06</option><option value="2023-02-03">2023-02-03</option><option value="2023-02-02">2023-02-02</option><option value="2023-02-01">2023-02-01</option><option value="2023-01-31">2023-01-31</option><option value="2023-01-30">2023-01-30</option><option value="2023-01-20">2023-01-20</option><option value="2023-01-19">2023-01-19</option><option value="2023-01-18">2023-01-18</option><option value="2023-01-17">2023-01-17</option><option value="2023-01-16">2023-01-16</option><option value="2023-01-13">2023-01-13</option><option value="2023-01-12">2023-01-12</option><option value="2023-01-11">2023-01-11</option><option value="2023-01-10">2023-01-10</option><option value="2023-01-09">2023-01-09</option><option value="2023-01-06">2023-01-06</option><option value="2023-01-05">2023-01-05</option><option value="2023-01-04">2023-01-04</option><option value="2023-01-03">2023-01-03</option><option value="2022-12-30">2022-12-30</option><option value="2022-12-29">2022-12-29</option><option value="2022-12-28">2022-12-28</option><option value="2022-12-27">2022-12-27</option><option value="2022-12-26">2022-12-26</option><option value="2022-12-23">2022-12-23</option><option value="2022-12-22">2022-12-22</option><option value="2022-12-21">2022-12-21</option><option value="2022-12-20">2022-12-20</option><option value="2022-12-19">2022-12-19</option><option value="2022-12-16">2022-12-16</option><option value="2022-12-15">2022-12-15</option><option value="2022-12-14">2022-12-14</option><option value="2022-12-13">2022-12-13</option><option value="2022-12-12">2022-12-12</option><option value="2022-12-09">2022-12-09</option><option value="2022-12-08">2022-12-08</option><option value="2022-12-07">2022-12-07</option><option value="2022-12-06">2022-12-06</option><option value="2022-12-05">2022-12-05</option><option value="2022-12-02">2022-12-02</option><option value="2022-12-01">2022-12-01</option><option value="2022-11-30">2022-11-30</option><option value="2022-11-29">2022-11-29</option><option value="2022-11-28">2022-11-28</option><option value="2022-11-25">2022-11-25</option><option value="2022-11-24">2022-11-24</option><option value="2022-11-23">2022-11-23</option><option value="2022-11-22">2022-11-22</option><option value="2022-11-21">2022-11-21</option><option value="2022-11-18">2022-11-18</option><option value="2022-11-17">2022-11-17</option><option value="2022-11-16">2022-11-16</option><option value="2022-11-15">2022-11-15</option><option value="2022-11-14">2022-11-14</option><option value="2022-11-11">2022-11-11</option><option value="2022-11-10">2022-11-10</option><option value="2022-11-09">2022-11-09</option><option value="2022-11-08">2022-11-08</option><option value="2022-11-07">2022-11-07</option><option value="2022-11-04">2022-11-04</option><option value="2022-11-03">2022-11-03</option><option value="2022-11-02">2022-11-02</option><option value="2022-11-01">2022-11-01</option><option value="2022-10-31">2022-10-31</option><option value="2022-10-28">2022-10-28</option><option value="2022-10-27">2022-10-27</option><option value="2022-10-26">2022-10-26</option><option value="2022-10-25">2022-10-25</option><option value="2022-10-24">2022-10-24</option><option value="2022-10-21">2022-10-21</option><option value="2022-10-20">2022-10-20</option><option value="2022-10-19">2022-10-19</option><option value="2022-10-18">2022-10-18</option><option value="2022-10-17">2022-10-17</option><option value="2022-10-14">2022-10-14</option><option value="2022-10-13">2022-10-13</option><option value="2022-10-12">2022-10-12</option><option value="2022-10-11">2022-10-11</option><option value="2022-10-10">2022-10-10</option><option value="2022-09-30">2022-09-30</option><option value="2022-09-29">2022-09-29</option><option value="2022-09-28">2022-09-28</option><option value="2022-09-27">2022-09-27</option><option value="2022-09-26">2022-09-26</option><option value="2022-09-23">2022-09-23</option><option value="2022-09-22">2022-09-22</option><option value="2022-09-21">2022-09-21</option><option value="2022-09-20">2022-09-20</option><option value="2022-09-19">2022-09-19</option><option value="2022-09-16">2022-09-16</option><option value="2022-09-15">2022-09-15</option><option value="2022-09-14">2022-09-14</option><option value="2022-09-13">2022-09-13</option><option value="2022-09-09">2022-09-09</option><option value="2022-09-08">2022-09-08</option><option value="2022-09-07">2022-09-07</option><option value="2022-09-06">2022-09-06</option><option value="2022-09-05">2022-09-05</option><option value="2022-09-02">2022-09-02</option><option value="2022-09-01">2022-09-01</option><option value="2022-08-31">2022-08-31</option><option value="2022-08-30">2022-08-30</option><option value="2022-08-29">2022-08-29</option><option value="2022-08-26">2022-08-26</option><option value="2022-08-25">2022-08-25</option><option value="2022-08-24">2022-08-24</option><option value="2022-08-23">2022-08-23</option><option value="2022-08-22">2022-08-22</option><option value="2022-08-19">2022-08-19</option><option value="2022-08-18">2022-08-18</option><option value="2022-08-17">2022-08-17</option><option value="2022-08-16">2022-08-16</option><option value="2022-08-15">2022-08-15</option><option value="2022-08-12">2022-08-12</option><option value="2022-08-11">2022-08-11</option><option value="2022-08-10">2022-08-10</option><option value="2022-08-09">2022-08-09</option><option value="2022-08-08">2022-08-08</option><option value="2022-08-05">2022-08-05</option><option value="2022-08-04">2022-08-04</option><option value="2022-08-03">2022-08-03</option><option value="2022-08-02">2022-08-02</option><option value="2022-08-01">2022-08-01</option><option value="2022-07-29">2022-07-29</option><option value="2022-07-28">2022-07-28</option><option value="2022-07-27">2022-07-27</option><option value="2022-07-26">2022-07-26</option><option value="2022-07-25">2022-07-25</option><option value="2022-07-22">2022-07-22</option><option value="2022-07-21">2022-07-21</option><option value="2022-07-20">2022-07-20</option><option value="2022-07-19">2022-07-19</option><option value="2022-07-18">2022-07-18</option><option value="2022-07-15">2022-07-15</option><option value="2022-07-14">2022-07-14</option><option value="2022-07-13">2022-07-13</option><option value="2022-07-12">2022-07-12</option><option value="2022-07-11">2022-07-11</option><option value="2022-07-08">2022-07-08</option><option value="2022-07-07">2022-07-07</option><option value="2022-07-06">2022-07-06</option><option value="2022-07-05">2022-07-05</option><option value="2022-07-04">2022-07-04</option><option value="2022-07-01">2022-07-01</option><option value="2022-06-30">2022-06-30</option><option value="2022-06-29">2022-06-29</option><option value="2022-06-28">2022-06-28</option><option value="2022-06-27">2022-06-27</option><option value="2022-06-24">2022-06-24</option><option value="2022-06-23">2022-06-23</option><option value="2022-06-22">2022-06-22</option><option value="2022-06-21">2022-06-21</option><option value="2022-06-20">2022-06-20</option><option value="2022-06-17">2022-06-17</option><option value="2022-06-16">2022-06-16</option><option value="2022-06-15">2022-06-15</option><option value="2022-06-14">2022-06-14</option><option value="2022-06-13">2022-06-13</option><option value="2022-06-10">2022-06-10</option><option value="2022-06-09">2022-06-09</option><option value="2022-06-08">2022-06-08</option><option value="2022-06-07">2022-06-07</option><option value="2022-06-06">2022-06-06</option><option value="2022-06-02">2022-06-02</option><option value="2022-06-01">2022-06-01</option><option value="2022-05-31">2022-05-31</option><option value="2022-05-30">2022-05-30</option><option value="2022-05-27">2022-05-27</option><option value="2022-05-26">2022-05-26</option><option value="2022-05-25">2022-05-25</option><option value="2022-05-24">2022-05-24</option><option value="2022-05-23">2022-05-23</option><option value="2022-05-20">2022-05-20</option><option value="2022-05-19">2022-05-19</option><option value="2022-05-18">2022-05-18</option><option value="2022-05-17">2022-05-17</option><option value="2022-05-16">2022-05-16</option><option value="2022-05-13">2022-05-13</option><option value="2022-05-12">2022-05-12</option><option value="2022-05-11">2022-05-11</option><option value="2022-05-10">2022-05-10</option><option value="2022-05-09">2022-05-09</option><option value="2022-05-06">2022-05-06</option><option value="2022-04-29">2022-04-29</option><option value="2022-04-28">2022-04-28</option><option value="2022-04-27">2022-04-27</option><option value="2022-04-26">2022-04-26</option><option value="2022-04-25">2022-04-25</option><option value="2022-04-22">2022-04-22</option><option value="2022-04-21">2022-04-21</option><option value="2022-04-20">2022-04-20</option><option value="2022-04-19">2022-04-19</option><option value="2022-04-18">2022-04-18</option><option value="2022-04-15">2022-04-15</option><option value="2022-04-14">2022-04-14</option><option value="2022-04-13">2022-04-13</option><option value="2022-04-12">2022-04-12</option><option value="2022-04-11">2022-04-11</option><option value="2022-04-08">2022-04-08</option><option value="2022-04-07">2022-04-07</option><option value="2022-04-06">2022-04-06</option><option value="2022-04-01">2022-04-01</option><option value="2022-03-31">2022-03-31</option><option value="2022-03-30">2022-03-30</option><option value="2022-03-29">2022-03-29</option><option value="2022-03-28">2022-03-28</option><option value="2022-03-25">2022-03-25</option><option value="2022-03-24">2022-03-24</option><option value="2022-03-23">2022-03-23</option><option value="2022-03-22">2022-03-22</option><option value="2022-03-21">2022-03-21</option><option value="2022-03-18">2022-03-18</option><option value="2022-03-17">2022-03-17</option><option value="2022-03-16">2022-03-16</option><option value="2022-03-15">2022-03-15</option><option value="2022-03-14">2022-03-14</option><option value="2022-03-11">2022-03-11</option><option value="2022-03-10">2022-03-10</option><option value="2022-03-09">2022-03-09</option><option value="2022-03-08">2022-03-08</option><option value="2022-03-07">2022-03-07</option><option value="2022-03-04">2022-03-04</option><option value="2022-03-03">2022-03-03</option><option value="2022-03-02">2022-03-02</option><option value="2022-03-01">2022-03-01</option><option value="2022-02-28">2022-02-28</option><option value="2022-02-25">2022-02-25</option><option value="2022-02-24">2022-02-24</option><option value="2022-02-23">2022-02-23</option><option value="2022-02-22">2022-02-22</option><option value="2022-02-21">2022-02-21</option><option value="2022-02-18">2022-02-18</option><option value="2022-02-17">2022-02-17</option><option value="2022-02-16">2022-02-16</option><option value="2022-02-15">2022-02-15</option><option value="2022-02-14">2022-02-14</option><option value="2022-02-11">2022-02-11</option><option value="2022-02-10">2022-02-10</option><option value="2022-02-09">2022-02-09</option><option value="2022-02-08">2022-02-08</option><option value="2022-02-07">2022-02-07</option><option value="2022-01-28">2022-01-28</option><option value="2022-01-27">2022-01-27</option><option value="2022-01-26">2022-01-26</option><option value="2022-01-25">2022-01-25</option><option value="2022-01-24">2022-01-24</option><option value="2022-01-21">2022-01-21</option><option value="2022-01-20">2022-01-20</option><option value="2022-01-19">2022-01-19</option><option value="2022-01-18">2022-01-18</option><option value="2022-01-17">2022-01-17</option><option value="2022-01-14">2022-01-14</option><option value="2022-01-13">2022-01-13</option><option value="2022-01-12">2022-01-12</option><option value="2022-01-11">2022-01-11</option><option value="2022-01-10">2022-01-10</option><option value="2022-01-07">2022-01-07</option><option value="2022-01-06">2022-01-06</option><option value="2022-01-05">2022-01-05</option><option value="2022-01-04">2022-01-04</option><option value="2021-12-31">2021-12-31</option><option value="2021-12-30">2021-12-30</option><option value="2021-12-29">2021-12-29</option><option value="2021-12-28">2021-12-28</option><option value="2021-12-27">2021-12-27</option><option value="2021-12-24">2021-12-24</option><option value="2021-12-23">2021-12-23</option><option value="2021-12-22">2021-12-22</option><option value="2021-12-21">2021-12-21</option><option value="2021-12-20">2021-12-20</option><option value="2021-12-17">2021-12-17</option><option value="2021-12-16">2021-12-16</option><option value="2021-12-15">2021-12-15</option><option value="2021-12-14">2021-12-14</option><option value="2021-12-13">2021-12-13</option><option value="2021-12-10">2021-12-10</option><option value="2021-12-09">2021-12-09</option><option value="2021-12-08">2021-12-08</option><option value="2021-12-07">2021-12-07</option><option value="2021-12-06">2021-12-06</option><option value="2021-12-03">2021-12-03</option><option value="2021-12-02">2021-12-02</option><option value="2021-12-01">2021-12-01</option><option value="2021-11-30">2021-11-30</option><option value="2021-11-29">2021-11-29</option><option value="2021-11-26">2021-11-26</option><option value="2021-11-25">2021-11-25</option><option value="2021-11-24">2021-11-24</option><option value="2021-11-23">2021-11-23</option><option value="2021-11-22">2021-11-22</option><option value="2021-11-19">2021-11-19</option><option value="2021-11-18">2021-11-18</option><option value="2021-11-17">2021-11-17</option><option value="2021-11-16">2021-11-16</option><option value="2021-11-15">2021-11-15</option><option value="2021-11-12">2021-11-12</option><option value="2021-11-11">2021-11-11</option><option value="2021-11-10">2021-11-10</option><option value="2021-11-09">2021-11-09</option><option value="2021-11-08">2021-11-08</option><option value="2021-11-05">2021-11-05</option><option value="2021-11-04">2021-11-04</option><option value="2021-11-03">2021-11-03</option><option value="2021-11-02">2021-11-02</option><option value="2021-11-01">2021-11-01</option><option value="2021-10-29">2021-10-29</option><option value="2021-10-28">2021-10-28</option><option value="2021-10-27">2021-10-27</option><option value="2021-10-26">2021-10-26</option><option value="2021-10-25">2021-10-25</option><option value="2021-10-22">2021-10-22</option><option value="2021-10-21">2021-10-21</option><option value="2021-10-20">2021-10-20</option><option value="2021-10-19">2021-10-19</option><option value="2021-10-18">2021-10-18</option><option value="2021-10-15">2021-10-15</option><option value="2021-10-14">2021-10-14</option><option value="2021-10-13">2021-10-13</option><option value="2021-10-12">2021-10-12</option><option value="2021-10-11">2021-10-11</option><option value="2021-10-08">2021-10-08</option><option value="2021-09-30">2021-09-30</option><option value="2021-09-29">2021-09-29</option><option value="2021-09-28">2021-09-28</option><option value="2021-09-27">2021-09-27</option><option value="2021-09-24">2021-09-24</option><option value="2021-09-23">2021-09-23</option><option value="2021-09-22">2021-09-22</option><option value="2021-09-17">2021-09-17</option><option value="2021-09-16">2021-09-16</option><option value="2021-09-15">2021-09-15</option><option value="2021-09-14">2021-09-14</option><option value="2021-09-13">2021-09-13</option><option value="2021-09-10">2021-09-10</option><option value="2021-09-09">2021-09-09</option><option value="2021-09-08">2021-09-08</option><option value="2021-09-07">2021-09-07</option><option value="2021-09-06">2021-09-06</option><option value="2021-09-03">2021-09-03</option><option value="2021-09-02">2021-09-02</option><option value="2021-09-01">2021-09-01</option><option value="2021-08-31">2021-08-31</option><option value="2021-08-30">2021-08-30</option><option value="2021-08-27">2021-08-27</option><option value="2021-08-26">2021-08-26</option><option value="2021-08-25">2021-08-25</option><option value="2021-08-24">2021-08-24</option><option value="2021-08-23">2021-08-23</option><option value="2021-08-20">2021-08-20</option><option value="2021-08-19">2021-08-19</option><option value="2021-08-18">2021-08-18</option><option value="2021-08-17">2021-08-17</option><option value="2021-08-16">2021-08-16</option><option value="2021-08-13">2021-08-13</option><option value="2021-08-12">2021-08-12</option><option value="2021-08-11">2021-08-11</option><option value="2021-08-10">2021-08-10</option><option value="2021-08-09">2021-08-09</option><option value="2021-08-06">2021-08-06</option><option value="2021-08-05">2021-08-05</option><option value="2021-08-04">2021-08-04</option><option value="2021-08-03">2021-08-03</option><option value="2021-08-02">2021-08-02</option><option value="2021-07-30">2021-07-30</option><option value="2021-07-29">2021-07-29</option><option value="2021-07-28">2021-07-28</option><option value="2021-07-27">2021-07-27</option><option value="2021-07-26">2021-07-26</option><option value="2021-07-23">2021-07-23</option><option value="2021-07-22">2021-07-22</option><option value="2021-07-21">2021-07-21</option><option value="2021-07-20">2021-07-20</option><option value="2021-07-19">2021-07-19</option><option value="2021-07-16">2021-07-16</option><option value="2021-07-15">2021-07-15</option><option value="2021-07-14">2021-07-14</option><option value="2021-07-13">2021-07-13</option><option value="2021-07-12">2021-07-12</option><option value="2021-07-09">2021-07-09</option><option value="2021-07-08">2021-07-08</option><option value="2021-07-07">2021-07-07</option><option value="2021-07-06">2021-07-06</option><option value="2021-07-05">2021-07-05</option><option value="2021-07-02">2021-07-02</option><option value="2021-07-01">2021-07-01</option><option value="2021-06-30">2021-06-30</option><option value="2021-06-29">2021-06-29</option><option value="2021-06-28">2021-06-28</option><option value="2021-06-25">2021-06-25</option><option value="2021-06-24">2021-06-24</option><option value="2021-06-23">2021-06-23</option><option value="2021-06-22">2021-06-22</option><option value="2021-06-21">2021-06-21</option><option value="2021-06-18">2021-06-18</option><option value="2021-06-17">2021-06-17</option><option value="2021-06-16">2021-06-16</option><option value="2021-06-15">2021-06-15</option><option value="2021-06-11">2021-06-11</option><option value="2021-06-10">2021-06-10</option><option value="2021-06-09">2021-06-09</option><option value="2021-06-08">2021-06-08</option><option value="2021-06-07">2021-06-07</option><option value="2021-06-04">2021-06-04</option><option value="2021-06-03">2021-06-03</option><option value="2021-06-02">2021-06-02</option><option value="2021-06-01">2021-06-01</option><option value="2021-05-31">2021-05-31</option><option value="2021-05-28">2021-05-28</option><option value="2021-05-27">2021-05-27</option><option value="2021-05-26">2021-05-26</option><option value="2021-05-25">2021-05-25</option><option value="2021-05-24">2021-05-24</option><option value="2021-05-21">2021-05-21</option><option value="2021-05-20">2021-05-20</option><option value="2021-05-19">2021-05-19</option><option value="2021-05-18">2021-05-18</option><option value="2021-05-17">2021-05-17</option><option value="2021-05-14">2021-05-14</option><option value="2021-05-13">2021-05-13</option><option value="2021-05-12">2021-05-12</option><option value="2021-05-11">2021-05-11</option><option value="2021-05-10">2021-05-10</option><option value="2021-05-07">2021-05-07</option><option value="2021-05-06">2021-05-06</option><option value="2021-04-29">2021-04-29</option><option value="2021-04-28">2021-04-28</option><option value="2021-04-27">2021-04-27</option><option value="2021-04-26">2021-04-26</option><option value="2021-04-23">2021-04-23</option><option value="2021-04-22">2021-04-22</option><option value="2021-04-21">2021-04-21</option><option value="2021-04-20">2021-04-20</option><option value="2021-04-19">2021-04-19</option><option value="2021-04-16">2021-04-16</option><option value="2021-04-15">2021-04-15</option><option value="2021-04-14">2021-04-14</option><option value="2021-04-13">2021-04-13</option><option value="2021-04-12">2021-04-12</option><option value="2021-04-09">2021-04-09</option><option value="2021-04-08">2021-04-08</option><option value="2021-04-07">2021-04-07</option><option value="2021-04-06">2021-04-06</option><option value="2021-04-02">2021-04-02</option><option value="2021-04-01">2021-04-01</option><option value="2021-03-31">2021-03-31</option><option value="2021-03-30">2021-03-30</option><option value="2021-03-29">2021-03-29</option><option value="2021-03-26">2021-03-26</option><option value="2021-03-25">2021-03-25</option><option value="2021-03-24">2021-03-24</option><option value="2021-03-23">2021-03-23</option><option value="2021-03-22">2021-03-22</option><option value="2021-03-19">2021-03-19</option><option value="2021-03-18">2021-03-18</option><option value="2021-03-17">2021-03-17</option><option value="2021-03-16">2021-03-16</option><option value="2021-03-15">2021-03-15</option><option value="2021-03-12">2021-03-12</option><option value="2021-03-11">2021-03-11</option><option value="2021-03-10">2021-03-10</option><option value="2021-03-09">2021-03-09</option><option value="2021-03-08">2021-03-08</option><option value="2021-03-05">2021-03-05</option><option value="2021-03-04">2021-03-04</option><option value="2021-03-03">2021-03-03</option><option value="2021-03-02">2021-03-02</option><option value="2021-03-01">2021-03-01</option><option value="2021-02-26">2021-02-26</option><option value="2021-02-25">2021-02-25</option><option value="2021-02-24">2021-02-24</option><option value="2021-02-23">2021-02-23</option><option value="2021-02-22">2021-02-22</option><option value="2021-02-19">2021-02-19</option><option value="2021-02-18">2021-02-18</option><option value="2021-02-10">2021-02-10</option><option value="2021-02-09">2021-02-09</option><option value="2021-02-08">2021-02-08</option><option value="2021-02-05">2021-02-05</option><option value="2021-02-04">2021-02-04</option><option value="2021-02-03">2021-02-03</option><option value="2021-02-02">2021-02-02</option><option value="2021-02-01">2021-02-01</option><option value="2021-01-29">2021-01-29</option><option value="2021-01-28">2021-01-28</option><option value="2021-01-27">2021-01-27</option><option value="2021-01-26">2021-01-26</option><option value="2021-01-25">2021-01-25</option><option value="2021-01-22">2021-01-22</option></select>
     </label>
     
     
       <div class="tm-meta">
-        <div class="ws-meta-row"><span>实际交易日</span><b class="mono">2026-09-30</b></div>
-        <div class="ws-meta-row"><span>请求日期</span><b class="mono">2026-09-30</b></div>
+        <div class="ws-meta-row"><span>实际交易日</span><b class="mono">2026-10-09</b></div>
+        <div class="ws-meta-row"><span>请求日期</span><b class="mono">2026-10-09</b></div>
         <div class="ws-meta-row"><span>数据层级</span><b class="mono">L1_CACHE</b></div>
         
       </div>
@@ -4099,245 +4151,245 @@ body.mod-research .stage { padding: 20px 24px 40px; }
         <tbody>
         <tr>
           <td class="mono">1</td>
-          <td class="mono">600887</td>
-          <td>伊利股份</td>
-          <td>乳制品</td>
-          <td class="mono tm-strong"><span class="mono">0.8646</span></td>
-          <td class="mono"><span class="mono">1.401</span></td>
-          <td class="mono"><span class="mono">0.805</span></td>
-          <td class="mono"><span class="mono">0.949</span></td>
-          <td class="mono"><span class="mono">-0.198</span></td>
-        </tr>
-        <tr>
-          <td class="mono">2</td>
           <td class="mono">600028</td>
           <td>中国石化</td>
           <td>石化</td>
-          <td class="mono tm-strong"><span class="mono">0.7830</span></td>
-          <td class="mono"><span class="mono">-0.029</span></td>
-          <td class="mono"><span class="mono">0.869</span></td>
-          <td class="mono"><span class="mono">0.298</span></td>
-          <td class="mono"><span class="mono">2.663</span></td>
+          <td class="mono tm-strong"><span class="mono">1.0677</span></td>
+          <td class="mono"><span class="mono">0.647</span></td>
+          <td class="mono"><span class="mono">0.885</span></td>
+          <td class="mono"><span class="mono">0.234</span></td>
+          <td class="mono"><span class="mono">2.762</span></td>
+        </tr>
+        <tr>
+          <td class="mono">2</td>
+          <td class="mono">601728</td>
+          <td>中国电信</td>
+          <td>运营商</td>
+          <td class="mono tm-strong"><span class="mono">0.9099</span></td>
+          <td class="mono"><span class="mono">1.063</span></td>
+          <td class="mono"><span class="mono">1.093</span></td>
+          <td class="mono"><span class="mono">0.834</span></td>
+          <td class="mono"><span class="mono">0.432</span></td>
         </tr>
         <tr>
           <td class="mono">3</td>
-          <td class="mono">600036</td>
-          <td>招商银行</td>
-          <td>银行</td>
-          <td class="mono tm-strong"><span class="mono">0.7453</span></td>
-          <td class="mono"><span class="mono">1.005</span></td>
-          <td class="mono"><span class="mono">0.862</span></td>
-          <td class="mono"><span class="mono">0.834</span></td>
-          <td class="mono"><span class="mono">0.013</span></td>
+          <td class="mono">600887</td>
+          <td>伊利股份</td>
+          <td>乳制品</td>
+          <td class="mono tm-strong"><span class="mono">0.9059</span></td>
+          <td class="mono"><span class="mono">1.518</span></td>
+          <td class="mono"><span class="mono">0.850</span></td>
+          <td class="mono"><span class="mono">0.898</span></td>
+          <td class="mono"><span class="mono">-0.242</span></td>
         </tr>
         <tr>
           <td class="mono">4</td>
           <td class="mono">600900</td>
           <td>长江电力</td>
           <td>水电</td>
-          <td class="mono tm-strong"><span class="mono">0.7333</span></td>
-          <td class="mono"><span class="mono">0.911</span></td>
-          <td class="mono"><span class="mono">0.530</span></td>
-          <td class="mono"><span class="mono">0.959</span></td>
-          <td class="mono"><span class="mono">0.463</span></td>
+          <td class="mono tm-strong"><span class="mono">0.8303</span></td>
+          <td class="mono"><span class="mono">1.151</span></td>
+          <td class="mono"><span class="mono">0.529</span></td>
+          <td class="mono"><span class="mono">0.943</span></td>
+          <td class="mono"><span class="mono">0.481</span></td>
         </tr>
         <tr>
           <td class="mono">5</td>
-          <td class="mono">601728</td>
-          <td>中国电信</td>
-          <td>运营商</td>
-          <td class="mono tm-strong"><span class="mono">0.5867</span></td>
-          <td class="mono"><span class="mono">0.245</span></td>
-          <td class="mono"><span class="mono">1.086</span></td>
-          <td class="mono"><span class="mono">0.966</span></td>
-          <td class="mono"><span class="mono">0.361</span></td>
+          <td class="mono">600036</td>
+          <td>招商银行</td>
+          <td>银行</td>
+          <td class="mono tm-strong"><span class="mono">0.7096</span></td>
+          <td class="mono"><span class="mono">0.971</span></td>
+          <td class="mono"><span class="mono">0.804</span></td>
+          <td class="mono"><span class="mono">0.799</span></td>
+          <td class="mono"><span class="mono">0.001</span></td>
         </tr>
         <tr>
           <td class="mono">6</td>
-          <td class="mono">300394</td>
-          <td>天孚通信</td>
-          <td>光模块</td>
-          <td class="mono tm-strong"><span class="mono">0.5403</span></td>
-          <td class="mono"><span class="mono">1.509</span></td>
-          <td class="mono"><span class="mono">0.686</span></td>
-          <td class="mono"><span class="mono">-1.063</span></td>
-          <td class="mono"><span class="mono">-0.377</span></td>
-        </tr>
-        <tr>
-          <td class="mono">7</td>
           <td class="mono">601088</td>
           <td>中国神华</td>
           <td>煤炭</td>
-          <td class="mono tm-strong"><span class="mono">0.4944</span></td>
-          <td class="mono"><span class="mono">0.614</span></td>
-          <td class="mono"><span class="mono">1.126</span></td>
-          <td class="mono"><span class="mono">0.579</span></td>
-          <td class="mono"><span class="mono">-0.598</span></td>
+          <td class="mono tm-strong"><span class="mono">0.6437</span></td>
+          <td class="mono"><span class="mono">1.045</span></td>
+          <td class="mono"><span class="mono">1.017</span></td>
+          <td class="mono"><span class="mono">0.565</span></td>
+          <td class="mono"><span class="mono">-0.567</span></td>
         </tr>
         <tr>
-          <td class="mono">8</td>
+          <td class="mono">7</td>
           <td class="mono">000538</td>
           <td>云南白药</td>
           <td>中药</td>
-          <td class="mono tm-strong"><span class="mono">0.3769</span></td>
-          <td class="mono"><span class="mono">0.723</span></td>
-          <td class="mono"><span class="mono">0.504</span></td>
-          <td class="mono"><span class="mono">0.913</span></td>
-          <td class="mono"><span class="mono">-0.877</span></td>
+          <td class="mono tm-strong"><span class="mono">0.5214</span></td>
+          <td class="mono"><span class="mono">1.036</span></td>
+          <td class="mono"><span class="mono">0.617</span></td>
+          <td class="mono"><span class="mono">0.860</span></td>
+          <td class="mono"><span class="mono">-0.881</span></td>
+        </tr>
+        <tr>
+          <td class="mono">8</td>
+          <td class="mono">601899</td>
+          <td>紫金矿业</td>
+          <td>铜金矿</td>
+          <td class="mono tm-strong"><span class="mono">0.4240</span></td>
+          <td class="mono"><span class="mono">-0.422</span></td>
+          <td class="mono"><span class="mono">0.860</span></td>
+          <td class="mono"><span class="mono">-0.107</span></td>
+          <td class="mono"><span class="mono">1.969</span></td>
         </tr>
         <tr>
           <td class="mono">9</td>
           <td class="mono">601399</td>
           <td>国电南自</td>
           <td>电力设备</td>
-          <td class="mono tm-strong"><span class="mono">0.2053</span></td>
-          <td class="mono"><span class="mono">0.218</span></td>
-          <td class="mono"><span class="mono">0.149</span></td>
-          <td class="mono"><span class="mono">0.611</span></td>
-          <td class="mono"><span class="mono">-0.054</span></td>
+          <td class="mono tm-strong"><span class="mono">0.4002</span></td>
+          <td class="mono"><span class="mono">0.569</span></td>
+          <td class="mono"><span class="mono">0.310</span></td>
+          <td class="mono"><span class="mono">0.660</span></td>
+          <td class="mono"><span class="mono">-0.019</span></td>
         </tr>
         <tr>
           <td class="mono">10</td>
           <td class="mono">600941</td>
           <td>中国移动</td>
           <td>运营商</td>
-          <td class="mono tm-strong"><span class="mono">0.1787</span></td>
-          <td class="mono"><span class="mono">0.020</span></td>
-          <td class="mono"><span class="mono">0.774</span></td>
-          <td class="mono"><span class="mono">1.006</span></td>
-          <td class="mono"><span class="mono">-0.869</span></td>
+          <td class="mono tm-strong"><span class="mono">0.3218</span></td>
+          <td class="mono"><span class="mono">0.408</span></td>
+          <td class="mono"><span class="mono">0.811</span></td>
+          <td class="mono"><span class="mono">0.873</span></td>
+          <td class="mono"><span class="mono">-0.876</span></td>
         </tr>
         <tr>
           <td class="mono">11</td>
-          <td class="mono">601318</td>
-          <td>中国平安</td>
-          <td>保险</td>
-          <td class="mono tm-strong"><span class="mono">0.0772</span></td>
-          <td class="mono"><span class="mono">-0.521</span></td>
-          <td class="mono"><span class="mono">0.760</span></td>
-          <td class="mono"><span class="mono">0.574</span></td>
-          <td class="mono"><span class="mono">0.048</span></td>
-        </tr>
-        <tr>
-          <td class="mono">12</td>
           <td class="mono">600690</td>
           <td>海尔智家</td>
           <td>家电</td>
-          <td class="mono tm-strong"><span class="mono">0.0410</span></td>
-          <td class="mono"><span class="mono">-0.091</span></td>
-          <td class="mono"><span class="mono">0.321</span></td>
-          <td class="mono"><span class="mono">0.581</span></td>
-          <td class="mono"><span class="mono">-0.449</span></td>
+          <td class="mono tm-strong"><span class="mono">0.1522</span></td>
+          <td class="mono"><span class="mono">0.061</span></td>
+          <td class="mono"><span class="mono">0.511</span></td>
+          <td class="mono"><span class="mono">0.634</span></td>
+          <td class="mono"><span class="mono">-0.475</span></td>
         </tr>
         <tr>
-          <td class="mono">13</td>
-          <td class="mono">601899</td>
-          <td>紫金矿业</td>
-          <td>铜金矿</td>
-          <td class="mono tm-strong"><span class="mono">0.0047</span></td>
-          <td class="mono"><span class="mono">-1.452</span></td>
-          <td class="mono"><span class="mono">0.745</span></td>
-          <td class="mono"><span class="mono">-0.072</span></td>
-          <td class="mono"><span class="mono">2.050</span></td>
-        </tr>
-        <tr>
-          <td class="mono">14</td>
-          <td class="mono">002335</td>
-          <td>科华数据</td>
-          <td>算力基建</td>
-          <td class="mono tm-strong"><span class="mono">-0.0799</span></td>
-          <td class="mono"><span class="mono">0.706</span></td>
-          <td class="mono"><span class="mono">-0.679</span></td>
-          <td class="mono"><span class="mono">-0.419</span></td>
-          <td class="mono"><span class="mono">-0.648</span></td>
-        </tr>
-        <tr>
-          <td class="mono">15</td>
+          <td class="mono">12</td>
           <td class="mono">002594</td>
           <td>比亚迪</td>
           <td>汽车</td>
-          <td class="mono tm-strong"><span class="mono">-0.1560</span></td>
-          <td class="mono"><span class="mono">-0.367</span></td>
-          <td class="mono"><span class="mono">0.095</span></td>
-          <td class="mono"><span class="mono">0.569</span></td>
-          <td class="mono"><span class="mono">-0.592</span></td>
+          <td class="mono tm-strong"><span class="mono">0.1518</span></td>
+          <td class="mono"><span class="mono">0.381</span></td>
+          <td class="mono"><span class="mono">0.222</span></td>
+          <td class="mono"><span class="mono">0.424</span></td>
+          <td class="mono"><span class="mono">-0.598</span></td>
         </tr>
         <tr>
-          <td class="mono">16</td>
-          <td class="mono">688048</td>
-          <td>长华化学</td>
-          <td>光模块</td>
-          <td class="mono tm-strong"><span class="mono">-0.2639</span></td>
-          <td class="mono"><span class="mono">1.488</span></td>
-          <td class="mono"><span class="mono">-1.410</span></td>
-          <td class="mono"><span class="mono">-2.268</span></td>
-          <td class="mono"><span class="mono">-0.832</span></td>
-        </tr>
-        <tr>
-          <td class="mono">17</td>
+          <td class="mono">13</td>
           <td class="mono">000333</td>
           <td>美的集团</td>
           <td>家电</td>
-          <td class="mono tm-strong"><span class="mono">-0.2744</span></td>
-          <td class="mono"><span class="mono">-0.825</span></td>
-          <td class="mono"><span class="mono">0.364</span></td>
-          <td class="mono"><span class="mono">0.542</span></td>
-          <td class="mono"><span class="mono">-0.584</span></td>
+          <td class="mono tm-strong"><span class="mono">0.0574</span></td>
+          <td class="mono"><span class="mono">-0.082</span></td>
+          <td class="mono"><span class="mono">0.508</span></td>
+          <td class="mono"><span class="mono">0.499</span></td>
+          <td class="mono"><span class="mono">-0.558</span></td>
         </tr>
         <tr>
-          <td class="mono">18</td>
+          <td class="mono">14</td>
+          <td class="mono">601318</td>
+          <td>中国平安</td>
+          <td>保险</td>
+          <td class="mono tm-strong"><span class="mono">0.0014</span></td>
+          <td class="mono"><span class="mono">-0.651</span></td>
+          <td class="mono"><span class="mono">0.639</span></td>
+          <td class="mono"><span class="mono">0.698</span></td>
+          <td class="mono"><span class="mono">-0.013</span></td>
+        </tr>
+        <tr>
+          <td class="mono">15</td>
           <td class="mono">600522</td>
           <td>中天科技</td>
           <td>光通信</td>
-          <td class="mono tm-strong"><span class="mono">-0.4278</span></td>
-          <td class="mono"><span class="mono">-0.829</span></td>
-          <td class="mono"><span class="mono">-1.677</span></td>
-          <td class="mono"><span class="mono">-0.932</span></td>
-          <td class="mono"><span class="mono">2.314</span></td>
+          <td class="mono tm-strong"><span class="mono">-0.2258</span></td>
+          <td class="mono"><span class="mono">-0.594</span></td>
+          <td class="mono"><span class="mono">-1.356</span></td>
+          <td class="mono"><span class="mono">-0.669</span></td>
+          <td class="mono"><span class="mono">2.256</span></td>
         </tr>
         <tr>
-          <td class="mono">19</td>
-          <td class="mono">300308</td>
-          <td>中际旭创</td>
+          <td class="mono">16</td>
+          <td class="mono">300394</td>
+          <td>天孚通信</td>
           <td>光模块</td>
-          <td class="mono tm-strong"><span class="mono">-0.7975</span></td>
-          <td class="mono"><span class="mono">-0.334</span></td>
-          <td class="mono"><span class="mono">-1.319</span></td>
-          <td class="mono"><span class="mono">-1.438</span></td>
-          <td class="mono"><span class="mono">-0.593</span></td>
+          <td class="mono tm-strong"><span class="mono">-0.3658</span></td>
+          <td class="mono"><span class="mono">-0.090</span></td>
+          <td class="mono"><span class="mono">-0.299</span></td>
+          <td class="mono"><span class="mono">-1.184</span></td>
+          <td class="mono"><span class="mono">-0.388</span></td>
         </tr>
         <tr>
-          <td class="mono">20</td>
-          <td class="mono">002281</td>
-          <td>光迅科技</td>
-          <td>光模块</td>
-          <td class="mono tm-strong"><span class="mono">-1.0148</span></td>
-          <td class="mono"><span class="mono">-0.886</span></td>
-          <td class="mono"><span class="mono">-1.185</span></td>
-          <td class="mono"><span class="mono">-1.788</span></td>
-          <td class="mono"><span class="mono">-0.479</span></td>
-        </tr>
-        <tr>
-          <td class="mono">21</td>
-          <td class="mono">000988</td>
-          <td>华工科技</td>
-          <td>光模块</td>
-          <td class="mono tm-strong"><span class="mono">-1.1418</span></td>
-          <td class="mono"><span class="mono">-0.959</span></td>
-          <td class="mono"><span class="mono">-2.011</span></td>
-          <td class="mono"><span class="mono">-1.427</span></td>
-          <td class="mono"><span class="mono">-0.207</span></td>
-        </tr>
-        <tr>
-          <td class="mono">22</td>
+          <td class="mono">17</td>
           <td class="mono">002460</td>
           <td>赣锋锂业</td>
           <td>锂矿</td>
-          <td class="mono tm-strong"><span class="mono">-1.4752</span></td>
-          <td class="mono"><span class="mono">-2.548</span></td>
-          <td class="mono"><span class="mono">-1.398</span></td>
-          <td class="mono"><span class="mono">0.028</span></td>
-          <td class="mono"><span class="mono">-0.554</span></td>
+          <td class="mono tm-strong"><span class="mono">-0.5605</span></td>
+          <td class="mono"><span class="mono">-0.831</span></td>
+          <td class="mono"><span class="mono">-0.548</span></td>
+          <td class="mono"><span class="mono">0.112</span></td>
+          <td class="mono"><span class="mono">-0.539</span></td>
+        </tr>
+        <tr>
+          <td class="mono">18</td>
+          <td class="mono">300308</td>
+          <td>中际旭创</td>
+          <td>光模块</td>
+          <td class="mono tm-strong"><span class="mono">-0.5829</span></td>
+          <td class="mono"><span class="mono">0.059</span></td>
+          <td class="mono"><span class="mono">-1.307</span></td>
+          <td class="mono"><span class="mono">-1.063</span></td>
+          <td class="mono"><span class="mono">-0.601</span></td>
+        </tr>
+        <tr>
+          <td class="mono">19</td>
+          <td class="mono">002335</td>
+          <td>科华数据</td>
+          <td>算力基建</td>
+          <td class="mono tm-strong"><span class="mono">-0.6819</span></td>
+          <td class="mono"><span class="mono">-0.775</span></td>
+          <td class="mono"><span class="mono">-0.742</span></td>
+          <td class="mono"><span class="mono">-0.382</span></td>
+          <td class="mono"><span class="mono">-0.645</span></td>
+        </tr>
+        <tr>
+          <td class="mono">20</td>
+          <td class="mono">000988</td>
+          <td>华工科技</td>
+          <td>光模块</td>
+          <td class="mono tm-strong"><span class="mono">-1.2114</span></td>
+          <td class="mono"><span class="mono">-1.354</span></td>
+          <td class="mono"><span class="mono">-1.810</span></td>
+          <td class="mono"><span class="mono">-1.183</span></td>
+          <td class="mono"><span class="mono">-0.200</span></td>
+        </tr>
+        <tr>
+          <td class="mono">21</td>
+          <td class="mono">002281</td>
+          <td>光迅科技</td>
+          <td>光模块</td>
+          <td class="mono tm-strong"><span class="mono">-1.2988</span></td>
+          <td class="mono"><span class="mono">-1.542</span></td>
+          <td class="mono"><span class="mono">-1.425</span></td>
+          <td class="mono"><span class="mono">-1.543</span></td>
+          <td class="mono"><span class="mono">-0.472</span></td>
+        </tr>
+        <tr>
+          <td class="mono">22</td>
+          <td class="mono">688048</td>
+          <td>长华化学</td>
+          <td>光模块</td>
+          <td class="mono tm-strong"><span class="mono">-2.1703</span></td>
+          <td class="mono"><span class="mono">-2.569</span></td>
+          <td class="mono"><span class="mono">-2.167</span></td>
+          <td class="mono"><span class="mono">-2.900</span></td>
+          <td class="mono"><span class="mono">-0.829</span></td>
         </tr></tbody>
       </table></div>
       <div class="tm-ic-head">RankIC（h=10 · 评估标签，非候选评分）</div>
@@ -4376,11 +4428,11 @@ body.mod-research .stage { padding: 20px 24px 40px; }
       
         <div class="tm-runs">
           <span class="tm-runs-label">该日期已存档研究 Run（点击进入研究链路）：</span>
-                 <button type="button" class="tm-run-chip mono" data-tm-run="run-2026-09-30-10f69c">run-2026-09-30-10f69c</button><button type="button" class="tm-run-chip mono" data-tm-run="run-2026-09-30-11896f">run-2026-09-30-11896f</button><button type="button" class="tm-run-chip mono" data-tm-run="run-2026-09-30-19dc26">run-2026-09-30-19dc26</button><button type="button" class="tm-run-chip mono" data-tm-run="run-2026-09-30-3d0a2a">run-2026-09-30-3d0a2a</button><button type="button" class="tm-run-chip mono" data-tm-run="run-2026-09-30-4fbd05">run-2026-09-30-4fbd05</button><button type="button" class="tm-run-chip mono" data-tm-run="run-2026-09-30-53f416">run-2026-09-30-53f416</button><button type="button" class="tm-run-chip mono" data-tm-run="run-2026-09-30-5f4b99">run-2026-09-30-5f4b99</button><button type="button" class="tm-run-chip mono" data-tm-run="run-2026-09-30-62293c">run-2026-09-30-62293c</button><button type="button" class="tm-run-chip mono" data-tm-run="run-2026-09-30-68710b">run-2026-09-30-68710b</button><button type="button" class="tm-run-chip mono" data-tm-run="run-2026-09-30-b6ce28">run-2026-09-30-b6ce28</button><button type="button" class="tm-run-chip mono" data-tm-run="run-2026-09-30-cf9771">run-2026-09-30-cf9771</button><button type="button" class="tm-run-chip mono" data-tm-run="run-2026-09-30-d5824e">run-2026-09-30-d5824e</button><button type="button" class="tm-run-chip mono" data-tm-run="run-2026-09-30-d9fe7d">run-2026-09-30-d9fe7d</button><button type="button" class="tm-run-chip mono" data-tm-run="run-2026-09-30-df4374">run-2026-09-30-df4374</button><button type="button" class="tm-run-chip mono" data-tm-run="run-2026-09-30-f20e9f">run-2026-09-30-f20e9f</button><button type="button" class="tm-run-chip mono" data-tm-run="run-2026-09-30-ff01c0">run-2026-09-30-ff01c0</button>
+                 <button type="button" class="tm-run-chip mono" data-tm-run="run-2026-10-09-da76e4">run-2026-10-09-da76e4</button>
         </div>
         
-      <p class="tm-source mono">排名：runCrossSection（asOf 截断快照，point-in-time）· resultHash <span class="mono">fa8a49d64e2b9e01</span> · 配置 cfg-default-v0 v0 · configHash <span class="mono">3b92f3f3804a</span></p>
-      <p class="tm-source mono">IC：computeRankICAtDate（src/engine/ic.ts，与 Outcome 评估同一实现） · 研究日 2026-09-30 截面因子值 × 研究日之后 10 个交易日 forward return（取自完整未截断快照；RankIC 是评估标签，不是候选评分，也不是决策 trace）</p>
+      <p class="tm-source mono">排名：runCrossSection（asOf 截断快照，point-in-time）· resultHash <span class="mono">2eb7e1e2e3923dca</span> · 配置 cfg-default-v0 v0 · configHash <span class="mono">c0b15ef2b6b8</span></p>
+      <p class="tm-source mono">IC：computeRankICAtDate（src/engine/ic.ts，与 Outcome 评估同一实现） · 研究日 2026-10-09 截面因子值 × 研究日之后 10 个交易日 forward return（取自完整未截断快照；RankIC 是评估标签，不是候选评分，也不是决策 trace）</p>
       </section>
     </section>
 
@@ -5153,18 +5205,18 @@ body.mod-research .stage { padding: 20px 24px 40px; }
     </div>
     <div class="rws-header-meta">
       <div class="ws-meta-row"><span>研究对象</span><b class="mono">1</b></div>
-      <div class="ws-meta-row"><span>有效 ResearchRun</span><b class="mono">16</b></div>
+      <div class="ws-meta-row"><span>有效 ResearchRun</span><b class="mono">17</b></div>
       <div class="ws-meta-row"><span>legacy / 损坏跳过</span><b class="mono">17</b></div>
-      <div class="ws-meta-row"><span>扫描 run 目录</span><b class="mono">33</b></div>
+      <div class="ws-meta-row"><span>扫描 run 目录</span><b class="mono">34</b></div>
       <div class="ws-meta-row"><span>Outcome 关联</span><b class="mono">0</b></div>
       <div class="ws-meta-note">17 条 run 记录不是有效 ResearchRun（legacy 或损坏），已跳过且不影响其余记录。</div><div class="ws-meta-note">本轮只装配 ResearchRun 自身字段；Outcome 关联由独立只读路径处理，recordsWithOutcomeLink 恒为 0。</div>
     </div>
   </header>
   <section class="panel rws-panel">
     <div class="rws-stat">
-      <div class="rws-stat-cell"><span>索引记录</span><b>16</b></div>
+      <div class="rws-stat-cell"><span>索引记录</span><b>17</b></div>
       <div class="rws-stat-cell"><span>身份跳过</span><b>0</b></div>
-      <div class="rws-stat-cell"><span>已锁定预测</span><b>16 / 16</b></div>
+      <div class="rws-stat-cell"><span>已锁定预测</span><b>17 / 17</b></div>
       <div class="rws-stat-cell"><span>历史快照</span><b>0</b></div>
     </div>
     <p class="muted" style="font-size:11.5px">
@@ -5181,7 +5233,7 @@ body.mod-research .stage { padding: 20px 24px 40px; }
           <span class="rws-loop-name">Research</span>
           <span class="ws-badge ws-badge-ok">COMPLETE</span>
         </div>
-        <div class="rws-loop-note">16 条有效 ResearchRun · 1 个研究对象 · 17 条 legacy 跳过</div>
+        <div class="rws-loop-note">17 条有效 ResearchRun · 1 个研究对象 · 17 条 legacy 跳过</div>
       </div>
       <div class="rws-loop-arrow" aria-hidden="true">→</div>
       <div class="rws-loop-node is-complete">
@@ -5208,7 +5260,7 @@ body.mod-research .stage { padding: 20px 24px 40px; }
           <span class="rws-loop-name">Prediction · LOCK</span>
           <span class="ws-badge ws-badge-ok">COMPLETE</span>
         </div>
-        <div class="rws-loop-note">16 / 16 条预测已锁定 · 当前 mom20 | 10D</div>
+        <div class="rws-loop-note">17 / 17 条预测已锁定 · 当前 mom20 | 10D</div>
       </div>
       <div class="rws-loop-arrow" aria-hidden="true">→</div>
       <div class="rws-loop-node is-waiting">
@@ -5273,7 +5325,7 @@ body.mod-research .stage { padding: 20px 24px 40px; }
       <div class="rws-subject-head">
         <span class="ws-badge ws-badge-info mono">mom20 | 10D</span>
         <b class="mono">f10342b7a9d6c9a9</b>
-        <span class="muted">16 次运行 · 2026-09-30 → 2026-09-30</span>
+        <span class="muted">17 次运行 · 2026-09-30 → 2026-10-09</span>
       </div>
       <ol class="rws-tl">
       <li class="rws-tl-group">
@@ -5360,6 +5412,18 @@ body.mod-research .stage { padding: 20px 24px 40px; }
     <button type="button" class="rws-tl-node" data-tl-run="run-2026-09-30-4fbd05" title="run-2026-09-30-4fbd05">
       <span class="rws-tl-run mono">run-2026-09-30-4fbd05</span>
       <span class="rws-tl-time mono">2026-10-11 15:06:15Z</span>
+      <span class="rws-tl-flags"><span class="rws-tl-flag on">EVID</span><span class="rws-tl-flag on">HYP</span><span class="rws-tl-flag pending">no-outcome</span></span>
+    </button></div>
+      </li>
+      <li class="rws-tl-group">
+        <div class="rws-tl-date">
+          <span class="mono">2026-10-09</span>
+          <span class="muted">1 条</span>
+        </div>
+        <div class="rws-tl-items">
+    <button type="button" class="rws-tl-node" data-tl-run="run-2026-10-09-da76e4" title="run-2026-10-09-da76e4">
+      <span class="rws-tl-run mono">run-2026-10-09-da76e4</span>
+      <span class="rws-tl-time mono">2026-10-11 22:49:03Z</span>
       <span class="rws-tl-flags"><span class="rws-tl-flag on">EVID</span><span class="rws-tl-flag on">HYP</span><span class="rws-tl-flag pending">no-outcome</span></span>
     </button></div>
       </li></ol>
